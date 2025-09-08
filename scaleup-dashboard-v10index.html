@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scaleup Finance - e-conomic Dimensions Dashboard</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f5f7fa; color: #333; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        
+        /* CENTERED HEADER */
+        .header { 
+            background: linear-gradient(135deg, #3a4a47 0%, #2d3a36 100%);
+            color: white; 
+            padding: 50px; 
+            border-radius: 15px; 
+            margin-bottom: 30px; 
+            text-align: center;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 30px;
+        }
+        
+        .scaleup-logo {
+            width: 100px; 
+            height: 100px; 
+            background: #ffffff; 
+            border-radius: 15px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .scaleup-logo img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        
+        .logo-fallback {
+            color: #3a4a47; 
+            font-size: 36px; 
+            font-weight: 800;
+        }
+        
+        .company-name {
+            font-size: 4em;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .header-description {
+            font-size: 1.3em;
+            opacity: 0.9;
+            text-align: center;
+        }
+        
+        /* Project Controls */
+        .project-controls {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .project-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .project-select {
+            padding: 10px 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1em;
+            min-width: 250px;
+        }
+        
+        .nav-tabs { display: flex; background: white; border-radius: 12px; overflow: hidden; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+        .nav-tab { flex: 1; padding: 15px 25px; background: #f8f9fa; border: none; cursor: pointer; font-size: 1.1em; font-weight: 600; transition: all 0.3s; }
+        .nav-tab.active { background: linear-gradient(135deg, #3a4a47, #2d3a36); color: white; }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .setup-form { background: white; padding: 30px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #495057; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 2px solid #dee2e6; border-radius: 8px; font-size: 1em; }
+        
+        .btn { padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 1em; margin: 5px; transition: all 0.3s; }
+        .btn-primary { background: #3a4a47; color: white; }
+        .btn-primary:hover { background: #2d3a36; transform: translateY(-2px); }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-info { background: #17a2b8; color: white; }
+        
+        /* Logo Upload Styles */
+        .logo-upload-area {
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            background: #f8f9fa;
+            transition: all 0.3s;
+        }
+        
+        .logo-upload-area:hover {
+            border-color: #3a4a47;
+            background: #f1f3f4;
+        }
+        
+        .upload-preview {
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .preview-image {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* Loading & Status */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            font-size: 1.2em;
+            color: #666;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-online {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-offline {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* Dashboard Styles */
+        .dashboard-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 25px; 
+            margin-bottom: 40px; 
+        }
+        
+        .kpi-card { 
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 30px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(58, 74, 71, 0.15); 
+            text-align: center; 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(58, 74, 71, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .kpi-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(58, 74, 71, 0.2);
+        }
+        
+        .kpi-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #3a4a47, #2d3a36);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            box-shadow: 0 8px 16px rgba(58, 74, 71, 0.3);
+        }
+        
+        .kpi-value { 
+            font-size: 3.5em; 
+            font-weight: 800; 
+            margin: 20px 0 10px; 
+            background: linear-gradient(135deg, #3a4a47, #2d3a36);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .kpi-label { 
+            color: #666; 
+            font-size: 1.1em; 
+            font-weight: 600;
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            margin-bottom: 15px;
+        }
+        
+        .progress-bar { 
+            width: 100%; 
+            height: 8px; 
+            background: #e9ecef; 
+            border-radius: 10px; 
+            overflow: hidden; 
+            margin: 20px 0 10px;
+        }
+        
+        .progress-fill { 
+            height: 100%; 
+            background: linear-gradient(90deg, #3a4a47, #2d3a36, #3a4a47); 
+            border-radius: 10px; 
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .kpi-subtitle {
+            font-size: 0.9em;
+            color: #3a4a47;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        /* Dashboard Intro Section */
+        .dashboard-intro {
+            background: linear-gradient(135deg, rgba(58, 74, 71, 0.05) 0%, rgba(45, 58, 54, 0.05) 100%);
+            border: 1px solid rgba(58, 74, 71, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .dashboard-intro h2 {
+            color: #3a4a47;
+            font-size: 2.2em;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .dashboard-intro p {
+            color: #666;
+            font-size: 1.1em;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Quick Stats Bar */
+        .quick-stats {
+            background: linear-gradient(135deg, #3a4a47 0%, #2d3a36 100%);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(58, 74, 71, 0.3);
+        }
+        
+        .quick-stat {
+            flex: 1;
+        }
+        
+        .quick-stat-number {
+            font-size: 2em;
+            font-weight: 700;
+            display: block;
+        }
+        
+        .quick-stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+
+        /* Team Distribution */
+        .team-distribution { 
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 35px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(58, 74, 71, 0.15);
+            border: 1px solid rgba(58, 74, 71, 0.1);
+            margin-top: 30px;
+        }
+        
+        .team-distribution h3 { 
+            color: #3a4a47; 
+            margin-bottom: 30px; 
+            text-align: center;
+            font-size: 1.6em;
+            font-weight: 700;
+        }
+        
+        .person-task-row { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 20px 0; 
+            border-bottom: 1px solid rgba(58, 74, 71, 0.1);
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            margin: 0 -10px;
+            padding-left: 25px;
+            padding-right: 25px;
+        }
+        
+        .person-name { 
+            font-weight: 700; 
+            color: #3a4a47; 
+            font-size: 1.1em;
+        }
+        
+        .task-counts { 
+            display: flex; 
+            gap: 20px; 
+            align-items: center;
+        }
+        
+        .task-count { 
+            font-size: 0.95em; 
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(58, 74, 71, 0.05);
+        }
+        
+        .count-completed { 
+            color: #28a745; 
+            background: rgba(40, 167, 69, 0.1);
+        }
+        
+        .count-progress { 
+            color: #3a4a47; 
+            background: rgba(58, 74, 71, 0.1);
+        }
+        
+        .count-total { 
+            color: #666;
+            background: rgba(102, 102, 102, 0.1);
+        }
+        
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #dee2e6; }
+        th { background: #f8f9fa; font-weight: 600; color: #495057; }
+        
+        .table-header { background: #3a4a47; color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .client-info { font-size: 1.1em; opacity: 0.9; }
+        
+        .status-select { padding: 8px 12px; border: none; border-radius: 6px; background: white; cursor: pointer; font-weight: 600; }
+        .status-completed { background: #28a745; color: white; }
+        .status-in-progress { background: #3a4a47; color: white; }
+        .status-not-started { background: #e9ecef; color: #495057; }
+        
+        .warning-message { background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        
+        /* Team Members Styles */
+        .team-section {
+            background: #f8f9fa; 
+            padding: 20px; 
+            border-radius: 8px; 
+            margin: 20px 0;
+            border: 2px solid #3a4a47;
+        }
+        .team-section h3 {
+            color: #3a4a47; 
+            margin-bottom: 15px;
+        }
+        .team-input-row {
+            display: flex; 
+            gap: 10px; 
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        .team-input {
+            flex: 1; 
+            padding: 10px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px;
+        }
+        .team-select {
+            padding: 10px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px;
+            background: white;
+            min-width: 150px;
+        }
+        .team-member-item {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 12px 15px; 
+            background: white; 
+            border-radius: 6px; 
+            margin: 8px 0; 
+            border: 1px solid #ddd;
+        }
+        .team-member-name {
+            font-weight: 600;
+            color: #3a4a47;
+        }
+        .team-member-company {
+            font-size: 0.9em;
+            color: #666;
+        }
+        .btn-small {
+            padding: 4px 8px; 
+            font-size: 0.8em;
+        }
+        
+        /* Share Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+        
+        .close {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .share-link {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.9em;
+            word-break: break-all;
+            margin: 15px 0;
+            border: 1px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CENTERED HEADER -->
+        <div class="header">
+            <div class="header-content">
+                <div class="scaleup-logo">
+                    <img id="header-logo" style="display: none;" alt="Company Logo">
+                    <div class="logo-fallback" id="logo-fallback">SF</div>
+                </div>
+                <div class="company-name">Scaleup Finance</div>
+            </div>
+            <div class="header-description">e-conomic Dimensions Implementation Dashboard</div>
+        </div>
+
+        <!-- Project Controls -->
+        <div class="project-controls">
+            <div class="project-info">
+                <label style="font-weight: 600; color: #495057;">Current Project:</label>
+                <select id="project-select" class="project-select" onchange="loadProject(this.value)">
+                    <option value="">Select or create a project...</option>
+                </select>
+                <span id="connection-status" class="status-badge status-offline">Offline</span>
+            </div>
+            <div>
+                <button class="btn btn-success" onclick="createNewProject()">📄 New Project</button>
+                <button class="btn btn-info" onclick="shareProject()" id="share-btn" disabled>📤 Share</button>
+                <button class="btn btn-secondary" onclick="exportProject()">💾 Export</button>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchTab('setup')">🔧 Client Setup</button>
+            <button class="nav-tab" onclick="switchTab('dashboard')">📊 Dashboard</button>
+            <button class="nav-tab" onclick="switchTab('project')">📋 Project Plan</button>
+        </div>
+
+        <!-- Client Setup Tab -->
+        <div id="setup-tab" class="tab-content active">
+            <div class="setup-form">
+                <h2>Client Information Setup</h2>
+                <p style="margin-bottom: 25px; color: #666;">Configure client details and team members for this e-conomic dimensions implementation project.</p>
+                
+                <div class="form-group">
+                    <label>Client Company Name *</label>
+                    <input type="text" id="client-name" placeholder="e.g., ABC Corporation" onchange="saveToSupabase()">
+                </div>
+                
+                <div class="form-group">
+                    <label>Upload Company Logo</label>
+                    <div class="logo-upload-area" id="logo-upload-area">
+                        <input type="file" id="logo-upload" accept="image/*" style="margin-bottom: 10px;">
+                        <p style="color: #666; font-size: 0.9em; margin: 0;">Choose a logo file from your computer (PNG, JPG, GIF)</p>
+                        <div class="upload-preview" id="upload-preview">
+                            <img class="preview-image" id="preview-image" alt="Logo preview">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Scaleup Finance Project Manager *</label>
+                    <input type="text" id="scaleup-pm" placeholder="e.g., Lars Jensen" onchange="saveToSupabase()">
+                </div>
+                
+                <div class="form-group">
+                    <label>Client Project Manager</label>
+                    <input type="text" id="client-pm" placeholder="e.g., John Smith (CFO)" onchange="saveToSupabase()">
+                </div>
+
+                <!-- Team Members Section -->
+                <div class="team-section">
+                    <h3>👥 Team Members</h3>
+                    <p style="color: #666; margin-bottom: 15px; font-size: 0.9em;">Add team members who can be assigned to specific tasks.</p>
+                    
+                    <div class="team-input-row">
+                        <input type="text" id="new-member-name" class="team-input" placeholder="Enter team member name..." maxlength="50">
+                        <select id="new-member-company" class="team-select">
+                            <option value="Scaleup Finance">Scaleup Finance</option>
+                            <option value="Client">Client</option>
+                        </select>
+                        <button type="button" class="btn btn-success" onclick="addTeamMember()">➕ Add Member</button>
+                    </div>
+
+                    <div id="team-members-list">
+                        <p style="color: #666; font-style: italic; text-align: center; padding: 20px;">No team members added yet.</p>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Project Notes (Optional)</label>
+                    <textarea id="project-notes" rows="3" placeholder="Any specific notes about this implementation..." onchange="saveToSupabase()"></textarea>
+                </div>
+                
+                <button class="btn btn-primary" onclick="saveSetup()">💾 Save Client Setup</button>
+            </div>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard-tab" class="tab-content">
+            <div id="dashboard-warning" class="warning-message">
+                ⚠️ Please select a project and complete the Client Setup first to view the dashboard.
+            </div>
+            
+            <div id="dashboard-content" style="display: none;">
+                <div class="dashboard-intro">
+                    <h2>📊 Project Overview</h2>
+                    <p>Monitor your e-conomic dimensions implementation progress with real-time insights and team performance metrics.</p>
+                </div>
+                
+                <div class="quick-stats">
+                    <div class="quick-stat">
+                        <span class="quick-stat-number" id="phases-completed">0</span>
+                        <span class="quick-stat-label">Phases Done</span>
+                    </div>
+                    <div class="quick-stat">
+                        <span class="quick-stat-number" id="days-remaining">--</span>
+                        <span class="quick-stat-label">Est. Days Left</span>
+                    </div>
+                    <div class="quick-stat">
+                        <span class="quick-stat-number" id="team-size">0</span>
+                        <span class="quick-stat-label">Team Members</span>
+                    </div>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-icon">📈</div>
+                        <div class="kpi-label">Overall Progress</div>
+                        <div class="kpi-value" id="overall-progress">0%</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="overall-progress-bar" style="width: 0%"></div>
+                        </div>
+                        <div class="kpi-subtitle">Implementation Status</div>
+                    </div>
+                    
+                    <div class="kpi-card">
+                        <div class="kpi-icon">✅</div>
+                        <div class="kpi-label">Completed Tasks</div>
+                        <div class="kpi-value" id="completed-tasks">0</div>
+                        <div class="kpi-subtitle">of <span id="total-tasks">0</span> total tasks</div>
+                    </div>
+                    
+                    <div class="kpi-card">
+                        <div class="kpi-icon">🔄</div>
+                        <div class="kpi-label">Active Tasks</div>
+                        <div class="kpi-value" id="ongoing-tasks">0</div>
+                        <div class="kpi-subtitle">currently in progress</div>
+                    </div>
+                    
+                    <div class="kpi-card">
+                        <div class="kpi-icon">🎯</div>
+                        <div class="kpi-label">Next Milestone</div>
+                        <div class="kpi-value" style="font-size: 1.8em; line-height: 1.2;" id="next-milestone">Requirements Analysis</div>
+                        <div class="kpi-subtitle">Phase 1 - Analysis</div>
+                    </div>
+                </div>
+
+                <div class="team-distribution">
+                    <h3>👥 Team Performance Dashboard</h3>
+                    <div id="team-task-distribution">
+                        <div style="text-align: center; padding: 40px; color: #666;">
+                            <div style="font-size: 3em; margin-bottom: 20px;">📝</div>
+                            <h3 style="color: #3a4a47; margin-bottom: 10px;">No tasks assigned yet</h3>
+                            <p>Start assigning tasks to team members to see their workload distribution.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Plan Tab -->
+        <div id="project-tab" class="tab-content">
+            <div id="project-warning" class="warning-message">
+                ⚠️ Please select a project and complete the Client Setup first to access the project plan.
+            </div>
+            
+            <div id="project-content" style="display: none;">
+                <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.08);">
+                    <div class="table-header">
+                        <h2>📋 Detailed Project Plan</h2>
+                        <div class="client-info" id="client-display">No project selected</div>
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 350px">Task</th>
+                                <th style="width: 150px">Status</th>
+                                <th style="width: 200px">Responsible</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody id="project-body">
+                            <tr>
+                                <td colspan="4" class="loading">Select a project to view tasks...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeShareModal()">&times;</span>
+            <h2>Share Project</h2>
+            <p style="margin: 15px 0; color: #666;">Share this project link with clients or team members:</p>
+            <div class="share-link" id="shareLink">Generating link...</div>
+            <div style="margin-top: 20px;">
+                <button class="btn btn-primary" onclick="copyShareLink()">📋 Copy Link</button>
+                <button class="btn btn-secondary" onclick="closeShareModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase SDK -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+    <script>
+        // Supabase Configuration - REPLACE WITH YOUR ACTUAL SUPABASE CONFIG
+        const supabaseUrl = https://swlnojbzlfosjdtqswjd.supabase.co
+        const supabaseAnonKey = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3bG5vamJ6bGZvc2pkdHFzd2pkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTczNDUzNzIsImV4cCI6MjA3MjkyMTM3Mn0.weAmKGGMeUaerNwyAoz6dpFufK0Fz1YbrdaUzsKiYk8
+
+        // Initialize Supabase
+        let supabase = null;
+        let currentProjectId = null;
+        let realtimeChannel = null;
+        
+        try {
+            supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+            document.getElementById('connection-status').textContent = 'Online';
+            document.getElementById('connection-status').className = 'status-badge status-online';
+            
+            // Load available projects
+            loadProjectsList();
+        } catch (error) {
+            console.warn('Supabase not configured yet:', error.message);
+            document.getElementById('connection-status').textContent = 'Demo Mode';
+        }
+
+        // Global data
+        let clientData = { name: '', scaleupPM: '', clientPM: '', notes: '' };
+        let teamMembers = [];
+        let currentProjectData = null;
+
+        const masterTemplate = [
+            {
+                phase: "Phase 1: Analysis & Planning",
+                tasks: [
+                    {name: "1.1 Requirements Analysis", status: "not-started", responsible: "Scaleup Finance", description: "Map dimension requirements and needs"},
+                    {name: "1.2 System Mapping", status: "not-started", responsible: "Client", description: "Current setup in all systems"},
+                    {name: "1.3 Gap Analysis", status: "not-started", responsible: "Scaleup Finance", description: "Identify change requirements"},
+                    {name: "1.4 Technical Architecture", status: "not-started", responsible: "Scaleup Finance", description: "Design solution architecture"}
+                ]
+            },
+            {
+                phase: "Phase 2: e-conomic Configuration",
+                tasks: [
+                    {name: "2.1 Dimension Setup", status: "not-started", responsible: "Scaleup Finance", description: "Create dimensions in e-conomic"},
+                    {name: "2.2 Chart of Accounts Adaptation", status: "not-started", responsible: "Scaleup Finance", description: "Update chart of accounts"},
+                    {name: "2.3 Report Configuration", status: "not-started", responsible: "Scaleup Finance", description: "Customize standard reports"},
+                    {name: "2.4 User Permissions", status: "not-started", responsible: "Client", description: "Setup user access rights"}
+                ]
+            },
+            {
+                phase: "Phase 3: Corpay Integration",
+                tasks: [
+                    {name: "3.1 Corpay Setup", status: "not-started", responsible: "Client", description: "Configure dimensions in Corpay"},
+                    {name: "3.2 e-conomic Mapping", status: "not-started", responsible: "Scaleup Finance", description: "System mapping between platforms"},
+                    {name: "3.3 Data Import Testing", status: "not-started", responsible: "Scaleup Finance", description: "Test data transfer processes"},
+                    {name: "3.4 Automation Rules", status: "not-started", responsible: "Scaleup Finance", description: "Setup automatic posting rules"}
+                ]
+            },
+            {
+                phase: "Phase 4: Pleo Integration",
+                tasks: [
+                    {name: "4.1 Pleo Setup", status: "not-started", responsible: "Client", description: "Configure dimensions in Pleo"},
+                    {name: "4.2 Employee Training", status: "not-started", responsible: "Client", description: "Train employees on dimension usage"},
+                    {name: "4.3 Approval Workflows", status: "not-started", responsible: "Client", description: "Setup approval processes"},
+                    {name: "4.4 Integration Testing", status: "not-started", responsible: "Scaleup Finance", description: "Test Pleo to e-conomic integration"}
+                ]
+            },
+            {
+                phase: "Phase 5: Testing & Validation",
+                tasks: [
+                    {name: "5.1 System Testing", status: "not-started", responsible: "Scaleup Finance", description: "Functional testing of all systems"},
+                    {name: "5.2 User Acceptance Testing", status: "not-started", responsible: "Client", description: "Testing with end users"},
+                    {name: "5.3 Report Validation", status: "not-started", responsible: "Scaleup Finance", description: "Verify report accuracy"},
+                    {name: "5.4 Performance Testing", status: "not-started", responsible: "Scaleup Finance", description: "Test system performance"}
+                ]
+            },
+            {
+                phase: "Phase 6: Go-Live & Support",
+                tasks: [
+                    {name: "6.1 Production Implementation", status: "not-started", responsible: "Scaleup Finance", description: "Deploy to production environment"},
+                    {name: "6.2 User Training", status: "not-started", responsible: "Scaleup Finance", description: "Train all users"},
+                    {name: "6.3 Documentation", status: "not-started", responsible: "Scaleup Finance", description: "Create user manuals"},
+                    {name: "6.4 Post-Implementation Support", status: "not-started", responsible: "Scaleup Finance", description: "Ongoing support first month"}
+                ]
+            }
+        ];
+
+        // Logo Upload Functionality
+        function setupLogoUpload() {
+            const logoUpload = document.getElementById('logo-upload');
+            const uploadArea = document.getElementById('logo-upload-area');
+            const previewDiv = document.getElementById('upload-preview');
+            const previewImg = document.getElementById('preview-image');
+            const headerLogo = document.getElementById('header-logo');
+            const logoFallback = document.getElementById('logo-fallback');
+
+            if (!logoUpload) return;
+
+            logoUpload.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    handleLogoFile(file);
+                }
+            });
+
+            function handleLogoFile(file) {
+                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                if (!validTypes.includes(file.type)) {
+                    alert('Please select a valid image file (JPG, PNG, or GIF)');
+                    return;
+                }
+
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('Image is too large. Maximum size is 5MB.');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const dataURL = e.target.result;
+                    
+                    headerLogo.src = dataURL;
+                    headerLogo.style.display = 'block';
+                    logoFallback.style.display = 'none';
+                    
+                    previewImg.src = dataURL;
+                    previewDiv.style.display = 'block';
+                    
+                    if (currentProjectData) {
+                        currentProjectData.logoData = dataURL;
+                        saveToSupabase();
+                    }
+                };
+                
+                reader.onerror = function(error) {
+                    console.error('Error reading file:', error);
+                    alert('Error loading image. Please try again.');
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Supabase Functions
+        async function loadProjectsList() {
+            if (!supabase) return;
+            
+            try {
+                const { data: projects, error } = await supabase
+                    .from('projects')
+                    .select('project_id, client_data');
+
+                if (error) throw error;
+
+                const select = document.getElementById('project-select');
+                select.innerHTML = '<option value="">Select or create a project...</option>';
+                
+                projects.forEach(project => {
+                    const option = document.createElement('option');
+                    option.value = project.project_id;
+                    const clientName = project.client_data?.name || 'Unnamed Project';
+                    option.textContent = `${clientName} (${project.project_id})`;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading projects:', error.message);
+            }
+        }
+
+        async function createNewProject() {
+            const projectName = prompt('Enter client company name for the new project:');
+            if (!projectName) return;
+            
+            const projectId = generateProjectId(projectName);
+            currentProjectId = projectId;
+            
+            const newProject = {
+                project_id: projectId,
+                client_data: {
+                    name: projectName,
+                    scaleupPM: '',
+                    clientPM: '',
+                    notes: ''
+                },
+                team_members: [],
+                tasks: masterTemplate,
+                created_at: new Date().toISOString(),
+                last_updated: new Date().toISOString()
+            };
+            
+            if (supabase) {
+                try {
+                    const { error } = await supabase
+                        .from('projects')
+                        .insert([newProject]);
+                    
+                    if (error) throw error;
+                } catch (error) {
+                    console.error('Error creating project:', error.message);
+                    return;
+                }
+            }
+            
+            document.getElementById('project-select').value = projectId;
+            loadProject(projectId);
+        }
+
+        async function loadProject(projectId) {
+            if (!projectId) {
+                currentProjectId = null;
+                resetUI();
+                return;
+            }
+            
+            currentProjectId = projectId;
+            document.getElementById('share-btn').disabled = false;
+            
+            if (!supabase) {
+                loadDemoProject();
+                return;
+            }
+            
+            try {
+                const { data: project, error } = await supabase
+                    .from('projects')
+                    .select('*')
+                    .eq('project_id', projectId)
+                    .single();
+
+                if (error) throw error;
+
+                if (project) {
+                    currentProjectData = project;
+                    populateUIFromProject(project);
+                    
+                    // Setup real-time subscription
+                    setupRealtimeSubscription(projectId);
+                }
+            } catch (error) {
+                console.error('Error loading project:', error.message);
+            }
+        }
+
+        function setupRealtimeSubscription(projectId) {
+            if (realtimeChannel) {
+                supabase.removeChannel(realtimeChannel);
+            }
+
+            realtimeChannel = supabase
+                .channel(`project-${projectId}`)
+                .on('postgres_changes', 
+                    { 
+                        event: 'UPDATE', 
+                        schema: 'public', 
+                        table: 'projects',
+                        filter: `project_id=eq.${projectId}`
+                    }, 
+                    (payload) => {
+                        console.log('Real-time update received:', payload.new);
+                        currentProjectData = payload.new;
+                        populateUIFromProject(payload.new);
+                    }
+                )
+                .subscribe();
+        }
+
+        function loadDemoProject() {
+            const demoProject = {
+                client_data: {
+                    name: 'Demo Corporation',
+                    scaleupPM: 'Lars Jensen',
+                    clientPM: 'John Smith',
+                    notes: 'Demo project for testing'
+                },
+                team_members: [
+                    {name: 'Lars Jensen', company: 'Scaleup Finance'},
+                    {name: 'Maria Petersen', company: 'Scaleup Finance'}
+                ],
+                tasks: masterTemplate
+            };
+            
+            currentProjectData = demoProject;
+            populateUIFromProject(demoProject);
+        }
+
+        function populateUIFromProject(projectData) {
+            clientData = projectData.client_data || {};
+            document.getElementById('client-name').value = clientData.name || '';
+            document.getElementById('scaleup-pm').value = clientData.scaleupPM || '';
+            document.getElementById('client-pm').value = clientData.clientPM || '';
+            document.getElementById('project-notes').value = clientData.notes || '';
+            
+            if (projectData.logo_data) {
+                const headerLogo = document.getElementById('header-logo');
+                const logoFallback = document.getElementById('logo-fallback');
+                const previewImg = document.getElementById('preview-image');
+                const previewDiv = document.getElementById('upload-preview');
+                
+                headerLogo.src = projectData.logo_data;
+                headerLogo.style.display = 'block';
+                logoFallback.style.display = 'none';
+                
+                previewImg.src = projectData.logo_data;
+                previewDiv.style.display = 'block';
+            }
+            
+            teamMembers = projectData.team_members || [];
+            updateTeamMembersList();
+            
+            checkSetup();
+            populateTable();
+            updateDashboard();
+        }
+
+        async function saveToSupabase() {
+            if (!currentProjectId || !supabase) return;
+            
+            const currentData = {
+                client_data: {
+                    name: document.getElementById('client-name').value.trim(),
+                    scaleupPM: document.getElementById('scaleup-pm').value.trim(),
+                    clientPM: document.getElementById('client-pm').value.trim(),
+                    notes: document.getElementById('project-notes').value.trim()
+                },
+                team_members: teamMembers,
+                tasks: currentProjectData?.tasks || masterTemplate,
+                logo_data: currentProjectData?.logo_data || null,
+                last_updated: new Date().toISOString()
+            };
+            
+            try {
+                const { error } = await supabase
+                    .from('projects')
+                    .update(currentData)
+                    .eq('project_id', currentProjectId);
+                
+                if (error) throw error;
+                console.log('Successfully saved to Supabase');
+            } catch (error) {
+                console.error('Failed to save to Supabase:', error.message);
+            }
+            
+            currentProjectData = { ...currentProjectData, ...currentData };
+        }
+
+        function generateProjectId(projectName) {
+            const cleanName = projectName.toLowerCase().replace(/[^a-z0-9]/g, '-');
+            const timestamp = Date.now().toString().slice(-6);
+            return `${cleanName}-${timestamp}`;
+        }
+
+        function resetUI() {
+            clientData = { name: '', scaleupPM: '', clientPM: '', notes: '' };
+            teamMembers = [];
+            currentProjectData = null;
+            
+            document.getElementById('client-name').value = '';
+            document.getElementById('scaleup-pm').value = '';
+            document.getElementById('client-pm').value = '';
+            document.getElementById('project-notes').value = '';
+            
+            const headerLogo = document.getElementById('header-logo');
+            const logoFallback = document.getElementById('logo-fallback');
+            const previewDiv = document.getElementById('upload-preview');
+            headerLogo.style.display = 'none';
+            logoFallback.style.display = 'flex';
+            previewDiv.style.display = 'none';
+            
+            updateTeamMembersList();
+            checkSetup();
+            
+            document.getElementById('share-btn').disabled = true;
+            
+            if (realtimeChannel) {
+                supabase.removeChannel(realtimeChannel);
+                realtimeChannel = null;
+            }
+        }
+
+        // Share functionality
+        function shareProject() {
+            if (!currentProjectId) return;
+            
+            const baseUrl = window.location.href.split('?')[0];
+            const shareUrl = `${baseUrl}?project=${currentProjectId}`;
+            
+            document.getElementById('shareLink').textContent = shareUrl;
+            document.getElementById('shareModal').style.display = 'block';
+        }
+
+        function closeShareModal() {
+            document.getElementById('shareModal').style.display = 'none';
+        }
+
+        function copyShareLink() {
+            const shareLink = document.getElementById('shareLink').textContent;
+            navigator.clipboard.writeText(shareLink).then(() => {
+                alert('Link copied to clipboard!');
+            });
+        }
+
+        // Export functionality
+        function exportProject() {
+            if (!currentProjectData) return;
+            
+            const exportData = {
+                ...currentProjectData,
+                exportedAt: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `scaleup-project-${currentProjectId}.json`;
+            a.click();
+        }
+
+        // Team member functions
+        function addTeamMember() {
+            const nameInput = document.getElementById('new-member-name');
+            const companySelect = document.getElementById('new-member-company');
+            
+            const name = nameInput.value.trim();
+            const company = companySelect.value;
+            
+            if (!name) {
+                alert('Please enter a team member name');
+                return;
+            }
+            
+            if (teamMembers.find(member => member.name === name)) {
+                alert('Team member already exists');
+                return;
+            }
+            
+            teamMembers.push({ name: name, company: company });
+            nameInput.value = '';
+            updateTeamMembersList();
+            saveToSupabase();
+        }
+
+        function removeTeamMember(name) {
+            if (confirm('Remove this team member?')) {
+                teamMembers = teamMembers.filter(member => member.name !== name);
+                updateTeamMembersList();
+                saveToSupabase();
+            }
+        }
+
+        function updateTeamMembersList() {
+            const listDiv = document.getElementById('team-members-list');
+            
+            if (teamMembers.length === 0) {
+                listDiv.innerHTML = '<p style="color: #666; font-style: italic; text-align: center; padding: 20px;">No team members added yet.</p>';
+                return;
+            }
+            
+            listDiv.innerHTML = teamMembers.map(member => `
+                <div class="team-member-item">
+                    <div>
+                        <div class="team-member-name">${member.name}</div>
+                        <div class="team-member-company">${member.company}</div>
+                    </div>
+                    <button onclick="removeTeamMember('${member.name}')" class="btn btn-danger btn-small">Remove</button>
+                </div>
+            `).join('');
+        }
+
+        // UI Functions
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+            checkSetup();
+        }
+
+        function saveSetup() {
+            clientData.name = document.getElementById('client-name').value.trim();
+            clientData.scaleupPM = document.getElementById('scaleup-pm').value.trim();
+            clientData.clientPM = document.getElementById('client-pm').value.trim();
+            clientData.notes = document.getElementById('project-notes').value.trim();
+            
+            if (!clientData.name || !clientData.scaleupPM) {
+                alert('Please fill in both client name and Scaleup Finance PM');
+                return;
+            }
+            
+            saveToSupabase();
+            switchTab('dashboard');
+            document.querySelectorAll('.nav-tab')[1].click();
+        }
+
+        function checkSetup() {
+            const hasProject = currentProjectId !== null;
+            const hasSetup = hasProject && clientData.name && clientData.scaleupPM;
+            
+            const dashboardWarning = document.getElementById('dashboard-warning');
+            const dashboardContent = document.getElementById('dashboard-content');
+            const projectWarning = document.getElementById('project-warning');
+            const projectContent = document.getElementById('project-content');
+            
+            if (hasSetup) {
+                if (dashboardWarning) dashboardWarning.style.display = 'none';
+                if (dashboardContent) dashboardContent.style.display = 'block';
+                if (projectWarning) projectWarning.style.display = 'none';
+                if (projectContent) projectContent.style.display = 'block';
+                
+                const clientDisplay = document.getElementById('client-display');
+                if (clientDisplay) {
+                    clientDisplay.textContent = `${clientData.name} | PM: ${clientData.scaleupPM}`;
+                }
+                
+                populateTable();
+                updateDashboard();
+            } else {
+                if (dashboardWarning) dashboardWarning.style.display = 'block';
+                if (dashboardContent) dashboardContent.style.display = 'none';
+                if (projectWarning) projectWarning.style.display = 'block';
+                if (projectContent) projectContent.style.display = 'none';
+            }
+        }
+
+        function populateTable() {
+            const tbody = document.getElementById('project-body');
+            if (!tbody || !currentProjectData?.tasks) return;
+            
+            tbody.innerHTML = '';
+            
+            currentProjectData.tasks.forEach(phase => {
+                const phaseRow = document.createElement('tr');
+                phaseRow.innerHTML = `<td colspan="4" style="background: #3a4a47; color: white; font-weight: bold; padding: 15px;">${phase.phase}</td>`;
+                tbody.appendChild(phaseRow);
+                
+                phase.tasks.forEach(task => {
+                    const taskRow = document.createElement('tr');
+                    taskRow.innerHTML = `
+                        <td>${task.name}</td>
+                        <td>
+                            <select class="status-select status-${task.status}" onchange="updateTaskStatus('${task.name}', this.value)">
+                                <option value="not-started" ${task.status === 'not-started' ? 'selected' : ''}>⏳ Not Started</option>
+                                <option value="in-progress" ${task.status === 'in-progress' ? 'selected' : ''}>🔄 In Progress</option>
+                                <option value="completed" ${task.status === 'completed' ? 'selected' : ''}>✅ Completed</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select onchange="updateTaskResponsible('${task.name}', this.value)" style="width: 100%; padding: 6px;">
+                                <option value="Scaleup Finance" ${task.responsible === 'Scaleup Finance' ? 'selected' : ''}>Scaleup Finance</option>
+                                <option value="Client" ${task.responsible === 'Client' ? 'selected' : ''}>Client</option>
+                            </select>
+                        </td>
+                        <td>${task.description}</td>
+                    `;
+                    tbody.appendChild(taskRow);
+                });
+            });
+        }
+
+        function updateDashboard() {
+            if (!currentProjectData?.tasks) return;
+            
+            let totalTasks = 0;
+            let completedTasks = 0;
+            let ongoingTasks = 0;
+            let tasksByResponsible = {};
+            
+            currentProjectData.tasks.forEach(phase => {
+                phase.tasks.forEach(task => {
+                    totalTasks++;
+                    if (task.status === 'completed') completedTasks++;
+                    if (task.status === 'in-progress') ongoingTasks++;
+                    
+                    if (!tasksByResponsible[task.responsible]) {
+                        tasksByResponsible[task.responsible] = { total: 0, completed: 0, 'in-progress': 0 };
+                    }
+                    tasksByResponsible[task.responsible].total++;
+                    tasksByResponsible[task.responsible][task.status]++;
+                });
+            });
+            
+            const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            
+            const overallProgress = document.getElementById('overall-progress');
+            const overallProgressBar = document.getElementById('overall-progress-bar');
+            const completedTasksEl = document.getElementById('completed-tasks');
+            const totalTasksEl = document.getElementById('total-tasks');
+            const ongoingTasksEl = document.getElementById('ongoing-tasks');
+            const teamSizeEl = document.getElementById('team-size');
+            const daysRemainingEl = document.getElementById('days-remaining');
+            const phasesCompletedEl = document.getElementById('phases-completed');
+            
+            if (overallProgress) overallProgress.textContent = progressPercent + '%';
+            if (overallProgressBar) overallProgressBar.style.width = progressPercent + '%';
+            if (completedTasksEl) completedTasksEl.textContent = completedTasks;
+            if (totalTasksEl) totalTasksEl.textContent = totalTasks;
+            if (ongoingTasksEl) ongoingTasksEl.textContent = ongoingTasks;
+            if (teamSizeEl) teamSizeEl.textContent = teamMembers.length + 2;
+            
+            const remainingTasks = totalTasks - completedTasks;
+            const daysRemaining = remainingTasks > 0 ? Math.ceil(remainingTasks / 2) : 0;
+            if (daysRemainingEl) daysRemainingEl.textContent = daysRemaining;
+            
+            let completedPhases = 0;
+            currentProjectData.tasks.forEach(phase => {
+                const allCompleted = phase.tasks.every(task => task.status === 'completed');
+                if (allCompleted && phase.tasks.length > 0) completedPhases++;
+            });
+            if (phasesCompletedEl) phasesCompletedEl.textContent = completedPhases;
+            
+            updateTeamTaskDistribution(tasksByResponsible);
+        }
+
+        function updateTeamTaskDistribution(tasksByResponsible) {
+            const container = document.getElementById('team-task-distribution');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            if (!tasksByResponsible || Object.keys(tasksByResponsible).length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #666;">
+                        <div style="font-size: 3em; margin-bottom: 20px;">📝</div>
+                        <h3 style="color: #3a4a47; margin-bottom: 10px;">No tasks assigned yet</h3>
+                        <p>Start assigning tasks to team members to see their workload distribution.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            Object.keys(tasksByResponsible).forEach(responsible => {
+                const data = tasksByResponsible[responsible];
+                const completionRate = data.total > 0 ? Math.round((data.completed / data.total) * 100) : 0;
+                
+                const row = document.createElement('div');
+                row.className = 'person-task-row';
+                row.innerHTML = `
+                    <div class="person-name">${responsible}</div>
+                    <div class="task-counts">
+                        <span class="task-count count-completed">✅ ${data.completed} done</span>
+                        <span class="task-count count-progress">🔄 ${data['in-progress'] || 0} active</span>
+                        <span class="task-count count-total">📋 ${data.total} total (${completionRate}%)</span>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        async function updateTaskStatus(taskName, status) {
+            if (!currentProjectData?.tasks) return;
+            
+            for (let phase of currentProjectData.tasks) {
+                for (let task of phase.tasks) {
+                    if (task.name === taskName) {
+                        task.status = status;
+                        if (event && event.target) {
+                            event.target.className = `status-select status-${status}`;
+                        }
+                        updateDashboard();
+                        await saveToSupabase();
+                        break;
+                    }
+                }
+            }
+        }
+
+        async function updateTaskResponsible(taskName, newResponsible) {
+            if (!currentProjectData?.tasks) return;
+            
+            for (let phase of currentProjectData.tasks) {
+                for (let task of phase.tasks) {
+                    if (task.name === taskName) {
+                        task.responsible = newResponsible;
+                        updateDashboard();
+                        await saveToSupabase();
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get('project');
+            
+            if (projectId) {
+                document.getElementById('project-select').value = projectId;
+                loadProject(projectId);
+            }
+            
+            updateTeamMembersList();
+            setupLogoUpload();
+        });
+    </script>
+</body>
+</html>
