@@ -3,11 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scaleup Finance - e-conomic Dimensions Dashboard</title>
+    <title>Scaleup Finance - Secure Dashboard</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', sans-serif; background: #f5f7fa; color: #333; }
         .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        
+        /* Login Screen */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #3a4a47 0%, #2d3a36 100%);
+        }
+        
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .login-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .login-logo h1 {
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #3a4a47, #2d3a36);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .auth-form {
+            margin-top: 20px;
+        }
+        
+        .auth-form input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        
+        .auth-form button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #3a4a47, #2d3a36);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .auth-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(58, 74, 71, 0.3);
+        }
+        
+        .auth-toggle {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+        
+        .auth-toggle a {
+            color: #3a4a47;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
+        }
+        
+        /* User Info Bar */
+        .user-bar {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-email {
+            font-weight: 600;
+            color: #3a4a47;
+        }
         
         /* CENTERED HEADER */
         .header { 
@@ -112,64 +227,7 @@
         .btn-danger { background: #dc3545; color: white; }
         .btn-info { background: #17a2b8; color: white; }
         
-        /* Logo Upload Styles */
-        .logo-upload-area {
-            border: 2px dashed #dee2e6;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            background: #f8f9fa;
-            transition: all 0.3s;
-        }
-        
-        .logo-upload-area:hover {
-            border-color: #3a4a47;
-            background: #f1f3f4;
-        }
-        
-        .upload-preview {
-            margin-top: 15px;
-            display: none;
-        }
-        
-        .preview-image {
-            max-width: 100px;
-            max-height: 100px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        /* Loading & Status */
-        .loading {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px;
-            font-size: 1.2em;
-            color: #666;
-        }
-        
-        .status-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8em;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .status-online {
-            background: #d4edda;
-            color: #155724;
-        }
-        
-        .status-offline {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        
-        /* Dashboard Styles */
+        /* Dashboard and other styles */
         .dashboard-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
@@ -250,7 +308,6 @@
             margin-top: 10px;
         }
         
-        /* Dashboard Intro Section */
         .dashboard-intro {
             background: linear-gradient(135deg, rgba(58, 74, 71, 0.05) 0%, rgba(45, 58, 54, 0.05) 100%);
             border: 1px solid rgba(58, 74, 71, 0.1);
@@ -275,103 +332,6 @@
             margin: 0 auto;
         }
         
-        /* Quick Stats Bar */
-        .quick-stats {
-            background: linear-gradient(135deg, #3a4a47 0%, #2d3a36 100%);
-            color: white;
-            padding: 20px 30px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-around;
-            text-align: center;
-            box-shadow: 0 8px 16px rgba(58, 74, 71, 0.3);
-        }
-        
-        .quick-stat {
-            flex: 1;
-        }
-        
-        .quick-stat-number {
-            font-size: 2em;
-            font-weight: 700;
-            display: block;
-        }
-        
-        .quick-stat-label {
-            font-size: 0.9em;
-            opacity: 0.9;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 5px;
-        }
-
-        /* Team Distribution */
-        .team-distribution { 
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            padding: 35px; 
-            border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(58, 74, 71, 0.15);
-            border: 1px solid rgba(58, 74, 71, 0.1);
-            margin-top: 30px;
-        }
-        
-        .team-distribution h3 { 
-            color: #3a4a47; 
-            margin-bottom: 30px; 
-            text-align: center;
-            font-size: 1.6em;
-            font-weight: 700;
-        }
-        
-        .person-task-row { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 20px 0; 
-            border-bottom: 1px solid rgba(58, 74, 71, 0.1);
-            transition: all 0.3s ease;
-            border-radius: 10px;
-            margin: 0 -10px;
-            padding-left: 25px;
-            padding-right: 25px;
-        }
-        
-        .person-name { 
-            font-weight: 700; 
-            color: #3a4a47; 
-            font-size: 1.1em;
-        }
-        
-        .task-counts { 
-            display: flex; 
-            gap: 20px; 
-            align-items: center;
-        }
-        
-        .task-count { 
-            font-size: 0.95em; 
-            font-weight: 600;
-            padding: 8px 16px;
-            border-radius: 20px;
-            background: rgba(58, 74, 71, 0.05);
-        }
-        
-        .count-completed { 
-            color: #28a745; 
-            background: rgba(40, 167, 69, 0.1);
-        }
-        
-        .count-progress { 
-            color: #3a4a47; 
-            background: rgba(58, 74, 71, 0.1);
-        }
-        
-        .count-total { 
-            color: #666;
-            background: rgba(102, 102, 102, 0.1);
-        }
-        
         table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
         th, td { padding: 15px; text-align: left; border-bottom: 1px solid #dee2e6; }
         th { background: #f8f9fa; font-weight: 600; color: #495057; }
@@ -386,7 +346,6 @@
         
         .warning-message { background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
         
-        /* Team Members Styles */
         .team-section {
             background: #f8f9fa; 
             padding: 20px; 
@@ -394,97 +353,71 @@
             margin: 20px 0;
             border: 2px solid #3a4a47;
         }
+        
         .team-section h3 {
             color: #3a4a47; 
             margin-bottom: 15px;
         }
-        .team-input-row {
-            display: flex; 
-            gap: 10px; 
-            margin-bottom: 15px;
+        
+        .loading {
+            display: flex;
+            justify-content: center;
             align-items: center;
-        }
-        .team-input {
-            flex: 1; 
-            padding: 10px; 
-            border: 1px solid #ddd; 
-            border-radius: 4px;
-        }
-        .team-select {
-            padding: 10px; 
-            border: 1px solid #ddd; 
-            border-radius: 4px;
-            background: white;
-            min-width: 150px;
-        }
-        .team-member-item {
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 12px 15px; 
-            background: white; 
-            border-radius: 6px; 
-            margin: 8px 0; 
-            border: 1px solid #ddd;
-        }
-        .team-member-name {
-            font-weight: 600;
-            color: #3a4a47;
-        }
-        .team-member-company {
-            font-size: 0.9em;
+            padding: 40px;
+            font-size: 1.2em;
             color: #666;
-        }
-        .btn-small {
-            padding: 4px 8px; 
-            font-size: 0.8em;
-        }
-        
-        /* Share Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-        }
-        
-        .modal-content {
-            background: white;
-            margin: 5% auto;
-            padding: 30px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 500px;
-            position: relative;
-        }
-        
-        .close {
-            position: absolute;
-            right: 15px;
-            top: 15px;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        
-        .share-link {
-            background: #f8f9fa;
-            padding: 12px;
-            border-radius: 8px;
-            font-family: monospace;
-            font-size: 0.9em;
-            word-break: break-all;
-            margin: 15px 0;
-            border: 1px solid #dee2e6;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-container" style="display: none;">
+        <div class="login-box">
+            <div class="login-logo">
+                <h1>Scaleup Finance</h1>
+                <p>e-conomic Dimensions Dashboard</p>
+            </div>
+            
+            <div id="error-message" class="error-message"></div>
+            <div id="success-message" class="success-message"></div>
+            
+            <!-- Login Form -->
+            <div id="login-form" class="auth-form">
+                <h2 style="margin-bottom: 20px;">Log ind</h2>
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button onclick="handleLogin()">Log ind</button>
+                <div class="auth-toggle">
+                    Ny bruger? <a href="#" onclick="showSignup(); return false;">Opret konto</a>
+                </div>
+            </div>
+            
+            <!-- Signup Form -->
+            <div id="signup-form" class="auth-form" style="display: none;">
+                <h2 style="margin-bottom: 20px;">Opret konto</h2>
+                <input type="email" id="signup-email" placeholder="Email" required>
+                <input type="password" id="signup-password" placeholder="Password (min. 6 tegn)" required>
+                <input type="text" id="company-name" placeholder="Firmanavn" required>
+                <button onclick="handleSignup()">Opret konto</button>
+                <div class="auth-toggle">
+                    Har du allerede en konto? <a href="#" onclick="showLogin(); return false;">Log ind</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard (hidden until logged in) -->
+    <div id="main-dashboard" class="container" style="display: none;">
+        
+        <!-- User Bar -->
+        <div class="user-bar">
+            <div class="user-info">
+                <span>Logget ind som:</span>
+                <span class="user-email" id="current-user-email">-</span>
+            </div>
+            <button class="btn btn-danger" onclick="handleLogout()">Log ud</button>
+        </div>
+        
         <!-- CENTERED HEADER -->
         <div class="header">
             <div class="header-content">
@@ -502,13 +435,12 @@
             <div class="project-info">
                 <label style="font-weight: 600; color: #495057;">Current Project:</label>
                 <select id="project-select" class="project-select" onchange="loadProject(this.value)">
-                    <option value="">Select or create a project...</option>
+                    <option value="">Vælg eller opret et projekt...</option>
                 </select>
-                <span id="connection-status" class="status-badge status-offline">Offline</span>
+                <span id="connection-status" class="status-badge status-online" style="background: #d4edda; color: #155724; padding: 4px 12px; border-radius: 20px; font-size: 0.8em;">Online</span>
             </div>
             <div>
-                <button class="btn btn-success" onclick="createNewProject()">🔄 New Project</button>
-                <button class="btn btn-info" onclick="shareProject()" id="share-btn" disabled>📤 Share</button>
+                <button class="btn btn-success" onclick="createNewProject()">🔄 Nyt Projekt</button>
                 <button class="btn btn-secondary" onclick="exportProject()">💾 Export</button>
             </div>
         </div>
@@ -524,22 +456,11 @@
         <div id="setup-tab" class="tab-content active">
             <div class="setup-form">
                 <h2>Client Information Setup</h2>
-                <p style="margin-bottom: 25px; color: #666;">Configure client details and team members for this e-conomic dimensions implementation project.</p>
+                <p style="margin-bottom: 25px; color: #666;">Configure client details for this project.</p>
                 
                 <div class="form-group">
                     <label>Client Company Name *</label>
                     <input type="text" id="client-name" placeholder="e.g., ABC Corporation" onchange="saveToSupabase()">
-                </div>
-                
-                <div class="form-group">
-                    <label>Upload Company Logo</label>
-                    <div class="logo-upload-area" id="logo-upload-area">
-                        <input type="file" id="logo-upload" accept="image/*" style="margin-bottom: 10px;">
-                        <p style="color: #666; font-size: 0.9em; margin: 0;">Choose a logo file from your computer (PNG, JPG, GIF)</p>
-                        <div class="upload-preview" id="upload-preview">
-                            <img class="preview-image" id="preview-image" alt="Logo preview">
-                        </div>
-                    </div>
                 </div>
                 
                 <div class="form-group">
@@ -550,25 +471,6 @@
                 <div class="form-group">
                     <label>Client Project Manager</label>
                     <input type="text" id="client-pm" placeholder="e.g., John Smith (CFO)" onchange="saveToSupabase()">
-                </div>
-
-                <!-- Team Members Section -->
-                <div class="team-section">
-                    <h3>👥 Team Members</h3>
-                    <p style="color: #666; margin-bottom: 15px; font-size: 0.9em;">Add team members who can be assigned to specific tasks.</p>
-                    
-                    <div class="team-input-row">
-                        <input type="text" id="new-member-name" class="team-input" placeholder="Enter team member name..." maxlength="50">
-                        <select id="new-member-company" class="team-select">
-                            <option value="Scaleup Finance">Scaleup Finance</option>
-                            <option value="Client">Client</option>
-                        </select>
-                        <button type="button" class="btn btn-success" onclick="addTeamMember()">➕ Add Member</button>
-                    </div>
-
-                    <div id="team-members-list">
-                        <p style="color: #666; font-style: italic; text-align: center; padding: 20px;">No team members added yet.</p>
-                    </div>
                 </div>
                 
                 <div class="form-group">
@@ -589,22 +491,7 @@
             <div id="dashboard-content" style="display: none;">
                 <div class="dashboard-intro">
                     <h2>📊 Project Overview</h2>
-                    <p>Monitor your e-conomic dimensions implementation progress with real-time insights and team performance metrics.</p>
-                </div>
-                
-                <div class="quick-stats">
-                    <div class="quick-stat">
-                        <span class="quick-stat-number" id="phases-completed">0</span>
-                        <span class="quick-stat-label">Phases Done</span>
-                    </div>
-                    <div class="quick-stat">
-                        <span class="quick-stat-number" id="days-remaining">--</span>
-                        <span class="quick-stat-label">Est. Days Left</span>
-                    </div>
-                    <div class="quick-stat">
-                        <span class="quick-stat-number" id="team-size">0</span>
-                        <span class="quick-stat-label">Team Members</span>
-                    </div>
+                    <p>Monitor your e-conomic dimensions implementation progress.</p>
                 </div>
                 
                 <div class="dashboard-grid">
@@ -637,17 +524,6 @@
                         <div class="kpi-label">Next Milestone</div>
                         <div class="kpi-value" style="font-size: 1.8em; line-height: 1.2;" id="next-milestone">Requirements Analysis</div>
                         <div class="kpi-subtitle">Phase 1 - Analysis</div>
-                    </div>
-                </div>
-
-                <div class="team-distribution">
-                    <h3>👥 Team Performance Dashboard</h3>
-                    <div id="team-task-distribution">
-                        <div style="text-align: center; padding: 40px; color: #666;">
-                            <div style="font-size: 3em; margin-bottom: 20px;">📝</div>
-                            <h3 style="color: #3a4a47; margin-bottom: 10px;">No tasks assigned yet</h3>
-                            <p>Start assigning tasks to team members to see their workload distribution.</p>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -686,56 +562,20 @@
         </div>
     </div>
 
-    <!-- Share Modal -->
-    <div id="shareModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeShareModal()">&times;</span>
-            <h2>Share Project</h2>
-            <p style="margin: 15px 0; color: #666;">Share this project link with clients or team members:</p>
-            <div class="share-link" id="shareLink">Generating link...</div>
-            <div style="margin-top: 20px;">
-                <button class="btn btn-primary" onclick="copyShareLink()">📋 Copy Link</button>
-                <button class="btn btn-secondary" onclick="closeShareModal()">Close</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Supabase SDK -->
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
     <script>
-        // Supabase Configuration - REPLACE WITH YOUR ACTUAL SUPABASE CONFIG
-        // DU SKAL ERSTATTE DISSE MED DINE EGNE VÆRDIER FRA SUPABASE
+        // Supabase Configuration - REPLACE WITH YOUR VALUES
         const supabaseUrl = 'https://swlnojbzlfosjdtqswjd.supabase.co'
         const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3bG5vamJ6bGZvc2pkdHFzd2pkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTczNDUzNzIsImV4cCI6MjA3MjkyMTM3Mn0.weAmKGGMeUaerNwyAoz6dpFufK0Fz1YbrdaUzsKiYk8';
-
-        // Initialize Supabase
-        let supabase = null;
-        let currentProjectId = null;
-        let realtimeChannel = null;
         
-        try {
-            if (supabaseUrl !== 'https://YOUR-PROJECT-REF.supabase.co') {
-                supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
-                document.getElementById('connection-status').textContent = 'Online';
-                document.getElementById('connection-status').className = 'status-badge status-online';
-                
-                // Load available projects
-                loadProjectsList();
-            } else {
-                console.warn('Supabase not configured yet. Please update the configuration.');
-                document.getElementById('connection-status').textContent = 'Demo Mode';
-            }
-        } catch (error) {
-            console.warn('Supabase not configured yet:', error.message);
-            document.getElementById('connection-status').textContent = 'Demo Mode';
-        }
-
-        // Global data
-        let clientData = { name: '', scaleupPM: '', clientPM: '', notes: '' };
-        let teamMembers = [];
+        let supabase = null;
+        let currentUser = null;
+        let currentProjectId = null;
         let currentProjectData = null;
-
+        
+        // Master template for new projects
         const masterTemplate = [
             {
                 phase: "Phase 1: Analysis & Planning",
@@ -792,91 +632,181 @@
                 ]
             }
         ];
-
-        // Logo Upload Functionality
-        function setupLogoUpload() {
-            const logoUpload = document.getElementById('logo-upload');
-            const uploadArea = document.getElementById('logo-upload-area');
-            const previewDiv = document.getElementById('upload-preview');
-            const previewImg = document.getElementById('preview-image');
-            const headerLogo = document.getElementById('header-logo');
-            const logoFallback = document.getElementById('logo-fallback');
-
-            if (!logoUpload) return;
-
-            logoUpload.addEventListener('change', function(event) {
-                const file = event.target.files[0];
-                if (file) {
-                    handleLogoFile(file);
-                }
-            });
-
-            function handleLogoFile(file) {
-                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
-                if (!validTypes.includes(file.type)) {
-                    alert('Please select a valid image file (JPG, PNG, or GIF)');
-                    return;
-                }
-
-                if (file.size > 5 * 1024 * 1024) {
-                    alert('Image is too large. Maximum size is 5MB.');
-                    return;
-                }
-
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const dataURL = e.target.result;
-                    
-                    headerLogo.src = dataURL;
-                    headerLogo.style.display = 'block';
-                    logoFallback.style.display = 'none';
-                    
-                    previewImg.src = dataURL;
-                    previewDiv.style.display = 'block';
-                    
-                    if (currentProjectData) {
-                        currentProjectData.logoData = dataURL;
-                        saveToSupabase();
-                    }
-                };
-                
-                reader.onerror = function(error) {
-                    console.error('Error reading file:', error);
-                    alert('Error loading image. Please try again.');
-                };
-                
-                reader.readAsDataURL(file);
+        
+        // Initialize Supabase
+        try {
+            if (supabaseUrl !== 'https://YOUR-PROJECT-REF.supabase.co') {
+                supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+                checkAuth();
+            } else {
+                console.error('Please configure Supabase credentials');
+                alert('Supabase er ikke konfigureret. Opdater credentials i HTML filen.');
+            }
+        } catch (error) {
+            console.error('Supabase initialization error:', error);
+        }
+        
+        // Authentication Functions
+        async function checkAuth() {
+            if (!supabase) return;
+            
+            const { data: { user } } = await supabase.auth.getUser();
+            
+            if (user) {
+                currentUser = user;
+                showDashboard();
+            } else {
+                showLoginScreen();
             }
         }
-
-        // Supabase Functions
-        async function loadProjectsList() {
-            if (!supabase) return;
+        
+        function showLoginScreen() {
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('main-dashboard').style.display = 'none';
+        }
+        
+        function showDashboard() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-dashboard').style.display = 'block';
+            if (currentUser) {
+                document.getElementById('current-user-email').textContent = currentUser.email;
+            }
+            loadUserProjects();
+        }
+        
+        function showLogin() {
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('signup-form').style.display = 'none';
+            clearMessages();
+        }
+        
+        function showSignup() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('signup-form').style.display = 'block';
+            clearMessages();
+        }
+        
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => errorDiv.style.display = 'none', 5000);
+        }
+        
+        function showSuccess(message) {
+            const successDiv = document.getElementById('success-message');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            setTimeout(() => successDiv.style.display = 'none', 5000);
+        }
+        
+        function clearMessages() {
+            document.getElementById('error-message').style.display = 'none';
+            document.getElementById('success-message').style.display = 'none';
+        }
+        
+        async function handleLogin() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            if (!email || !password) {
+                showError('Udfyld venligst alle felter');
+                return;
+            }
+            
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
+            
+            if (error) {
+                showError('Login fejlede: ' + error.message);
+            } else {
+                currentUser = data.user;
+                showDashboard();
+            }
+        }
+        
+        async function handleSignup() {
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const companyName = document.getElementById('company-name').value;
+            
+            if (!email || !password || !companyName) {
+                showError('Udfyld venligst alle felter');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showError('Password skal være mindst 6 tegn');
+                return;
+            }
+            
+            const { data, error } = await supabase.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    data: {
+                        company_name: companyName
+                    }
+                }
+            });
+            
+            if (error) {
+                showError('Oprettelse fejlede: ' + error.message);
+            } else {
+                showSuccess('Konto oprettet! Du kan nu logge ind.');
+                setTimeout(() => showLogin(), 3000);
+            }
+        }
+        
+        async function handleLogout() {
+            const { error } = await supabase.auth.signOut();
+            if (!error) {
+                currentUser = null;
+                showLoginScreen();
+            }
+        }
+        
+        // Load user's projects
+        async function loadUserProjects() {
+            if (!supabase || !currentUser) return;
             
             try {
                 const { data: projects, error } = await supabase
                     .from('projects')
-                    .select('project_id, client_data');
+                    .select('project_id, client_data')
+                    .eq('user_id', currentUser.id);
 
                 if (error) throw error;
 
                 const select = document.getElementById('project-select');
-                select.innerHTML = '<option value="">Select or create a project...</option>';
-                
-                projects.forEach(project => {
-                    const option = document.createElement('option');
-                    option.value = project.project_id;
-                    const clientName = project.client_data?.name || 'Unnamed Project';
-                    option.textContent = `${clientName} (${project.project_id})`;
-                    select.appendChild(option);
-                });
+                if (select) {
+                    select.innerHTML = '<option value="">Vælg eller opret et projekt...</option>';
+                    
+                    if (projects && projects.length > 0) {
+                        projects.forEach(project => {
+                            const option = document.createElement('option');
+                            option.value = project.project_id;
+                            const clientName = project.client_data?.name || 'Unavngivet projekt';
+                            option.textContent = clientName;
+                            select.appendChild(option);
+                        });
+                    }
+                }
             } catch (error) {
                 console.error('Error loading projects:', error.message);
             }
         }
-
+        
+        // Create new project
         async function createNewProject() {
-            const projectName = prompt('Enter client company name for the new project:');
+            if (!currentUser) {
+                alert('Du skal være logget ind for at oprette projekter');
+                return;
+            }
+            
+            const projectName = prompt('Indtast kundens firmanavn:');
             if (!projectName) return;
             
             const projectId = generateProjectId(projectName);
@@ -884,6 +814,7 @@
             
             const newProject = {
                 project_id: projectId,
+                user_id: currentUser.id,  // Add user_id here
                 client_data: {
                     name: projectName,
                     scaleupPM: '',
@@ -892,6 +823,7 @@
                 },
                 team_members: [],
                 tasks: masterTemplate,
+                is_public: false,
                 created_at: new Date().toISOString(),
                 last_updated: new Date().toISOString()
             };
@@ -903,16 +835,18 @@
                         .insert([newProject]);
                     
                     if (error) throw error;
+                    
+                    await loadUserProjects();
+                    document.getElementById('project-select').value = projectId;
+                    loadProject(projectId);
                 } catch (error) {
                     console.error('Error creating project:', error.message);
-                    return;
+                    alert('Fejl ved oprettelse af projekt: ' + error.message);
                 }
             }
-            
-            document.getElementById('project-select').value = projectId;
-            loadProject(projectId);
         }
-
+        
+        // Load project
         async function loadProject(projectId) {
             if (!projectId) {
                 currentProjectId = null;
@@ -921,18 +855,15 @@
             }
             
             currentProjectId = projectId;
-            document.getElementById('share-btn').disabled = false;
             
-            if (!supabase) {
-                loadDemoProject();
-                return;
-            }
+            if (!supabase) return;
             
             try {
                 const { data: project, error } = await supabase
                     .from('projects')
                     .select('*')
                     .eq('project_id', projectId)
+                    .eq('user_id', currentUser.id)
                     .single();
 
                 if (error) throw error;
@@ -940,88 +871,28 @@
                 if (project) {
                     currentProjectData = project;
                     populateUIFromProject(project);
-                    
-                    // Setup real-time subscription
-                    setupRealtimeSubscription(projectId);
                 }
             } catch (error) {
                 console.error('Error loading project:', error.message);
             }
         }
-
-        function setupRealtimeSubscription(projectId) {
-            if (realtimeChannel) {
-                supabase.removeChannel(realtimeChannel);
-            }
-
-            realtimeChannel = supabase
-                .channel(`project-${projectId}`)
-                .on('postgres_changes', 
-                    { 
-                        event: 'UPDATE', 
-                        schema: 'public', 
-                        table: 'projects',
-                        filter: `project_id=eq.${projectId}`
-                    }, 
-                    (payload) => {
-                        console.log('Real-time update received:', payload.new);
-                        currentProjectData = payload.new;
-                        populateUIFromProject(payload.new);
-                    }
-                )
-                .subscribe();
-        }
-
-        function loadDemoProject() {
-            const demoProject = {
-                client_data: {
-                    name: 'Demo Corporation',
-                    scaleupPM: 'Lars Jensen',
-                    clientPM: 'John Smith',
-                    notes: 'Demo project for testing'
-                },
-                team_members: [
-                    {name: 'Lars Jensen', company: 'Scaleup Finance'},
-                    {name: 'Maria Petersen', company: 'Scaleup Finance'}
-                ],
-                tasks: masterTemplate
-            };
-            
-            currentProjectData = demoProject;
-            populateUIFromProject(demoProject);
-        }
-
+        
+        // Populate UI from project data
         function populateUIFromProject(projectData) {
-            clientData = projectData.client_data || {};
+            const clientData = projectData.client_data || {};
             document.getElementById('client-name').value = clientData.name || '';
             document.getElementById('scaleup-pm').value = clientData.scaleupPM || '';
             document.getElementById('client-pm').value = clientData.clientPM || '';
             document.getElementById('project-notes').value = clientData.notes || '';
             
-            if (projectData.logo_data) {
-                const headerLogo = document.getElementById('header-logo');
-                const logoFallback = document.getElementById('logo-fallback');
-                const previewImg = document.getElementById('preview-image');
-                const previewDiv = document.getElementById('upload-preview');
-                
-                headerLogo.src = projectData.logo_data;
-                headerLogo.style.display = 'block';
-                logoFallback.style.display = 'none';
-                
-                previewImg.src = projectData.logo_data;
-                previewDiv.style.display = 'block';
-            }
-            
-            teamMembers = projectData.team_members || [];
-            updateTeamMembersList();
-            
             checkSetup();
             populateTable();
             updateDashboard();
         }
-
+        
+        // Save to Supabase
         async function saveToSupabase() {
-            if (!currentProjectId || !supabase) return;
+            if (!currentProjectId || !supabase || !currentUser) return;
             
             const currentData = {
                 client_data: {
@@ -1030,9 +901,7 @@
                     clientPM: document.getElementById('client-pm').value.trim(),
                     notes: document.getElementById('project-notes').value.trim()
                 },
-                team_members: teamMembers,
                 tasks: currentProjectData?.tasks || masterTemplate,
-                logo_data: currentProjectData?.logo_data || null,
                 last_updated: new Date().toISOString()
             };
             
@@ -1040,142 +909,34 @@
                 const { error } = await supabase
                     .from('projects')
                     .update(currentData)
-                    .eq('project_id', currentProjectId);
+                    .eq('project_id', currentProjectId)
+                    .eq('user_id', currentUser.id);
                 
                 if (error) throw error;
-                console.log('Successfully saved to Supabase');
             } catch (error) {
                 console.error('Failed to save to Supabase:', error.message);
             }
             
             currentProjectData = { ...currentProjectData, ...currentData };
         }
-
+        
+        // Generate project ID
         function generateProjectId(projectName) {
             const cleanName = projectName.toLowerCase().replace(/[^a-z0-9]/g, '-');
             const timestamp = Date.now().toString().slice(-6);
             return `${cleanName}-${timestamp}`;
         }
-
+        
+        // Reset UI
         function resetUI() {
-            clientData = { name: '', scaleupPM: '', clientPM: '', notes: '' };
-            teamMembers = [];
-            currentProjectData = null;
-            
             document.getElementById('client-name').value = '';
             document.getElementById('scaleup-pm').value = '';
             document.getElementById('client-pm').value = '';
             document.getElementById('project-notes').value = '';
-            
-            const headerLogo = document.getElementById('header-logo');
-            const logoFallback = document.getElementById('logo-fallback');
-            const previewDiv = document.getElementById('upload-preview');
-            headerLogo.style.display = 'none';
-            logoFallback.style.display = 'flex';
-            previewDiv.style.display = 'none';
-            
-            updateTeamMembersList();
             checkSetup();
-            
-            document.getElementById('share-btn').disabled = true;
-            
-            if (realtimeChannel) {
-                supabase.removeChannel(realtimeChannel);
-                realtimeChannel = null;
-            }
         }
-
-        // Share functionality
-        function shareProject() {
-            if (!currentProjectId) return;
-            
-            const baseUrl = window.location.href.split('?')[0];
-            const shareUrl = `${baseUrl}?project=${currentProjectId}`;
-            
-            document.getElementById('shareLink').textContent = shareUrl;
-            document.getElementById('shareModal').style.display = 'block';
-        }
-
-        function closeShareModal() {
-            document.getElementById('shareModal').style.display = 'none';
-        }
-
-        function copyShareLink() {
-            const shareLink = document.getElementById('shareLink').textContent;
-            navigator.clipboard.writeText(shareLink).then(() => {
-                alert('Link copied to clipboard!');
-            });
-        }
-
-        // Export functionality
-        function exportProject() {
-            if (!currentProjectData) return;
-            
-            const exportData = {
-                ...currentProjectData,
-                exportedAt: new Date().toISOString()
-            };
-            
-            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `scaleup-project-${currentProjectId}.json`;
-            a.click();
-        }
-
-        // Team member functions
-        function addTeamMember() {
-            const nameInput = document.getElementById('new-member-name');
-            const companySelect = document.getElementById('new-member-company');
-            
-            const name = nameInput.value.trim();
-            const company = companySelect.value;
-            
-            if (!name) {
-                alert('Please enter a team member name');
-                return;
-            }
-            
-            if (teamMembers.find(member => member.name === name)) {
-                alert('Team member already exists');
-                return;
-            }
-            
-            teamMembers.push({ name: name, company: company });
-            nameInput.value = '';
-            updateTeamMembersList();
-            saveToSupabase();
-        }
-
-        function removeTeamMember(name) {
-            if (confirm('Remove this team member?')) {
-                teamMembers = teamMembers.filter(member => member.name !== name);
-                updateTeamMembersList();
-                saveToSupabase();
-            }
-        }
-
-        function updateTeamMembersList() {
-            const listDiv = document.getElementById('team-members-list');
-            
-            if (teamMembers.length === 0) {
-                listDiv.innerHTML = '<p style="color: #666; font-style: italic; text-align: center; padding: 20px;">No team members added yet.</p>';
-                return;
-            }
-            
-            listDiv.innerHTML = teamMembers.map(member => `
-                <div class="team-member-item">
-                    <div>
-                        <div class="team-member-name">${member.name}</div>
-                        <div class="team-member-company">${member.company}</div>
-                    </div>
-                    <button onclick="removeTeamMember('${member.name}')" class="btn btn-danger btn-small">Remove</button>
-                </div>
-            `).join('');
-        }
-
-        // UI Functions
+        
+        // Switch tabs
         function switchTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
@@ -1183,15 +944,18 @@
             event.target.classList.add('active');
             checkSetup();
         }
-
+        
+        // Save setup
         function saveSetup() {
-            clientData.name = document.getElementById('client-name').value.trim();
-            clientData.scaleupPM = document.getElementById('scaleup-pm').value.trim();
-            clientData.clientPM = document.getElementById('client-pm').value.trim();
-            clientData.notes = document.getElementById('project-notes').value.trim();
+            const clientData = {
+                name: document.getElementById('client-name').value.trim(),
+                scaleupPM: document.getElementById('scaleup-pm').value.trim(),
+                clientPM: document.getElementById('client-pm').value.trim(),
+                notes: document.getElementById('project-notes').value.trim()
+            };
             
             if (!clientData.name || !clientData.scaleupPM) {
-                alert('Please fill in both client name and Scaleup Finance PM');
+                alert('Udfyld venligst kundenavn og Scaleup Finance PM');
                 return;
             }
             
@@ -1199,10 +963,13 @@
             switchTab('dashboard');
             document.querySelectorAll('.nav-tab')[1].click();
         }
-
+        
+        // Check setup
         function checkSetup() {
             const hasProject = currentProjectId !== null;
-            const hasSetup = hasProject && clientData.name && clientData.scaleupPM;
+            const clientName = document.getElementById('client-name').value.trim();
+            const scaleupPM = document.getElementById('scaleup-pm').value.trim();
+            const hasSetup = hasProject && clientName && scaleupPM;
             
             const dashboardWarning = document.getElementById('dashboard-warning');
             const dashboardContent = document.getElementById('dashboard-content');
@@ -1217,7 +984,7 @@
                 
                 const clientDisplay = document.getElementById('client-display');
                 if (clientDisplay) {
-                    clientDisplay.textContent = `${clientData.name} | PM: ${clientData.scaleupPM}`;
+                    clientDisplay.textContent = `${clientName} | PM: ${scaleupPM}`;
                 }
                 
                 populateTable();
@@ -1229,7 +996,8 @@
                 if (projectContent) projectContent.style.display = 'none';
             }
         }
-
+        
+        // Populate table
         function populateTable() {
             const tbody = document.getElementById('project-body');
             if (!tbody || !currentProjectData?.tasks) return;
@@ -1264,96 +1032,46 @@
                 });
             });
         }
-
+        
+        // Update dashboard
         function updateDashboard() {
             if (!currentProjectData?.tasks) return;
             
             let totalTasks = 0;
             let completedTasks = 0;
             let ongoingTasks = 0;
-            let tasksByResponsible = {};
             
             currentProjectData.tasks.forEach(phase => {
                 phase.tasks.forEach(task => {
                     totalTasks++;
                     if (task.status === 'completed') completedTasks++;
                     if (task.status === 'in-progress') ongoingTasks++;
-                    
-                    if (!tasksByResponsible[task.responsible]) {
-                        tasksByResponsible[task.responsible] = { total: 0, completed: 0, 'in-progress': 0 };
-                    }
-                    tasksByResponsible[task.responsible].total++;
-                    tasksByResponsible[task.responsible][task.status]++;
                 });
             });
             
             const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
             
-            const overallProgress = document.getElementById('overall-progress');
-            const overallProgressBar = document.getElementById('overall-progress-bar');
-            const completedTasksEl = document.getElementById('completed-tasks');
-            const totalTasksEl = document.getElementById('total-tasks');
-            const ongoingTasksEl = document.getElementById('ongoing-tasks');
-            const teamSizeEl = document.getElementById('team-size');
-            const daysRemainingEl = document.getElementById('days-remaining');
-            const phasesCompletedEl = document.getElementById('phases-completed');
+            document.getElementById('overall-progress').textContent = progressPercent + '%';
+            document.getElementById('overall-progress-bar').style.width = progressPercent + '%';
+            document.getElementById('completed-tasks').textContent = completedTasks;
+            document.getElementById('total-tasks').textContent = totalTasks;
+            document.getElementById('ongoing-tasks').textContent = ongoingTasks;
             
-            if (overallProgress) overallProgress.textContent = progressPercent + '%';
-            if (overallProgressBar) overallProgressBar.style.width = progressPercent + '%';
-            if (completedTasksEl) completedTasksEl.textContent = completedTasks;
-            if (totalTasksEl) totalTasksEl.textContent = totalTasks;
-            if (ongoingTasksEl) ongoingTasksEl.textContent = ongoingTasks;
-            if (teamSizeEl) teamSizeEl.textContent = teamMembers.length + 2;
-            
-            const remainingTasks = totalTasks - completedTasks;
-            const daysRemaining = remainingTasks > 0 ? Math.ceil(remainingTasks / 2) : 0;
-            if (daysRemainingEl) daysRemainingEl.textContent = daysRemaining;
-            
-            let completedPhases = 0;
-            currentProjectData.tasks.forEach(phase => {
-                const allCompleted = phase.tasks.every(task => task.status === 'completed');
-                if (allCompleted && phase.tasks.length > 0) completedPhases++;
-            });
-            if (phasesCompletedEl) phasesCompletedEl.textContent = completedPhases;
-            
-            updateTeamTaskDistribution(tasksByResponsible);
-        }
-
-        function updateTeamTaskDistribution(tasksByResponsible) {
-            const container = document.getElementById('team-task-distribution');
-            if (!container) return;
-            
-            container.innerHTML = '';
-            
-            if (!tasksByResponsible || Object.keys(tasksByResponsible).length === 0) {
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: #666;">
-                        <div style="font-size: 3em; margin-bottom: 20px;">📝</div>
-                        <h3 style="color: #3a4a47; margin-bottom: 10px;">No tasks assigned yet</h3>
-                        <p>Start assigning tasks to team members to see their workload distribution.</p>
-                    </div>
-                `;
-                return;
+            // Find next milestone
+            let nextMilestone = 'All tasks completed';
+            for (const phase of currentProjectData.tasks) {
+                for (const task of phase.tasks) {
+                    if (task.status !== 'completed') {
+                        nextMilestone = task.name.split(' ').slice(1).join(' ');
+                        break;
+                    }
+                }
+                if (nextMilestone !== 'All tasks completed') break;
             }
-            
-            Object.keys(tasksByResponsible).forEach(responsible => {
-                const data = tasksByResponsible[responsible];
-                const completionRate = data.total > 0 ? Math.round((data.completed / data.total) * 100) : 0;
-                
-                const row = document.createElement('div');
-                row.className = 'person-task-row';
-                row.innerHTML = `
-                    <div class="person-name">${responsible}</div>
-                    <div class="task-counts">
-                        <span class="task-count count-completed">✅ ${data.completed} done</span>
-                        <span class="task-count count-progress">🔄 ${data['in-progress'] || 0} active</span>
-                        <span class="task-count count-total">📋 ${data.total} total (${completionRate}%)</span>
-                    </div>
-                `;
-                container.appendChild(row);
-            });
+            document.getElementById('next-milestone').textContent = nextMilestone;
         }
-
+        
+        // Update task status
         async function updateTaskStatus(taskName, status) {
             if (!currentProjectData?.tasks) return;
             
@@ -1371,7 +1089,8 @@
                 }
             }
         }
-
+        
+        // Update task responsible
         async function updateTaskResponsible(taskName, newResponsible) {
             if (!currentProjectData?.tasks) return;
             
@@ -1386,20 +1105,36 @@
                 }
             }
         }
-
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const projectId = urlParams.get('project');
+        
+        // Export project
+        function exportProject() {
+            if (!currentProjectData) return;
             
-            if (projectId) {
-                document.getElementById('project-select').value = projectId;
-                loadProject(projectId);
-            }
+            const exportData = {
+                ...currentProjectData,
+                exportedAt: new Date().toISOString()
+            };
             
-            updateTeamMembersList();
-            setupLogoUpload();
-        });
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `scaleup-project-${currentProjectId}.json`;
+            a.click();
+        }
+        
+        // Add auth state listener
+        if (supabase) {
+            supabase.auth.onAuthStateChange((event, session) => {
+                if (event === 'SIGNED_IN') {
+                    currentUser = session.user;
+                    showDashboard();
+                } else if (event === 'SIGNED_OUT') {
+                    currentUser = null;
+                    showLoginScreen();
+                }
+            });
+        }
     </script>
 </body>
 </html>
