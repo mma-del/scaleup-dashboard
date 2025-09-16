@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scaleup Finance - Admin Dashboard</title>
+    <title>Scaleup Finance - e-conomic Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///wD///8A////AP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///8A////AP///wD///8A////AP///wD///8A////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///wD///8A3a4hAtuqGQLdriEA3a4hAN2uIQDdriEA3a4hAN2uIQDdriEA////AP///wAAAAAAAAAAAAAAAAD///8A3a4hAtuqGQrbqhkC26oZAtuqGQLbqhkC26oZAtuqGQLbqhkC26oZAtuqGQD///8AAAAAAAAAAAD///8A3a4hAtuqGQLbqhkC26oZAtuqGQLbqhkC26oZAtuqGQLbqhkC26oZAtuqGQLbqhkA////AAAAAAD///8A3a4hAN2uIQLbqhkC26oZAtuqGQLbqhkC26oZAtuqGQLbqhkC26oZAtuqGQLbqhkC3a4hAP///wD///8A////AN2uIQDdriEC26oZAtuqGQLbqhkC26oZAtuqGQLbqhkC26oZAtuqGQLbqhkC3a4hAN2uIQD///8A////AP///wDdriEA3a4hAtuqGQLbqhkC26oZAtuqGQLbqhkC26oZAtuqGQLbqhkC3a4hAN2uIQD///8A////AP///wD///8A////AN2uIQDdriEC26oZAtuqGQLbqhkC26oZAtuqGQLbqhkC3a4hAN2uIQD///8A////AP///wD///8A////AP///wDdriEA3a4hAtuqGQLbqhkC26oZAtuqGQLbqhkC3a4hAN2uIQD///8A////AP///wD///8A////AP///wD///8A////AN2uIQDdriEC26oZAtuqGQLbqhkC3a4hAN2uIQD///8A////AP///wD///8A////AP///wD///8A////AP///wDdriEA3a4hAtuqGQLbqhkC3a4hAN2uIQD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AN2uIQDdriEC3a4hAN2uIQD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wDdriEA3a4hAN2uIQD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A//8AAP//AADwDwAAwAcAAMADAACAAQAAgAEAAAAAAAAAAAAAAAAAAAABAACAAwAAwAcAAOAPAAD//wAA//8AAA==">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', sans-serif; background: #f5f7fa; color: #333; }
@@ -129,14 +130,13 @@
             border-radius: 20px;
             font-size: 0.85em;
             font-weight: 600;
-            color: white;
         }
         
-        .role-super_admin { background: #ff0000; }
-        .role-admin { background: #ff4500; }
-        .role-project_manager { background: #ffa500; }
-        .role-team_lead { background: #32cd32; }
-        .role-user { background: #808080; }
+        .role-super-admin { background: #ff4444; color: white; }
+        .role-admin { background: #ff8800; color: white; }
+        .role-project-manager { background: #ffdd00; color: #333; }
+        .role-team-lead { background: #44ff44; color: #333; }
+        .role-user { background: #e9ecef; color: #495057; }
         
         /* CENTERED HEADER */
         .header { 
@@ -220,6 +220,15 @@
             min-width: 250px;
         }
         
+        .shared-badge {
+            background: #17a2b8;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-left: 5px;
+        }
+        
         .nav-tabs { display: flex; background: white; border-radius: 12px; overflow: hidden; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
         .nav-tab { flex: 1; padding: 15px 25px; background: #f8f9fa; border: none; cursor: pointer; font-size: 1.1em; font-weight: 600; transition: all 0.3s; }
         .nav-tab.active { background: linear-gradient(135deg, #3a4a47, #2d3a36); color: white; }
@@ -239,92 +248,88 @@
         .btn-success { background: #28a745; color: white; }
         .btn-danger { background: #dc3545; color: white; }
         .btn-info { background: #17a2b8; color: white; }
-        .btn-warning { background: #ffc107; color: #212529; }
+        .btn-warning { background: #ffc107; color: #333; }
         
-        /* Logo Upload Section */
-        .logo-upload-section {
-            border: 2px dashed #dee2e6;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            background: #f8f9fa;
-            position: relative;
+        /* Team Members Styles */
+        .team-section {
+            background: #f8f9fa; 
+            padding: 20px; 
+            border-radius: 8px; 
+            margin: 20px 0;
+            border: 2px solid #3a4a47;
         }
         
-        .logo-preview {
-            margin-top: 15px;
-            display: none;
+        .team-section h3 {
+            color: #3a4a47; 
+            margin-bottom: 15px;
         }
         
-        .logo-preview img {
-            max-width: 150px;
-            max-height: 150px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        .team-input-row {
+            display: flex; 
+            gap: 10px; 
+            margin-bottom: 15px;
+            align-items: center;
         }
         
-        .remove-logo-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
-            cursor: pointer;
-            font-size: 0.9em;
+        .team-input {
+            flex: 1; 
+            padding: 10px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px;
+            font-size: 1em;
         }
         
-        /* Admin Panel */
-        .admin-panel {
+        .team-select {
+            padding: 10px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px;
             background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            margin-bottom: 20px;
+            min-width: 150px;
         }
         
-        .admin-panel h2 {
+        .team-member-item {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 12px 15px; 
+            background: white; 
+            border-radius: 6px; 
+            margin: 8px 0; 
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .team-member-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        .team-member-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .team-member-name {
+            font-weight: 600;
             color: #3a4a47;
-            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         
-        .users-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        
-        .users-table th {
-            background: #f8f9fa;
-            padding: 12px;
-            text-align: left;
-            font-weight: 600;
-            color: #495057;
-            border-bottom: 2px solid #dee2e6;
-        }
-        
-        .users-table td {
-            padding: 12px;
-            border-bottom: 1px solid #dee2e6;
-        }
-        
-        .users-table tr:hover {
-            background: #f8f9fa;
-        }
-        
-        .role-select {
-            padding: 6px 12px;
-            border: 2px solid #dee2e6;
-            border-radius: 6px;
+        .team-member-company {
             font-size: 0.9em;
+            color: #666;
+            margin-left: 28px;
         }
         
-        /* Dashboard Styles */
+        .btn-small {
+            padding: 6px 12px; 
+            font-size: 0.85em;
+        }
+        
+        /* Dashboard styles */
         .dashboard-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
@@ -451,6 +456,121 @@
             font-size: 1.2em;
             color: #666;
         }
+        
+        /* Admin Panel Styles */
+        .admin-panel {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .admin-section {
+            margin-bottom: 30px;
+        }
+        
+        .admin-section h3 {
+            color: #3a4a47;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .user-list {
+            display: grid;
+            gap: 10px;
+        }
+        
+        .user-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 10px;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .user-row:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+        
+        .user-email {
+            font-weight: 600;
+            color: #3a4a47;
+        }
+        
+        .role-select {
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            background: white;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h2 {
+            color: #3a4a47;
+        }
+        
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: #000;
+        }
+        
+        .modal-body {
+            margin-bottom: 20px;
+        }
+        
+        .modal-body input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
     </style>
 </head>
 <body>
@@ -490,6 +610,24 @@
         </div>
     </div>
 
+    <!-- Share Project Modal -->
+    <div id="shareModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔗 Del Projekt</h2>
+                <span class="close" onclick="closeShareModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Indtast email på den bruger du vil dele projektet med:</p>
+                <input type="email" id="share-email" placeholder="kollega@firma.dk">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeShareModal()">Annuller</button>
+                <button class="btn btn-primary" onclick="confirmShare()">Del Projekt</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Main Dashboard (hidden until logged in) -->
     <div id="main-dashboard" class="container" style="display: none;">
         
@@ -501,7 +639,7 @@
                 <span class="role-badge" id="current-user-role">User</span>
             </div>
             <div>
-                <button class="btn btn-warning" id="admin-btn" onclick="switchTab('admin')" style="display: none;">👥 Admin Panel</button>
+                <button class="btn btn-warning" id="admin-btn" onclick="switchTab('admin')" style="display: none;">👑 Admin Panel</button>
                 <button class="btn btn-danger" onclick="handleLogout()">Log ud</button>
             </div>
         </div>
@@ -525,10 +663,11 @@
                 <select id="project-select" class="project-select" onchange="loadProject(this.value)">
                     <option value="">Vælg eller opret et projekt...</option>
                 </select>
+                <span id="connection-status" class="status-badge status-online" style="background: #d4edda; color: #155724; padding: 4px 12px; border-radius: 20px; font-size: 0.8em;">Online</span>
             </div>
             <div>
-                <button class="btn btn-success" onclick="createNewProject()">➕ Nyt Projekt</button>
-                <button class="btn btn-info" id="share-btn" onclick="shareProject()" style="display: none;">🔗 Del Projekt</button>
+                <button class="btn btn-info" onclick="shareProject()">🔗 Del Projekt</button>
+                <button class="btn btn-success" onclick="createNewProject()">🔄 Nyt Projekt</button>
                 <button class="btn btn-secondary" onclick="exportProject()">💾 Export</button>
             </div>
         </div>
@@ -538,7 +677,7 @@
             <button class="nav-tab active" onclick="switchTab('setup')">🔧 Client Setup</button>
             <button class="nav-tab" onclick="switchTab('dashboard')">📊 Dashboard</button>
             <button class="nav-tab" onclick="switchTab('project')">📋 Project Plan</button>
-            <button class="nav-tab" id="admin-tab" onclick="switchTab('admin')" style="display: none;">👥 Admin</button>
+            <button class="nav-tab" id="admin-tab" onclick="switchTab('admin')" style="display: none;">👑 Admin Panel</button>
         </div>
 
         <!-- Client Setup Tab -->
@@ -553,18 +692,6 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>Upload Company Logo</label>
-                    <div class="logo-upload-section">
-                        <input type="file" id="logo-upload" accept="image/*" onchange="handleLogoUpload(event)">
-                        <p style="color: #666; font-size: 0.9em; margin-top: 10px;">Vælg en logofil (PNG, JPG, GIF - Max 2MB)</p>
-                        <button class="remove-logo-btn" id="remove-logo-btn" onclick="removeLogo()" style="display: none;">🗑️ Fjern Logo</button>
-                        <div class="logo-preview" id="logo-preview">
-                            <img id="preview-image" alt="Logo preview">
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-group">
                     <label>Scaleup Finance Project Manager *</label>
                     <input type="text" id="scaleup-pm" placeholder="e.g., Lars Jensen" onchange="saveToSupabase()">
                 </div>
@@ -572,6 +699,25 @@
                 <div class="form-group">
                     <label>Client Project Manager</label>
                     <input type="text" id="client-pm" placeholder="e.g., John Smith (CFO)" onchange="saveToSupabase()">
+                </div>
+                
+                <!-- Team Members Section FIXED -->
+                <div class="team-section">
+                    <h3>👥 Team Members</h3>
+                    <p style="color: #666; margin-bottom: 15px; font-size: 0.9em;">Tilføj team medlemmer som kan tildeles specifikke opgaver.</p>
+                    
+                    <div class="team-input-row">
+                        <input type="text" id="new-member-name" class="team-input" placeholder="Indtast team medlems navn..." maxlength="50">
+                        <select id="new-member-company" class="team-select">
+                            <option value="Scaleup Finance">Scaleup Finance</option>
+                            <option value="Client">Client</option>
+                        </select>
+                        <button type="button" class="btn btn-success btn-small" onclick="addTeamMember()">➕ Tilføj</button>
+                    </div>
+
+                    <div id="team-members-list">
+                        <p style="color: #666; font-style: italic; text-align: center; padding: 20px;">Ingen team medlemmer tilføjet endnu.</p>
+                    </div>
                 </div>
                 
                 <div class="form-group">
@@ -661,44 +807,36 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Admin Panel Tab -->
         <div id="admin-tab" class="tab-content">
             <div class="admin-panel">
-                <h2>👥 Admin Panel - Bruger Administration</h2>
-                <p style="margin-bottom: 20px; color: #666;">Administrer brugere og deres roller i systemet.</p>
+                <h2>👑 Admin Panel</h2>
+                <p style="margin-bottom: 30px; color: #666;">Administrer brugere og roller på tværs af systemet.</p>
                 
-                <div style="margin-bottom: 20px;">
-                    <button class="btn btn-success" onclick="loadAllUsers()">🔄 Opdater Liste</button>
+                <div class="admin-section">
+                    <h3>👥 Bruger Administration</h3>
+                    <div id="user-list" class="user-list">
+                        <div class="loading">Indlæser brugere...</div>
+                    </div>
                 </div>
                 
-                <table class="users-table">
-                    <thead>
-                        <tr>
-                            <th>Email</th>
-                            <th>Rolle</th>
-                            <th>Oprettet</th>
-                            <th>Handlinger</th>
-                        </tr>
-                    </thead>
-                    <tbody id="users-table-body">
-                        <tr>
-                            <td colspan="4" style="text-align: center; padding: 20px; color: #666;">
-                                Loading users...
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
-                    <h3>📊 Rolle Oversigt</h3>
-                    <ul style="list-style: none; padding: 0;">
-                        <li style="margin: 10px 0;"><span class="role-badge role-super_admin">Super Admin</span> - Fuld kontrol, kan ændre roller</li>
-                        <li style="margin: 10px 0;"><span class="role-badge role-admin">Admin</span> - Kan administrere projekter og brugere</li>
-                        <li style="margin: 10px 0;"><span class="role-badge role-project_manager">Project Manager</span> - Kan redigere alle projekter</li>
-                        <li style="margin: 10px 0;"><span class="role-badge role-team_lead">Team Lead</span> - Kan se alle projekter</li>
-                        <li style="margin: 10px 0;"><span class="role-badge role-user">User</span> - Kun egne projekter</li>
-                    </ul>
+                <div class="admin-section">
+                    <h3>📊 System Statistik</h3>
+                    <div class="dashboard-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-value" id="total-users">0</div>
+                            <div class="kpi-label">Total Brugere</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-value" id="total-projects">0</div>
+                            <div class="kpi-label">Total Projekter</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-value" id="active-projects">0</div>
+                            <div class="kpi-label">Aktive Projekter</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -708,74 +846,75 @@
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
     <script>
-        // Supabase Configuration - REPLACE WITH YOUR VALUES
-        const supabaseUrl = 'https://swlnojbzlfosjdtqswjd.supabase.co'
+        // TILPAS DISSE VÆRDIER MED DINE SUPABASE CREDENTIALS
+        const supabaseUrl = 'https://swlnojbzlfosjdtqswjd.supabase.co';
         const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3bG5vamJ6bGZvc2pkdHFzd2pkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTczNDUzNzIsImV4cCI6MjA3MjkyMTM3Mn0.weAmKGGMeUaerNwyAoz6dpFufK0Fz1YbrdaUzsKiYk8';
         
-        let supabase = null;
-        let currentUser = null;
-        let currentUserRole = 'user'; // Default role
-        let currentProjectId = null;
-        let currentProjectData = null;
+        // ADMIN EMAILS - TILFØJ DINE ADMIN EMAILS HER
+        const ADMIN_EMAILS = [
+            'din-email@firma.dk',
+            'kollega@firma.dk'
+        ];
         
-        // Role definitions with permissions
-        const rolePermissions = {
-            'super_admin': {
-                name: 'Super Admin',
-                color: '#ff0000',
-                canViewAllProjects: true,
-                canEditAllProjects: true,
+        // ROLLER DEFINITIONER
+        const USER_ROLES = {
+            super_admin: {
+                canViewAll: true,
+                canEditAll: true,
                 canDeleteProjects: true,
                 canManageUsers: true,
                 canChangeRoles: true,
                 canDeleteUsers: true,
-                canExportAll: true
+                badgeClass: 'role-super-admin',
+                label: '👑 Super Admin'
             },
-            'admin': {
-                name: 'Admin',
-                color: '#ff4500',
-                canViewAllProjects: true,
-                canEditAllProjects: true,
+            admin: {
+                canViewAll: true,
+                canEditAll: true,
                 canDeleteProjects: true,
                 canManageUsers: true,
                 canChangeRoles: false,
                 canDeleteUsers: false,
-                canExportAll: true
+                badgeClass: 'role-admin',
+                label: '🟠 Admin'
             },
-            'project_manager': {
-                name: 'Project Manager',
-                color: '#ffa500',
-                canViewAllProjects: true,
-                canEditAllProjects: true,
+            project_manager: {
+                canViewAll: true,
+                canEditAll: true,
                 canDeleteProjects: false,
                 canManageUsers: false,
                 canChangeRoles: false,
                 canDeleteUsers: false,
-                canExportAll: true
+                badgeClass: 'role-project-manager',
+                label: '🟡 Project Manager'
             },
-            'team_lead': {
-                name: 'Team Lead',
-                color: '#32cd32',
-                canViewAllProjects: true,
-                canEditAllProjects: false,
+            team_lead: {
+                canViewAll: true,
+                canEditAll: false,
                 canDeleteProjects: false,
                 canManageUsers: false,
                 canChangeRoles: false,
                 canDeleteUsers: false,
-                canExportAll: false
+                badgeClass: 'role-team-lead',
+                label: '🟢 Team Lead'
             },
-            'user': {
-                name: 'User',
-                color: '#808080',
-                canViewAllProjects: false,
-                canEditAllProjects: false,
+            user: {
+                canViewAll: false,
+                canEditAll: false,
                 canDeleteProjects: false,
                 canManageUsers: false,
                 canChangeRoles: false,
                 canDeleteUsers: false,
-                canExportAll: false
+                badgeClass: 'role-user',
+                label: '⚪ User'
             }
         };
+        
+        let supabase = null;
+        let currentUser = null;
+        let currentUserRole = 'user';
+        let currentProjectId = null;
+        let currentProjectData = null;
         
         // Master template for new projects
         const masterTemplate = [
@@ -856,83 +995,61 @@
             
             if (user) {
                 currentUser = user;
-                await loadUserRole();
+                await getUserRole();
                 showDashboard();
             } else {
                 showLoginScreen();
             }
         }
         
-        // Load user role
-        async function loadUserRole() {
-            if (!supabase || !currentUser) return;
+        // Get user role
+        async function getUserRole() {
+            if (!currentUser) return;
             
-            try {
-                // First check if users table exists and has role column
-                const { data: userData, error } = await supabase
-                    .from('users')
-                    .select('role')
-                    .eq('id', currentUser.id)
-                    .single();
-                
-                if (userData && userData.role) {
-                    currentUserRole = userData.role;
-                } else {
-                    // If no role found, set default based on if they're the first user
-                    const { data: allUsers } = await supabase
+            // Check if user is admin
+            if (ADMIN_EMAILS.includes(currentUser.email)) {
+                currentUserRole = 'super_admin';
+            } else {
+                // Check database for role
+                try {
+                    const { data, error } = await supabase
                         .from('users')
-                        .select('id');
+                        .select('role')
+                        .eq('email', currentUser.email)
+                        .single();
                     
-                    if (!allUsers || allUsers.length <= 1) {
-                        // First user becomes super_admin
-                        currentUserRole = 'super_admin';
-                        await supabase
-                            .from('users')
-                            .upsert({
-                                id: currentUser.id,
-                                email: currentUser.email,
-                                role: 'super_admin'
-                            });
-                    } else {
-                        currentUserRole = 'user';
+                    if (data && data.role) {
+                        currentUserRole = data.role;
                     }
+                } catch (error) {
+                    console.log('No user role found, defaulting to user');
                 }
-            } catch (error) {
-                console.log('Role loading error, using default:', error);
-                currentUserRole = 'user';
             }
             
-            updateUIBasedOnRole();
+            updateUIForRole();
         }
         
         // Update UI based on role
-        function updateUIBasedOnRole() {
-            const permissions = rolePermissions[currentUserRole] || rolePermissions.user;
+        function updateUIForRole() {
+            const role = USER_ROLES[currentUserRole];
             
             // Update role badge
             const roleBadge = document.getElementById('current-user-role');
             if (roleBadge) {
-                roleBadge.textContent = permissions.name;
-                roleBadge.className = `role-badge role-${currentUserRole}`;
+                roleBadge.textContent = role.label;
+                roleBadge.className = `role-badge ${role.badgeClass}`;
             }
             
             // Show/hide admin features
             const adminBtn = document.getElementById('admin-btn');
             const adminTab = document.getElementById('admin-tab');
-            const shareBtn = document.getElementById('share-btn');
             
-            if (permissions.canManageUsers) {
-                if (adminBtn) adminBtn.style.display = 'inline-block';
+            if (role.canManageUsers) {
+                if (adminBtn) adminBtn.style.display = 'block';
                 if (adminTab) adminTab.style.display = 'block';
             } else {
                 if (adminBtn) adminBtn.style.display = 'none';
                 if (adminTab) adminTab.style.display = 'none';
-            }
-            
-            if (permissions.canEditAllProjects) {
-                if (shareBtn) shareBtn.style.display = 'inline-block';
-            } else {
-                if (shareBtn) shareBtn.style.display = 'none';
             }
         }
         
@@ -999,7 +1116,7 @@
                 showError('Login fejlede: ' + error.message);
             } else {
                 currentUser = data.user;
-                await loadUserRole();
+                await getUserRole();
                 showDashboard();
             }
         }
@@ -1032,24 +1149,19 @@
             if (error) {
                 showError('Oprettelse fejlede: ' + error.message);
             } else {
-                // Check if this is the first user
-                const { data: allUsers } = await supabase
-                    .from('users')
-                    .select('id');
+                // Create user record
+                if (data.user) {
+                    await supabase
+                        .from('users')
+                        .insert([{
+                            id: data.user.id,
+                            email: email,
+                            role: 'user',
+                            company_name: companyName
+                        }]);
+                }
                 
-                const role = (!allUsers || allUsers.length === 0) ? 'super_admin' : 'user';
-                
-                // Create user record with role
-                await supabase
-                    .from('users')
-                    .upsert({
-                        id: data.user.id,
-                        email: email,
-                        role: role,
-                        created_at: new Date().toISOString()
-                    });
-                
-                showSuccess(`Konto oprettet! ${role === 'super_admin' ? 'Du er den første bruger og er nu Super Admin.' : ''} Du kan nu logge ind.`);
+                showSuccess('Konto oprettet! Du kan nu logge ind.');
                 setTimeout(() => showLogin(), 3000);
             }
         }
@@ -1058,30 +1170,34 @@
             const { error } = await supabase.auth.signOut();
             if (!error) {
                 currentUser = null;
-                currentUserRole = 'user';
                 showLoginScreen();
             }
         }
         
-        // Load user's projects based on role
+        // Load user's projects FIXED
         async function loadUserProjects() {
             if (!supabase || !currentUser) return;
             
-            const permissions = rolePermissions[currentUserRole] || rolePermissions.user;
+            const role = USER_ROLES[currentUserRole];
             
             try {
                 let query = supabase
                     .from('projects')
-                    .select('project_id, client_data, user_id');
+                    .select('project_id, client_data, user_id, shared_with');
                 
-                // Only filter by user if they can't view all projects
-                if (!permissions.canViewAllProjects) {
-                    query = query.eq('user_id', currentUser.id);
+                // Depending on role, filter projects
+                if (!role.canViewAll) {
+                    // Regular users see only their own + shared projects
+                    query = query.or(`user_id.eq.${currentUser.id},shared_with.cs.{${currentUser.email}}`);
                 }
+                // Admins and managers see all projects
                 
                 const { data: projects, error } = await query;
 
-                if (error) throw error;
+                if (error) {
+                    console.error('Error loading projects:', error);
+                    return;
+                }
 
                 const select = document.getElementById('project-select');
                 if (select) {
@@ -1092,218 +1208,22 @@
                             const option = document.createElement('option');
                             option.value = project.project_id;
                             const clientName = project.client_data?.name || 'Unavngivet projekt';
-                            const isOwner = project.user_id === currentUser.id;
-                            option.textContent = clientName + (permissions.canViewAllProjects && !isOwner ? ' (Delt)' : '');
+                            
+                            // Add badge if shared
+                            if (project.shared_with && 
+                                project.shared_with.includes(currentUser.email) && 
+                                project.user_id !== currentUser.id) {
+                                option.textContent = `${clientName} (Delt med dig)`;
+                            } else {
+                                option.textContent = clientName;
+                            }
+                            
                             select.appendChild(option);
                         });
                     }
                 }
             } catch (error) {
                 console.error('Error loading projects:', error.message);
-            }
-        }
-        
-        // Load all users for admin panel
-        async function loadAllUsers() {
-            if (!supabase || !currentUser) return;
-            
-            const permissions = rolePermissions[currentUserRole] || rolePermissions.user;
-            if (!permissions.canManageUsers) return;
-            
-            try {
-                const { data: users, error } = await supabase
-                    .from('users')
-                    .select('*')
-                    .order('created_at', { ascending: false });
-                
-                if (error) throw error;
-                
-                const tbody = document.getElementById('users-table-body');
-                if (!tbody) return;
-                
-                tbody.innerHTML = '';
-                
-                if (users && users.length > 0) {
-                    users.forEach(user => {
-                        const row = document.createElement('tr');
-                        const userRole = user.role || 'user';
-                        const isCurrentUser = user.id === currentUser.id;
-                        
-                        row.innerHTML = `
-                            <td>${user.email}</td>
-                            <td>
-                                <span class="role-badge role-${userRole}">${rolePermissions[userRole]?.name || 'User'}</span>
-                            </td>
-                            <td>${new Date(user.created_at).toLocaleDateString('da-DK')}</td>
-                            <td>
-                                ${permissions.canChangeRoles && !isCurrentUser ? `
-                                    <select class="role-select" onchange="updateUserRole('${user.id}', this.value)">
-                                        <option value="user" ${userRole === 'user' ? 'selected' : ''}>User</option>
-                                        <option value="team_lead" ${userRole === 'team_lead' ? 'selected' : ''}>Team Lead</option>
-                                        <option value="project_manager" ${userRole === 'project_manager' ? 'selected' : ''}>Project Manager</option>
-                                        <option value="admin" ${userRole === 'admin' ? 'selected' : ''}>Admin</option>
-                                        <option value="super_admin" ${userRole === 'super_admin' ? 'selected' : ''}>Super Admin</option>
-                                    </select>
-                                ` : '<span style="color: #666;">-</span>'}
-                                ${permissions.canDeleteUsers && !isCurrentUser ? `
-                                    <button class="btn btn-danger" style="padding: 4px 8px; font-size: 0.9em;" onclick="deleteUser('${user.id}')">Slet</button>
-                                ` : ''}
-                            </td>
-                        `;
-                        tbody.appendChild(row);
-                    });
-                } else {
-                    tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px; color: #666;">Ingen brugere fundet</td></tr>';
-                }
-            } catch (error) {
-                console.error('Error loading users:', error);
-            }
-        }
-        
-        // Update user role
-        async function updateUserRole(userId, newRole) {
-            if (!supabase) return;
-            
-            const permissions = rolePermissions[currentUserRole] || rolePermissions.user;
-            if (!permissions.canChangeRoles) {
-                alert('Du har ikke tilladelse til at ændre roller');
-                return;
-            }
-            
-            try {
-                const { error } = await supabase
-                    .from('users')
-                    .update({ role: newRole })
-                    .eq('id', userId);
-                
-                if (error) throw error;
-                
-                alert('Rolle opdateret!');
-                loadAllUsers();
-            } catch (error) {
-                console.error('Error updating role:', error);
-                alert('Fejl ved opdatering af rolle');
-            }
-        }
-        
-        // Delete user
-        async function deleteUser(userId) {
-            if (!confirm('Er du sikker på at du vil slette denne bruger?')) return;
-            
-            const permissions = rolePermissions[currentUserRole] || rolePermissions.user;
-            if (!permissions.canDeleteUsers) {
-                alert('Du har ikke tilladelse til at slette brugere');
-                return;
-            }
-            
-            try {
-                const { error } = await supabase
-                    .from('users')
-                    .delete()
-                    .eq('id', userId);
-                
-                if (error) throw error;
-                
-                alert('Bruger slettet!');
-                loadAllUsers();
-            } catch (error) {
-                console.error('Error deleting user:', error);
-                alert('Fejl ved sletning af bruger');
-            }
-        }
-        
-        // Handle logo upload
-        function handleLogoUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            
-            // Check file size (max 2MB)
-            if (file.size > 2 * 1024 * 1024) {
-                alert('Logo filen er for stor. Max størrelse er 2MB.');
-                event.target.value = '';
-                return;
-            }
-            
-            // Check file type
-            const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
-            if (!validTypes.includes(file.type)) {
-                alert('Vælg venligst en gyldig billedfil (JPG, PNG, eller GIF)');
-                event.target.value = '';
-                return;
-            }
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const dataUrl = e.target.result;
-                
-                // Show preview
-                const preview = document.getElementById('logo-preview');
-                const previewImg = document.getElementById('preview-image');
-                const removeBtn = document.getElementById('remove-logo-btn');
-                
-                if (preview && previewImg) {
-                    previewImg.src = dataUrl;
-                    preview.style.display = 'block';
-                }
-                if (removeBtn) {
-                    removeBtn.style.display = 'block';
-                }
-                
-                // Update header logo
-                updateHeaderLogo(dataUrl);
-                
-                // Save to current project
-                if (currentProjectData) {
-                    currentProjectData.client_data = currentProjectData.client_data || {};
-                    currentProjectData.client_data.logo = dataUrl;
-                    saveToSupabase();
-                }
-            };
-            
-            reader.onerror = function(error) {
-                console.error('Error reading file:', error);
-                alert('Der opstod en fejl ved indlæsning af billedet.');
-            };
-            
-            reader.readAsDataURL(file);
-        }
-        
-        // Update header logo
-        function updateHeaderLogo(logoUrl) {
-            const headerLogo = document.getElementById('header-logo');
-            const logoFallback = document.getElementById('logo-fallback');
-            
-            if (logoUrl && headerLogo) {
-                headerLogo.src = logoUrl;
-                headerLogo.style.display = 'block';
-                if (logoFallback) logoFallback.style.display = 'none';
-            } else {
-                if (headerLogo) headerLogo.style.display = 'none';
-                if (logoFallback) logoFallback.style.display = 'block';
-            }
-        }
-        
-        // Remove logo
-        function removeLogo() {
-            if (!confirm('Er du sikker på at du vil fjerne logoet?')) return;
-            
-            // Clear file input
-            const fileInput = document.getElementById('logo-upload');
-            if (fileInput) fileInput.value = '';
-            
-            // Hide preview
-            const preview = document.getElementById('logo-preview');
-            const removeBtn = document.getElementById('remove-logo-btn');
-            if (preview) preview.style.display = 'none';
-            if (removeBtn) removeBtn.style.display = 'none';
-            
-            // Reset header logo
-            updateHeaderLogo(null);
-            
-            // Remove from project data
-            if (currentProjectData && currentProjectData.client_data) {
-                delete currentProjectData.client_data.logo;
-                saveToSupabase();
             }
         }
         
@@ -1330,6 +1250,7 @@
                     notes: ''
                 },
                 team_members: [],
+                shared_with: [],
                 tasks: masterTemplate,
                 is_public: false,
                 created_at: new Date().toISOString(),
@@ -1347,10 +1268,165 @@
                     await loadUserProjects();
                     document.getElementById('project-select').value = projectId;
                     loadProject(projectId);
+                    alert('Projekt oprettet! 🎉');
                 } catch (error) {
                     console.error('Error creating project:', error.message);
                     alert('Fejl ved oprettelse af projekt: ' + error.message);
                 }
+            }
+        }
+        
+        // Team Members Functions FIXED
+        function addTeamMember() {
+            const nameInput = document.getElementById('new-member-name');
+            const companySelect = document.getElementById('new-member-company');
+            
+            if (!nameInput || !companySelect) {
+                console.error('Team member inputs not found');
+                return;
+            }
+            
+            const name = nameInput.value.trim();
+            const company = companySelect.value;
+            
+            if (!name) {
+                alert('Indtast venligst et navn');
+                return;
+            }
+            
+            if (!currentProjectData) {
+                alert('Vælg først et projekt');
+                return;
+            }
+            
+            // Initialize team_members if it doesn't exist
+            if (!currentProjectData.team_members) {
+                currentProjectData.team_members = [];
+            }
+            
+            // Check if member already exists
+            if (currentProjectData.team_members.find(member => member.name === name)) {
+                alert('Dette team medlem eksisterer allerede');
+                return;
+            }
+            
+            // Add new member
+            currentProjectData.team_members.push({ 
+                name: name, 
+                company: company 
+            });
+            
+            // Clear input
+            nameInput.value = '';
+            
+            // Update display
+            updateTeamMembersList();
+            
+            // Save to database
+            saveToSupabase();
+            
+            console.log('Team member added:', { name, company });
+        }
+        
+        function removeTeamMember(name) {
+            if (!confirm('Vil du fjerne dette team medlem?')) return;
+            
+            if (currentProjectData && currentProjectData.team_members) {
+                currentProjectData.team_members = currentProjectData.team_members.filter(member => member.name !== name);
+                updateTeamMembersList();
+                saveToSupabase();
+            }
+        }
+        
+        function updateTeamMembersList() {
+            const listDiv = document.getElementById('team-members-list');
+            if (!listDiv) return;
+            
+            if (!currentProjectData?.team_members || currentProjectData.team_members.length === 0) {
+                listDiv.innerHTML = '<p style="color: #666; font-style: italic; text-align: center; padding: 20px;">Ingen team medlemmer tilføjet endnu.</p>';
+                return;
+            }
+            
+            listDiv.innerHTML = currentProjectData.team_members.map(member => `
+                <div class="team-member-item">
+                    <div class="team-member-info">
+                        <div class="team-member-name">
+                            <span style="font-size: 1.2em;">${member.company === 'Scaleup Finance' ? '👔' : '👤'}</span>
+                            ${member.name}
+                        </div>
+                        <div class="team-member-company">${member.company}</div>
+                    </div>
+                    <button onclick="removeTeamMember('${member.name}')" class="btn btn-danger btn-small">Fjern</button>
+                </div>
+            `).join('');
+        }
+        
+        // Share project functionality FIXED
+        function shareProject() {
+            if (!currentProjectId) {
+                alert('Vælg først et projekt at dele');
+                return;
+            }
+            
+            const role = USER_ROLES[currentUserRole];
+            
+            // Check if user owns the project or has admin rights
+            if (currentProjectData.user_id !== currentUser.id && !role.canEditAll) {
+                alert('Du kan kun dele projekter du ejer eller har admin rettigheder til');
+                return;
+            }
+            
+            // Show modal
+            document.getElementById('shareModal').style.display = 'block';
+        }
+        
+        function closeShareModal() {
+            document.getElementById('shareModal').style.display = 'none';
+            document.getElementById('share-email').value = '';
+        }
+        
+        async function confirmShare() {
+            const email = document.getElementById('share-email').value.trim();
+            
+            if (!email) {
+                alert('Indtast en email adresse');
+                return;
+            }
+            
+            if (!currentProjectData) return;
+            
+            // Initialize shared_with if it doesn't exist
+            if (!currentProjectData.shared_with) {
+                currentProjectData.shared_with = [];
+            }
+            
+            // Check if already shared
+            if (currentProjectData.shared_with.includes(email)) {
+                alert('Projektet er allerede delt med denne bruger');
+                return;
+            }
+            
+            // Add to shared list
+            currentProjectData.shared_with.push(email);
+            
+            // Save to database
+            try {
+                const { error } = await supabase
+                    .from('projects')
+                    .update({ 
+                        shared_with: currentProjectData.shared_with,
+                        last_updated: new Date().toISOString()
+                    })
+                    .eq('project_id', currentProjectId);
+                
+                if (error) throw error;
+                
+                alert(`Projekt delt med ${email}! 🔗`);
+                closeShareModal();
+                
+            } catch (error) {
+                console.error('Error sharing project:', error);
+                alert('Fejl ved deling af projekt');
             }
         }
         
@@ -1367,16 +1443,17 @@
             if (!supabase) return;
             
             try {
-                const permissions = rolePermissions[currentUserRole] || rolePermissions.user;
-                
                 let query = supabase
                     .from('projects')
                     .select('*')
                     .eq('project_id', projectId);
                 
-                // If user can't view all projects, ensure they own it
-                if (!permissions.canViewAllProjects) {
-                    query = query.eq('user_id', currentUser.id);
+                const role = USER_ROLES[currentUserRole];
+                
+                // Check permissions
+                if (!role.canViewAll) {
+                    // Regular users can only see their own or shared projects
+                    query = query.or(`user_id.eq.${currentUser.id},shared_with.cs.{${currentUser.email}}`);
                 }
                 
                 const { data: project, error } = await query.single();
@@ -1385,31 +1462,21 @@
 
                 if (project) {
                     currentProjectData = project;
-                    populateUIFromProject(project);
                     
-                    // Load logo if exists
-                    if (project.client_data?.logo) {
-                        updateHeaderLogo(project.client_data.logo);
-                        
-                        // Show preview
-                        const preview = document.getElementById('logo-preview');
-                        const previewImg = document.getElementById('preview-image');
-                        const removeBtn = document.getElementById('remove-logo-btn');
-                        
-                        if (preview && previewImg) {
-                            previewImg.src = project.client_data.logo;
-                            preview.style.display = 'block';
-                        }
-                        if (removeBtn) {
-                            removeBtn.style.display = 'block';
-                        }
-                    } else {
-                        updateHeaderLogo(null);
+                    // Ensure arrays exist
+                    if (!currentProjectData.team_members) {
+                        currentProjectData.team_members = [];
                     }
+                    if (!currentProjectData.shared_with) {
+                        currentProjectData.shared_with = [];
+                    }
+                    
+                    populateUIFromProject(project);
+                    updateTeamMembersList();
                 }
             } catch (error) {
                 console.error('Error loading project:', error.message);
-                alert('Kunne ikke indlæse projekt. Du har muligvis ikke adgang.');
+                alert('Kunne ikke indlæse projekt');
             }
         }
         
@@ -1426,27 +1493,20 @@
             updateDashboard();
         }
         
-        // Save to Supabase
+        // Save to Supabase FIXED
         async function saveToSupabase() {
             if (!currentProjectId || !supabase || !currentUser) return;
-            
-            const permissions = rolePermissions[currentUserRole] || rolePermissions.user;
-            
-            // Check if user can edit
-            if (!permissions.canEditAllProjects && currentProjectData?.user_id !== currentUser.id) {
-                console.log('No permission to edit this project');
-                return;
-            }
             
             const currentData = {
                 client_data: {
                     name: document.getElementById('client-name').value.trim(),
                     scaleupPM: document.getElementById('scaleup-pm').value.trim(),
                     clientPM: document.getElementById('client-pm').value.trim(),
-                    notes: document.getElementById('project-notes').value.trim(),
-                    logo: currentProjectData?.client_data?.logo // Preserve logo
+                    notes: document.getElementById('project-notes').value.trim()
                 },
                 tasks: currentProjectData?.tasks || masterTemplate,
+                team_members: currentProjectData?.team_members || [],
+                shared_with: currentProjectData?.shared_with || [],
                 last_updated: new Date().toISOString()
             };
             
@@ -1456,30 +1516,21 @@
                     .update(currentData)
                     .eq('project_id', currentProjectId);
                 
-                if (error) throw error;
+                if (error) {
+                    console.error('Save error details:', error);
+                    
+                    // Check if columns exist
+                    if (error.message.includes('column')) {
+                        console.warn('Database schema issue. Please run the SQL migrations.');
+                    }
+                } else {
+                    console.log('Data saved successfully');
+                }
             } catch (error) {
                 console.error('Failed to save to Supabase:', error.message);
             }
             
             currentProjectData = { ...currentProjectData, ...currentData };
-        }
-        
-        // Share project
-        function shareProject() {
-            if (!currentProjectId) {
-                alert('Vælg et projekt først');
-                return;
-            }
-            
-            const shareUrl = `${window.location.origin}${window.location.pathname}?project=${currentProjectId}`;
-            
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(shareUrl).then(() => {
-                    alert('Projekt link kopieret til udklipsholder!');
-                });
-            } else {
-                prompt('Del dette link:', shareUrl);
-            }
         }
         
         // Generate project ID
@@ -1495,7 +1546,6 @@
             document.getElementById('scaleup-pm').value = '';
             document.getElementById('client-pm').value = '';
             document.getElementById('project-notes').value = '';
-            updateHeaderLogo(null);
             checkSetup();
         }
         
@@ -1505,23 +1555,129 @@
             document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
             
             const targetTab = document.getElementById(tabName + '-tab');
-            if (targetTab) {
-                targetTab.classList.add('active');
-            }
+            const targetNavTab = event ? event.target : document.querySelector(`.nav-tab:contains('${tabName}')`);
             
-            // Find and activate the nav button
-            document.querySelectorAll('.nav-tab').forEach(tab => {
-                if (tab.textContent.toLowerCase().includes(tabName.toLowerCase()) || 
-                    (tabName === 'admin' && tab.id === 'admin-tab')) {
-                    tab.classList.add('active');
-                }
-            });
+            if (targetTab) targetTab.classList.add('active');
+            if (targetNavTab) targetNavTab.classList.add('active');
             
-            if (tabName === 'admin') {
-                loadAllUsers();
+            // Load admin data if admin tab
+            if (tabName === 'admin' && USER_ROLES[currentUserRole].canManageUsers) {
+                loadAdminData();
             }
             
             checkSetup();
+        }
+        
+        // Load admin data
+        async function loadAdminData() {
+            if (!supabase) return;
+            
+            try {
+                // Load all users
+                const { data: users, error: usersError } = await supabase
+                    .from('users')
+                    .select('*');
+                
+                if (users) {
+                    displayUsers(users);
+                    document.getElementById('total-users').textContent = users.length;
+                }
+                
+                // Load project stats
+                const { data: projects, error: projectsError } = await supabase
+                    .from('projects')
+                    .select('project_id, tasks');
+                
+                if (projects) {
+                    document.getElementById('total-projects').textContent = projects.length;
+                    
+                    // Count active projects
+                    let activeCount = 0;
+                    projects.forEach(project => {
+                        if (project.tasks) {
+                            const hasActive = project.tasks.some(phase => 
+                                phase.tasks.some(task => task.status === 'in-progress')
+                            );
+                            if (hasActive) activeCount++;
+                        }
+                    });
+                    document.getElementById('active-projects').textContent = activeCount;
+                }
+                
+            } catch (error) {
+                console.error('Error loading admin data:', error);
+            }
+        }
+        
+        // Display users in admin panel
+        function displayUsers(users) {
+            const userList = document.getElementById('user-list');
+            if (!userList) return;
+            
+            userList.innerHTML = users.map(user => `
+                <div class="user-row">
+                    <div class="user-email">${user.email}</div>
+                    <div>${user.company_name || '-'}</div>
+                    <div>
+                        <select class="role-select" onchange="changeUserRole('${user.id}', this.value)" ${!USER_ROLES[currentUserRole].canChangeRoles ? 'disabled' : ''}>
+                            ${Object.keys(USER_ROLES).map(role => 
+                                `<option value="${role}" ${user.role === role ? 'selected' : ''}>${USER_ROLES[role].label}</option>`
+                            ).join('')}
+                        </select>
+                    </div>
+                    <div>
+                        <button class="btn btn-danger btn-small" onclick="deleteUser('${user.id}')" ${!USER_ROLES[currentUserRole].canDeleteUsers ? 'disabled' : ''}>Slet</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Change user role
+        async function changeUserRole(userId, newRole) {
+            if (!USER_ROLES[currentUserRole].canChangeRoles) {
+                alert('Du har ikke rettigheder til at ændre roller');
+                return;
+            }
+            
+            try {
+                const { error } = await supabase
+                    .from('users')
+                    .update({ role: newRole })
+                    .eq('id', userId);
+                
+                if (error) throw error;
+                
+                alert('Bruger rolle opdateret!');
+                loadAdminData();
+            } catch (error) {
+                console.error('Error changing role:', error);
+                alert('Fejl ved opdatering af rolle');
+            }
+        }
+        
+        // Delete user
+        async function deleteUser(userId) {
+            if (!USER_ROLES[currentUserRole].canDeleteUsers) {
+                alert('Du har ikke rettigheder til at slette brugere');
+                return;
+            }
+            
+            if (!confirm('Er du sikker på at du vil slette denne bruger?')) return;
+            
+            try {
+                const { error } = await supabase
+                    .from('users')
+                    .delete()
+                    .eq('id', userId);
+                
+                if (error) throw error;
+                
+                alert('Bruger slettet');
+                loadAdminData();
+            } catch (error) {
+                console.error('Error deleting user:', error);
+                alert('Fejl ved sletning af bruger');
+            }
         }
         
         // Save setup
@@ -1540,6 +1696,7 @@
             
             saveToSupabase();
             switchTab('dashboard');
+            document.querySelectorAll('.nav-tab')[1].click();
         }
         
         // Check setup
@@ -1580,9 +1737,6 @@
             const tbody = document.getElementById('project-body');
             if (!tbody || !currentProjectData?.tasks) return;
             
-            const permissions = rolePermissions[currentUserRole] || rolePermissions.user;
-            const canEdit = permissions.canEditAllProjects || currentProjectData?.user_id === currentUser.id;
-            
             tbody.innerHTML = '';
             
             currentProjectData.tasks.forEach(phase => {
@@ -1595,14 +1749,14 @@
                     taskRow.innerHTML = `
                         <td>${task.name}</td>
                         <td>
-                            <select class="status-select status-${task.status}" onchange="updateTaskStatus('${task.name}', this.value)" ${!canEdit ? 'disabled' : ''}>
+                            <select class="status-select status-${task.status}" onchange="updateTaskStatus('${task.name}', this.value)">
                                 <option value="not-started" ${task.status === 'not-started' ? 'selected' : ''}>⏳ Not Started</option>
                                 <option value="in-progress" ${task.status === 'in-progress' ? 'selected' : ''}>🔄 In Progress</option>
                                 <option value="completed" ${task.status === 'completed' ? 'selected' : ''}>✅ Completed</option>
                             </select>
                         </td>
                         <td>
-                            <select onchange="updateTaskResponsible('${task.name}', this.value)" style="width: 100%; padding: 6px;" ${!canEdit ? 'disabled' : ''}>
+                            <select onchange="updateTaskResponsible('${task.name}', this.value)" style="width: 100%; padding: 6px;">
                                 <option value="Scaleup Finance" ${task.responsible === 'Scaleup Finance' ? 'selected' : ''}>Scaleup Finance</option>
                                 <option value="Client" ${task.responsible === 'Client' ? 'selected' : ''}>Client</option>
                             </select>
@@ -1689,35 +1843,12 @@
         
         // Export project
         function exportProject() {
-            if (!currentProjectData) {
-                alert('Vælg et projekt først');
-                return;
-            }
-            
-            const permissions = rolePermissions[currentUserRole] || rolePermissions.user;
-            
-            // Check if user can export
-            if (!permissions.canExportAll && currentProjectData?.user_id !== currentUser.id) {
-                alert('Du har ikke tilladelse til at eksportere dette projekt');
-                return;
-            }
-            
-            // Ask if logo should be included
-            let includelogo = false;
-            if (currentProjectData.client_data?.logo) {
-                includelogo = confirm('Vil du inkludere logoet i eksporten? (Dette vil gøre filen større)');
-            }
+            if (!currentProjectData) return;
             
             const exportData = {
                 ...currentProjectData,
-                exportedAt: new Date().toISOString(),
-                exportedBy: currentUser.email
+                exportedAt: new Date().toISOString()
             };
-            
-            // Remove logo if not wanted
-            if (!includelogo && exportData.client_data?.logo) {
-                delete exportData.client_data.logo;
-            }
             
             const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
             const url = window.URL.createObjectURL(blob);
@@ -1732,27 +1863,21 @@
             supabase.auth.onAuthStateChange((event, session) => {
                 if (event === 'SIGNED_IN') {
                     currentUser = session.user;
-                    loadUserRole().then(() => showDashboard());
+                    getUserRole().then(() => showDashboard());
                 } else if (event === 'SIGNED_OUT') {
                     currentUser = null;
-                    currentUserRole = 'user';
                     showLoginScreen();
                 }
             });
         }
         
-        // Check for shared project in URL
-        window.addEventListener('load', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const sharedProjectId = urlParams.get('project');
-            
-            if (sharedProjectId && currentUser) {
-                setTimeout(() => {
-                    document.getElementById('project-select').value = sharedProjectId;
-                    loadProject(sharedProjectId);
-                }, 1000);
+        // Modal close on click outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('shareModal');
+            if (event.target == modal) {
+                closeShareModal();
             }
-        });
+        }
     </script>
 </body>
 </html>
