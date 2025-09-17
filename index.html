@@ -3,25 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scaleup Finance - e-conomic Dimensions Dashboard</title>
-    
-    <!-- Supabase SDK -->
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-    
+    <title>Scaleup Finance - Complete Project Dashboard</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
-            min-height: 100vh;
-            color: #2c3e50;
-        }
-        
-        .container { 
-            max-width: 1400px; 
-            margin: 0 auto; 
-            padding: 20px; 
-        }
+        body { font-family: 'Segoe UI', sans-serif; background: #f5f7fa; color: #333; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
         
         /* Login Screen */
         .login-container {
@@ -34,16 +20,16 @@
         
         .login-box {
             background: white;
-            padding: 48px;
-            border-radius: 24px;
+            padding: 40px;
+            border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             width: 100%;
-            max-width: 420px;
+            max-width: 400px;
         }
         
         .login-logo {
             text-align: center;
-            margin-bottom: 32px;
+            margin-bottom: 30px;
         }
         
         .login-logo h1 {
@@ -52,64 +38,60 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 8px;
-        }
-        
-        .login-logo p {
-            color: #6c757d;
-            font-size: 1.1em;
         }
         
         .auth-form input {
             width: 100%;
-            padding: 14px 16px;
-            margin-bottom: 16px;
-            border: 2px solid #e9ecef;
-            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
             font-size: 1em;
-            transition: all 0.3s ease;
-        }
-        
-        .auth-form input:focus {
-            outline: none;
-            border-color: #3a4a47;
-            box-shadow: 0 0 0 4px rgba(58, 74, 71, 0.1);
         }
         
         .auth-form button {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             background: linear-gradient(135deg, #3a4a47, #2d3a36);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 8px;
             font-size: 1.1em;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
         
         .auth-form button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(58, 74, 71, 0.3);
+            box-shadow: 0 5px 15px rgba(58, 74, 71, 0.3);
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
         }
         
         /* User Bar */
         .user-bar {
             background: white;
-            padding: 16px 24px;
-            border-radius: 16px;
-            margin-bottom: 24px;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
         }
         
         .user-info {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 15px;
         }
         
         .user-email {
@@ -117,630 +99,594 @@
             color: #3a4a47;
         }
         
-        .status-badge {
-            padding: 6px 14px;
-            background: #d4edda;
-            color: #155724;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 600;
-        }
-        
-        /* Modern Header */
-        .header {
+        /* Header */
+        .header { 
             background: linear-gradient(135deg, #3a4a47 0%, #2d3a36 100%);
-            color: white;
-            padding: 48px;
-            border-radius: 24px;
-            margin-bottom: 32px;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+            color: white; 
+            padding: 50px; 
+            border-radius: 15px; 
+            margin-bottom: 30px; 
             text-align: center;
         }
         
         .header-content {
             display: flex;
-            align-items: center;
             justify-content: center;
-            gap: 32px;
-            margin-bottom: 16px;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 30px;
         }
         
-        .logo {
-            width: 90px;
-            height: 90px;
-            background: white;
-            border-radius: 20px;
+        .scaleup-logo {
+            width: 100px; 
+            height: 100px; 
+            background: #ffffff; 
+            border-radius: 15px; 
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 42px;
-            font-weight: bold;
-            color: #3a4a47;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .scaleup-logo img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        
+        .logo-fallback {
+            color: #3a4a47; 
+            font-size: 48px; 
+            font-weight: 800;
         }
         
         .company-name {
-            font-size: 3.5em;
+            font-size: 4em;
             font-weight: 700;
-            letter-spacing: -1px;
-        }
-        
-        .header-description {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-        
-        /* Project Controls */
-        .project-controls {
-            background: white;
-            padding: 20px 24px;
-            border-radius: 16px;
-            margin-bottom: 24px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-        
-        .project-select {
-            padding: 10px 16px;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            font-size: 1em;
-            min-width: 280px;
-            background: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .project-select:hover {
-            border-color: #3a4a47;
-        }
-        
-        /* Enhanced Navigation Tabs */
-        .nav-tabs {
-            display: flex;
-            background: white;
-            border-radius: 16px;
-            padding: 8px;
-            margin-bottom: 32px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            gap: 8px;
-        }
-        
-        .nav-tab {
-            flex: 1;
-            padding: 16px 24px;
-            background: transparent;
-            border: 2px solid transparent;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 1.05em;
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            color: #6c757d;
-        }
-        
-        .nav-tab:hover {
-            background: #f8f9fa;
-            color: #3a4a47;
-        }
-        
-        .nav-tab.active {
-            background: linear-gradient(135deg, #3a4a47, #2d3a36);
             color: white;
-            box-shadow: 0 4px 12px rgba(58, 74, 71, 0.25);
         }
         
-        /* Tab Content */
+        /* Navigation */
+        .nav-tabs { 
+            display: flex; 
+            background: white; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            margin-bottom: 30px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08); 
+        }
+        
+        .nav-tab { 
+            flex: 1; 
+            padding: 15px 25px; 
+            background: #f8f9fa; 
+            border: none; 
+            cursor: pointer; 
+            font-size: 1.1em; 
+            font-weight: 600; 
+            transition: all 0.3s; 
+        }
+        
+        .nav-tab.active { 
+            background: linear-gradient(135deg, #3a4a47, #2d3a36); 
+            color: white; 
+        }
+        
         .tab-content { display: none; }
         .tab-content.active { display: block; }
         
         /* Forms */
-        .setup-form {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        .setup-form { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 12px; 
+            margin-bottom: 20px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08); 
         }
         
-        .form-group {
-            margin-bottom: 24px;
+        .form-group { 
+            margin-bottom: 20px; 
         }
         
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #3a4a47;
-            font-size: 0.95em;
+        .form-group label { 
+            display: block; 
+            font-weight: 600; 
+            margin-bottom: 8px; 
+            color: #495057; 
         }
         
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            font-size: 1em;
-            font-family: inherit;
-            transition: all 0.3s ease;
+        .form-group input, .form-group textarea { 
+            width: 100%; 
+            padding: 12px; 
+            border: 2px solid #dee2e6; 
+            border-radius: 8px; 
+            font-size: 1em; 
+            font-family: 'Segoe UI', sans-serif; 
         }
         
-        .form-group input:focus, .form-group textarea:focus {
-            outline: none;
+        /* Logo Upload Area */
+        .logo-upload-area {
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .logo-upload-area:hover {
             border-color: #3a4a47;
-            box-shadow: 0 0 0 4px rgba(58, 74, 71, 0.1);
+            background: #e9ecef;
+        }
+        
+        .logo-preview {
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .logo-preview img {
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
         /* Buttons */
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 600;
-            margin: 4px;
-            transition: all 0.3s ease;
-            display: inline-flex;
+        .btn { 
+            padding: 12px 25px; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 1em; 
+            margin: 5px; 
+            transition: all 0.3s; 
+        }
+        
+        .btn-primary { background: #3a4a47; color: white; }
+        .btn-primary:hover { background: #2d3a36; transform: translateY(-2px); }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-danger { background: #dc3545; color: white; }
+        
+        /* Team Members Section */
+        .team-section {
+            background: #f8f9fa; 
+            padding: 20px; 
+            border-radius: 8px; 
+            margin: 20px 0;
+            border: 2px solid #3a4a47;
+        }
+        
+        .team-section h3 {
+            color: #3a4a47; 
+            margin-bottom: 15px;
+        }
+        
+        .team-input-row {
+            display: flex; 
+            gap: 10px; 
+            margin-bottom: 15px;
             align-items: center;
-            gap: 8px;
         }
         
-        .btn-primary {
-            background: linear-gradient(135deg, #3a4a47, #2d3a36);
-            color: white;
+        .team-input {
+            flex: 1; 
+            padding: 10px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px;
+            font-size: 1em;
         }
         
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(58, 74, 71, 0.3);
-        }
-        
-        .btn-success {
-            background: linear-gradient(135deg, #28a745, #20c997);
-            color: white;
-        }
-        
-        .btn-secondary {
-            background: linear-gradient(135deg, #6c757d, #5a6268);
-            color: white;
-        }
-        
-        .btn-danger {
-            background: linear-gradient(135deg, #dc3545, #c82333);
-            color: white;
-        }
-        
-        .btn-info {
-            background: linear-gradient(135deg, #17a2b8, #138496);
-            color: white;
-        }
-        
-        /* Dashboard Grid */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-            margin-bottom: 32px;
-        }
-        
-        .kpi-card {
+        .team-select {
+            padding: 10px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px;
             background: white;
-            padding: 32px;
-            border-radius: 20px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-            text-align: center;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
+            min-width: 150px;
         }
         
-        .kpi-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #3a4a47, #2d3a36);
-            opacity: 0;
-            transition: opacity 0.3s;
+        .team-member-item {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 12px 15px; 
+            background: white; 
+            border-radius: 6px; 
+            margin: 8px 0; 
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        /* Dashboard KPIs */
+        .dashboard-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 25px; 
+            margin-bottom: 40px; 
+        }
+        
+        .kpi-card { 
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 30px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(58, 74, 71, 0.15); 
+            text-align: center; 
+            transition: all 0.4s;
+            border: 1px solid rgba(58, 74, 71, 0.1);
         }
         
         .kpi-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 32px rgba(0,0,0,0.15);
-        }
-        
-        .kpi-card:hover::before {
-            opacity: 1;
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(58, 74, 71, 0.2);
         }
         
         .kpi-icon {
-            width: 64px;
-            height: 64px;
+            width: 60px;
+            height: 60px;
             margin: 0 auto 20px;
             background: linear-gradient(135deg, #3a4a47, #2d3a36);
-            border-radius: 16px;
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            font-size: 24px;
             color: white;
         }
         
-        .kpi-value {
-            font-size: 3em;
-            font-weight: 800;
-            margin: 16px 0;
+        .kpi-value { 
+            font-size: 3.5em; 
+            font-weight: 800; 
+            margin: 20px 0 10px; 
             background: linear-gradient(135deg, #3a4a47, #2d3a36);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         
-        .kpi-label {
-            color: #6c757d;
-            font-size: 0.9em;
+        .kpi-label { 
+            color: #666; 
+            font-size: 1.1em; 
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            margin-bottom: 15px;
         }
         
-        .kpi-subtitle {
-            font-size: 0.95em;
-            color: #495057;
-            font-weight: 500;
+        .progress-bar { 
+            width: 100%; 
+            height: 8px; 
+            background: #e9ecef; 
+            border-radius: 10px; 
+            overflow: hidden; 
+            margin: 20px 0 10px;
         }
         
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #e9ecef;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 20px 0;
+        .progress-fill { 
+            height: 100%; 
+            background: linear-gradient(90deg, #3a4a47, #2d3a36); 
+            border-radius: 10px; 
+            transition: width 1s;
         }
         
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #3a4a47, #2d3a36);
-            border-radius: 10px;
-            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        /* Team Performance Dashboard */
+        .team-distribution { 
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 35px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(58, 74, 71, 0.15);
+            border: 1px solid rgba(58, 74, 71, 0.1);
+            margin-top: 30px;
         }
         
-        /* Project Table */
-        .project-table-container {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-        }
-        
-        .table-header {
-            background: linear-gradient(135deg, #3a4a47, #2d3a36);
-            color: white;
-            padding: 24px 32px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .table-header h2 {
-            font-size: 1.5em;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        th {
-            background: #f8f9fa;
-            padding: 16px;
-            text-align: left;
-            font-weight: 600;
-            color: #495057;
-            border-bottom: 2px solid #e9ecef;
-        }
-        
-        td {
-            padding: 16px;
-            border-bottom: 1px solid #e9ecef;
-            vertical-align: middle;
-        }
-        
-        tr:hover {
-            background: #fafbfc;
-        }
-        
-        /* Phase Headers */
-        .phase-header {
-            background: linear-gradient(90deg, #3a4a47 0%, #2d3a36 100%);
-            color: white;
+        .team-distribution h3 { 
+            color: #3a4a47; 
+            margin-bottom: 30px; 
+            text-align: center;
+            font-size: 1.6em;
             font-weight: 700;
+        }
+        
+        .person-task-row { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 20px 25px; 
+            border-bottom: 1px solid rgba(58, 74, 71, 0.1);
+            transition: all 0.3s;
+            border-radius: 10px;
+            margin: 0 -10px;
+        }
+        
+        .person-task-row:hover {
+            background: rgba(58, 74, 71, 0.05);
+            transform: translateX(5px);
+        }
+        
+        .person-name { 
+            font-weight: 700; 
+            color: #3a4a47; 
             font-size: 1.1em;
         }
         
-        .phase-header td {
-            padding: 18px 20px;
-            border: none;
+        .task-counts { 
+            display: flex; 
+            gap: 20px; 
+            align-items: center;
         }
         
-        /* Status Badges */
-        .status-select {
+        .task-count { 
+            font-size: 0.95em; 
+            font-weight: 600;
             padding: 8px 16px;
             border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            min-width: 140px;
         }
         
-        .status-not-started {
-            background: linear-gradient(135deg, #e9ecef, #dee2e6);
-            color: #495057;
+        .count-completed { 
+            color: #28a745; 
+            background: rgba(40, 167, 69, 0.1);
+            border: 1px solid rgba(40, 167, 69, 0.2);
         }
         
-        .status-in-progress {
-            background: linear-gradient(135deg, #3a4a47, #2d3a36);
-            color: white;
+        .count-progress { 
+            color: #3a4a47; 
+            background: rgba(58, 74, 71, 0.1);
+            border: 1px solid rgba(58, 74, 71, 0.2);
         }
         
-        .status-completed {
-            background: linear-gradient(135deg, #28a745, #20c997);
-            color: white;
+        .count-total { 
+            color: #666;
+            background: rgba(102, 102, 102, 0.1);
+            border: 1px solid rgba(102, 102, 102, 0.2);
         }
         
-        /* Team Section */
-        .team-section {
-            background: #f8f9fa;
-            padding: 24px;
-            border-radius: 16px;
-            margin: 24px 0;
-            border: 2px solid #3a4a47;
+        /* Project Table */
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            background: white; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08); 
         }
         
-        .team-section h3 {
-            color: #3a4a47;
-            margin-bottom: 16px;
-            font-size: 1.2em;
+        th, td { 
+            padding: 15px; 
+            text-align: left; 
+            border-bottom: 1px solid #dee2e6; 
         }
         
-        .team-input-row {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 16px;
+        th { 
+            background: #f8f9fa; 
+            font-weight: 600; 
+            color: #495057; 
         }
         
-        .team-input {
-            flex: 1;
-            padding: 10px 14px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 1em;
+        .table-header { 
+            background: #3a4a47; 
+            color: white; 
+            padding: 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
         }
         
-        .team-select {
-            padding: 10px 14px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            background: white;
-            min-width: 160px;
-            cursor: pointer;
-        }
-        
-        .team-member-item {
+        /* Task Row Styling */
+        .task-cell {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 16px;
-            background: white;
-            border-radius: 10px;
-            margin: 8px 0;
-            border: 1px solid #e9ecef;
-            transition: all 0.3s ease;
+            gap: 10px;
         }
         
-        .team-member-item:hover {
-            border-color: #3a4a47;
-            transform: translateX(4px);
+        .task-name {
+            flex: 1;
         }
         
-        /* Messages */
-        .error-message, .success-message, .warning-message {
-            padding: 16px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            font-weight: 500;
+        /* Subtask Styles */
+        .subtask-input-area {
+            background: #fff3cd; 
+            border: 2px solid #3a4a47; 
+            border-radius: 8px; 
+            padding: 20px; 
+            margin: 15px 0; 
+            display: none;
         }
         
-        .error-message {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+        .subtask-input { 
+            width: 100%; 
+            padding: 10px; 
+            margin: 10px 0; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
         }
         
-        .success-message {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+        .subtask-row { 
+            background-color: #f8f9fa; 
+            border-left: 4px solid #3a4a47; 
         }
         
-        .warning-message {
-            background: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeaa7;
+        .subtask-row td { 
+            padding-left: 35px; 
+            font-size: 0.95em; 
         }
         
-        /* Admin Panel */
-        .admin-panel {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-        }
-        
-        .admin-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
-            margin-top: 24px;
-        }
-        
-        .admin-card {
-            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-            padding: 24px;
-            border-radius: 16px;
-            border: 1px solid #e9ecef;
-            transition: all 0.3s ease;
-        }
-        
-        .admin-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-        }
-        
-        .admin-card h3 {
-            color: #3a4a47;
-            margin-bottom: 20px;
-            font-size: 1.2em;
-            display: flex;
+        .add-subtask-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 5px;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s;
+            display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
+        }
+        
+        .add-subtask-btn:hover {
+            background: #218838;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+        
+        /* Status Select */
+        .status-select { 
+            padding: 8px 12px; 
+            border: none; 
+            border-radius: 6px; 
+            background: white; 
+            cursor: pointer; 
+            font-weight: 600; 
+        }
+        
+        .status-completed { background: #28a745; color: white; }
+        .status-in-progress { background: #3a4a47; color: white; }
+        .status-not-started { background: #e9ecef; color: #495057; }
+        
+        .warning-message { 
+            background: #fff3cd; 
+            border: 1px solid #ffeaa7; 
+            color: #856404; 
+            padding: 15px; 
+            border-radius: 8px; 
+            margin-bottom: 20px; 
+        }
+        
+        /* Configuration Panel */
+        .config-panel {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            width: 300px;
+            display: none;
+            z-index: 1000;
+        }
+        
+        .config-panel h3 {
+            margin-bottom: 15px;
+            color: #3a4a47;
+        }
+        
+        .config-input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        
+        .config-toggle {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #3a4a47;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 999;
         }
     </style>
 </head>
 <body>
     <!-- Login Screen -->
-    <div id="login-screen" class="login-container">
+    <div id="login-screen" class="login-container" style="display: none;">
         <div class="login-box">
             <div class="login-logo">
                 <h1>Scaleup Finance</h1>
-                <p>e-conomic Dimensions Dashboard</p>
+                <p>Project Management Dashboard</p>
             </div>
             
-            <div id="error-message" class="error-message" style="display: none;"></div>
-            <div id="success-message" class="success-message" style="display: none;"></div>
+            <div id="error-message" class="error-message"></div>
             
-            <div id="login-form" class="auth-form">
-                <h2 style="margin-bottom: 24px; color: #3a4a47;">Log ind</h2>
-                <input type="email" id="login-email" placeholder="Email" required>
-                <input type="password" id="login-password" placeholder="Password" required>
-                <button onclick="handleLogin()">Log ind</button>
-                <p style="text-align: center; margin-top: 20px; color: #6c757d;">
-                    Ny bruger? <a href="#" onclick="showSignup(); return false;" style="color: #3a4a47; font-weight: 600;">Opret konto</a>
-                </p>
-            </div>
-            
-            <div id="signup-form" class="auth-form" style="display: none;">
-                <h2 style="margin-bottom: 24px; color: #3a4a47;">Opret konto</h2>
-                <input type="email" id="signup-email" placeholder="Email" required>
-                <input type="password" id="signup-password" placeholder="Password (min. 6 tegn)" required>
-                <input type="text" id="company-name" placeholder="Firmanavn" required>
-                <button onclick="handleSignup()">Opret konto</button>
-                <p style="text-align: center; margin-top: 20px; color: #6c757d;">
-                    Har du allerede en konto? <a href="#" onclick="showLogin(); return false;" style="color: #3a4a47; font-weight: 600;">Log ind</a>
-                </p>
+            <div class="auth-form">
+                <h2 style="margin-bottom: 20px;">Login</h2>
+                <input type="email" id="login-email" placeholder="Email">
+                <input type="password" id="login-password" placeholder="Password">
+                <button onclick="handleLogin()">Log In</button>
             </div>
         </div>
     </div>
 
     <!-- Main Dashboard -->
-    <div id="main-dashboard" class="container" style="display: none;">
+    <div id="main-dashboard" class="container">
         
         <!-- User Bar -->
         <div class="user-bar">
             <div class="user-info">
-                <span>Logget ind som:</span>
-                <span class="user-email" id="current-user-email">-</span>
-                <span class="status-badge">🟢 Online</span>
+                <span>Logged in as:</span>
+                <span class="user-email" id="current-user-email">demo@scaleup.dk</span>
             </div>
-            <button class="btn btn-danger" onclick="handleLogout()">Log ud</button>
+            <button class="btn btn-danger" onclick="handleLogout()">Log Out</button>
         </div>
         
         <!-- Header -->
         <div class="header">
             <div class="header-content">
-                <div class="logo">8</div>
+                <div class="scaleup-logo">
+                    <img id="header-logo" style="display: none;" alt="Company Logo">
+                    <div class="logo-fallback" id="logo-fallback">8</div>
+                </div>
                 <div class="company-name">Scaleup Finance</div>
             </div>
-            <p class="header-description">e-conomic Dimensions Implementation Dashboard</p>
-        </div>
-
-        <!-- Project Controls -->
-        <div class="project-controls">
-            <div style="display: flex; align-items: center; gap: 16px;">
-                <label style="font-weight: 600; color: #495057;">Current Project:</label>
-                <select id="project-select" class="project-select" onchange="loadProject(this.value)">
-                    <option value="">Vælg eller opret et projekt...</option>
-                </select>
-            </div>
-            <div>
-                <button class="btn btn-success" onclick="createNewProject()">➕ Nyt Projekt</button>
-                <button class="btn btn-info" onclick="shareProject()">🔗 Del Projekt</button>
-                <button class="btn btn-secondary" onclick="exportProject()">📥 Export</button>
-            </div>
+            <div class="header-description">e-conomic Dimensions Implementation Dashboard</div>
         </div>
 
         <!-- Navigation -->
         <div class="nav-tabs">
-            <button class="nav-tab active" onclick="switchTab('setup')">
-                <span>🔧</span>
-                <span>Client Setup</span>
-            </button>
-            <button class="nav-tab" onclick="switchTab('dashboard')">
-                <span>📊</span>
-                <span>Dashboard</span>
-            </button>
-            <button class="nav-tab" onclick="switchTab('project')">
-                <span>📋</span>
-                <span>Project Plan</span>
-            </button>
-            <button class="nav-tab" onclick="switchTab('admin')">
-                <span>👑</span>
-                <span>Admin Panel</span>
-            </button>
+            <button class="nav-tab active" onclick="switchTab('setup')">🔧 Client Setup</button>
+            <button class="nav-tab" onclick="switchTab('dashboard')">📊 Dashboard</button>
+            <button class="nav-tab" onclick="switchTab('project')">📋 Project Plan</button>
         </div>
 
         <!-- Client Setup Tab -->
         <div id="setup-tab" class="tab-content active">
             <div class="setup-form">
-                <h2 style="color: #3a4a47; margin-bottom: 8px;">Client Information Setup</h2>
-                <p style="color: #6c757d; margin-bottom: 32px;">Configure client details for this project</p>
+                <h2>Client Information Setup</h2>
+                <p style="margin-bottom: 25px; color: #666;">Configure client details for this project.</p>
                 
                 <div class="form-group">
                     <label>Client Company Name *</label>
-                    <input type="text" id="client-name" placeholder="e.g., ABC Corporation" onchange="saveToSupabase()">
+                    <input type="text" id="client-name" placeholder="e.g., ABC Corporation">
+                </div>
+                
+                <div class="form-group">
+                    <label>Upload Company Logo</label>
+                    <div class="logo-upload-area" onclick="document.getElementById('logo-upload').click()">
+                        <input type="file" id="logo-upload" accept="image/*" style="display: none;" onchange="handleLogoUpload(event)">
+                        <p style="color: #666;">📷 Click to upload logo (PNG, JPG, GIF)</p>
+                        <div class="logo-preview" id="logo-preview">
+                            <img id="preview-image" alt="Logo preview">
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="form-group">
                     <label>Scaleup Finance Project Manager *</label>
-                    <input type="text" id="scaleup-pm" placeholder="e.g., Lars Jensen" onchange="saveToSupabase()">
+                    <input type="text" id="scaleup-pm" placeholder="e.g., Lars Jensen">
                 </div>
                 
                 <div class="form-group">
                     <label>Client Project Manager</label>
-                    <input type="text" id="client-pm" placeholder="e.g., John Smith (CFO)" onchange="saveToSupabase()">
+                    <input type="text" id="client-pm" placeholder="e.g., John Smith (CFO)">
                 </div>
                 
                 <!-- Team Members Section -->
                 <div class="team-section">
                     <h3>👥 Team Members</h3>
-                    <p style="color: #6c757d; margin-bottom: 16px; font-size: 0.95em;">
+                    <p style="color: #666; margin-bottom: 15px; font-size: 0.9em;">
                         Add team members who can be assigned to specific tasks
                     </p>
                     
@@ -752,17 +698,17 @@
                         </select>
                         <button class="btn btn-success" onclick="addTeamMember()">➕ Add Member</button>
                     </div>
-                    
+
                     <div id="team-members-list">
-                        <p style="color: #6c757d; font-style: italic; text-align: center; padding: 20px;">
-                            No team members added yet. Add some above to get started!
+                        <p style="color: #666; font-style: italic; text-align: center; padding: 20px;">
+                            No team members added yet
                         </p>
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <label>Project Notes (Optional)</label>
-                    <textarea id="project-notes" rows="3" placeholder="Any specific notes about this implementation..." onchange="saveToSupabase()"></textarea>
+                    <textarea id="project-notes" rows="3" placeholder="Any specific notes..."></textarea>
                 </div>
                 
                 <button class="btn btn-primary" onclick="saveSetup()">💾 Save Client Setup</button>
@@ -773,7 +719,7 @@
         <!-- Dashboard Tab -->
         <div id="dashboard-tab" class="tab-content">
             <div id="dashboard-warning" class="warning-message">
-                ⚠️ Please select a project and complete the Client Setup first
+                ⚠️ Please complete the Client Setup first to view the dashboard.
             </div>
             
             <div id="dashboard-content" style="display: none;">
@@ -785,28 +731,34 @@
                         <div class="progress-bar">
                             <div class="progress-fill" id="overall-progress-bar" style="width: 0%"></div>
                         </div>
-                        <div class="kpi-subtitle">Implementation Status</div>
                     </div>
                     
                     <div class="kpi-card">
                         <div class="kpi-icon">✅</div>
                         <div class="kpi-label">Completed Tasks</div>
                         <div class="kpi-value" id="completed-tasks">0</div>
-                        <div class="kpi-subtitle">of <span id="total-tasks">0</span> total tasks</div>
+                        <div style="color: #666;">of <span id="total-tasks">0</span> total</div>
                     </div>
                     
                     <div class="kpi-card">
                         <div class="kpi-icon">🔄</div>
                         <div class="kpi-label">Active Tasks</div>
                         <div class="kpi-value" id="ongoing-tasks">0</div>
-                        <div class="kpi-subtitle">currently in progress</div>
+                        <div style="color: #666;">in progress</div>
                     </div>
                     
                     <div class="kpi-card">
                         <div class="kpi-icon">🎯</div>
                         <div class="kpi-label">Next Milestone</div>
-                        <div class="kpi-value" style="font-size: 1.8em;" id="next-milestone">Requirements Analysis</div>
-                        <div class="kpi-subtitle">Next task to complete</div>
+                        <div class="kpi-value" style="font-size: 1.5em;" id="next-milestone">Requirements</div>
+                    </div>
+                </div>
+                
+                <!-- Team Performance Dashboard -->
+                <div class="team-distribution">
+                    <h3>👥 Team Performance Dashboard</h3>
+                    <div id="team-task-distribution">
+                        <!-- Will be populated dynamically -->
                     </div>
                 </div>
             </div>
@@ -815,484 +767,162 @@
         <!-- Project Plan Tab -->
         <div id="project-tab" class="tab-content">
             <div id="project-warning" class="warning-message">
-                ⚠️ Please select a project and complete the Client Setup first
+                ⚠️ Please complete the Client Setup first to access the project plan.
             </div>
             
             <div id="project-content" style="display: none;">
-                <div class="project-table-container">
+                <!-- Subtask Input Area -->
+                <div id="subtask-input-area" class="subtask-input-area">
+                    <h4>✏️ Create New Subtask</h4>
+                    <p><strong>Adding to:</strong> <span id="target-task">Unknown Task</span></p>
+                    <input type="text" id="subtask-name" class="subtask-input" placeholder="Enter subtask name...">
+                    <input type="text" id="subtask-desc" class="subtask-input" placeholder="Optional description...">
+                    <button class="btn btn-success" onclick="createSubtask()">➕ Create Subtask</button>
+                    <button class="btn btn-secondary" onclick="cancelSubtask()">Cancel</button>
+                </div>
+                
+                <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.08);">
                     <div class="table-header">
                         <h2>📋 Detailed Project Plan</h2>
-                        <div id="client-display" style="font-size: 1.1em;">No project selected</div>
+                        <div id="client-display">No client selected</div>
+                    </div>
+                    
+                    <div style="padding: 15px; background: #f8f9fa;">
+                        <button class="btn btn-primary" onclick="exportToCSV()">📊 Export to CSV</button>
                     </div>
                     
                     <table>
                         <thead>
                             <tr>
-                                <th width="35%">Task</th>
-                                <th width="15%">Status</th>
-                                <th width="20%">Responsible</th>
-                                <th width="30%">Description</th>
+                                <th style="width: 400px">Task</th>
+                                <th style="width: 150px">Status</th>
+                                <th style="width: 200px">Responsible</th>
+                                <th>Description</th>
                             </tr>
                         </thead>
-                        <tbody id="project-body">
-                            <tr>
-                                <td colspan="4" style="text-align: center; padding: 40px; color: #6c757d;">
-                                    Select a project to view tasks...
-                                </td>
-                            </tr>
-                        </tbody>
+                        <tbody id="project-body"></tbody>
                     </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Admin Panel Tab -->
-        <div id="admin-tab" class="tab-content">
-            <div class="admin-panel">
-                <h2 style="color: #3a4a47; margin-bottom: 32px;">👑 Admin Panel</h2>
-                
-                <div class="admin-grid">
-                    <div class="admin-card">
-                        <h3>📊 Project Overview</h3>
-                        <div id="admin-project-stats">
-                            <p style="color: #6c757d;">Loading project statistics...</p>
-                        </div>
-                    </div>
-                    
-                    <div class="admin-card">
-                        <h3>👥 All Users</h3>
-                        <div id="admin-users-list">
-                            <p style="color: #6c757d;">Loading users...</p>
-                        </div>
-                    </div>
-                    
-                    <div class="admin-card">
-                        <h3>🔐 Permissions</h3>
-                        <button class="btn btn-primary" onclick="managePermissions()" style="width: 100%; margin-bottom: 12px;">
-                            Manage Permissions
-                        </button>
-                        <button class="btn btn-success" onclick="addAdminUser()" style="width: 100%;">
-                            Add Admin User
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Supabase SDK -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    
     <script>
-        // ⚠️ VIGTIGT: Erstat disse med DINE værdier fra Supabase Dashboard
-        const supabaseUrl = 'https://swlnojbzlfosjdtqswjd.supabase.co'; // <- Din Project URL
-        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3bG5vamJ6bGZvc2pkdHFzd2pkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTczNDUzNzIsImV4cCI6MjA3MjkyMTM3Mn0.weAmKGGMeUaerNwyAoz6dpFufK0Fz1YbrdaUzsKiYk8'; // <- Din anon public key
+        // SUPABASE CONFIGURATION - UPDATE THESE VALUES
+        const SUPABASE_URL = 'https://swlnojbzlfosjdtqswjd.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3bG5vamJ6bGZvc2pkdHFzd2pkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTczNDUzNzIsImV4cCI6MjA3MjkyMTM3Mn0.weAmKGGMeUaerNwyAoz6dpFufK0Fz1YbrdaUzsKiYk8';
         
-        // Global variables
-        let supabaseClient = null;
-        let currentUser = null;
-        let currentProjectId = null;
-        let currentProjectData = null;
+        // Initialize Supabase (optional - uncomment to enable)
+        // const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        // Global data
+        let clientData = { name: '', scaleupPM: '', clientPM: '', notes: '', logo: null };
         let teamMembers = [];
-        
-        // Master template for new projects
-        const masterTemplate = [
+        let currentTaskForSubtask = '';
+        let projectData = [
             {
                 phase: "Phase 1: Analysis & Planning",
                 tasks: [
-                    {name: "1.1 Requirements Analysis", status: "not-started", responsible: "Scaleup Finance", description: "Map dimension requirements and needs"},
-                    {name: "1.2 System Mapping", status: "not-started", responsible: "Client", description: "Current setup in all systems"},
-                    {name: "1.3 Gap Analysis", status: "not-started", responsible: "Scaleup Finance", description: "Identify change requirements"},
-                    {name: "1.4 Technical Architecture", status: "not-started", responsible: "Scaleup Finance", description: "Design solution architecture"}
+                    {name: "1.1 Requirements Analysis", status: "not-started", responsible: "Scaleup Finance", description: "Map dimension requirements", subtasks: []},
+                    {name: "1.2 System Mapping", status: "not-started", responsible: "Client", description: "Current setup in all systems", subtasks: []},
+                    {name: "1.3 Gap Analysis", status: "not-started", responsible: "Scaleup Finance", description: "Identify changes", subtasks: []},
+                    {name: "1.4 Technical Architecture", status: "not-started", responsible: "Scaleup Finance", description: "Design solution", subtasks: []}
                 ]
             },
             {
                 phase: "Phase 2: e-conomic Configuration",
                 tasks: [
-                    {name: "2.1 Dimension Setup", status: "not-started", responsible: "Scaleup Finance", description: "Create dimensions in e-conomic"},
-                    {name: "2.2 Chart of Accounts Adaptation", status: "not-started", responsible: "Scaleup Finance", description: "Update chart of accounts"},
-                    {name: "2.3 Report Configuration", status: "not-started", responsible: "Scaleup Finance", description: "Customize standard reports"},
-                    {name: "2.4 User Permissions", status: "not-started", responsible: "Client", description: "Setup user access rights"}
+                    {name: "2.1 Dimension Setup", status: "not-started", responsible: "Scaleup Finance", description: "Create dimensions", subtasks: []},
+                    {name: "2.2 Chart of Accounts", status: "not-started", responsible: "Scaleup Finance", description: "Update accounts", subtasks: []},
+                    {name: "2.3 Report Configuration", status: "not-started", responsible: "Scaleup Finance", description: "Customize reports", subtasks: []},
+                    {name: "2.4 User Permissions", status: "not-started", responsible: "Client", description: "Setup access", subtasks: []}
                 ]
             },
             {
-                phase: "Phase 3: Corpay Integration",
+                phase: "Phase 3: Integrations",
                 tasks: [
-                    {name: "3.1 Corpay Setup", status: "not-started", responsible: "Client", description: "Configure dimensions in Corpay"},
-                    {name: "3.2 e-conomic Mapping", status: "not-started", responsible: "Scaleup Finance", description: "System mapping between platforms"},
-                    {name: "3.3 Data Import Testing", status: "not-started", responsible: "Scaleup Finance", description: "Test data transfer processes"},
-                    {name: "3.4 Automation Rules", status: "not-started", responsible: "Scaleup Finance", description: "Setup automatic posting rules"}
+                    {name: "3.1 Corpay Setup", status: "not-started", responsible: "Client", description: "Configure Corpay", subtasks: []},
+                    {name: "3.2 Pleo Setup", status: "not-started", responsible: "Client", description: "Configure Pleo", subtasks: []},
+                    {name: "3.3 Integration Testing", status: "not-started", responsible: "Scaleup Finance", description: "Test integrations", subtasks: []},
+                    {name: "3.4 Data Validation", status: "not-started", responsible: "Scaleup Finance", description: "Verify data flow", subtasks: []}
                 ]
             },
             {
-                phase: "Phase 4: Pleo Integration",
+                phase: "Phase 4: Go-Live",
                 tasks: [
-                    {name: "4.1 Pleo Setup", status: "not-started", responsible: "Client", description: "Configure dimensions in Pleo"},
-                    {name: "4.2 Employee Training", status: "not-started", responsible: "Client", description: "Train employees on dimension usage"},
-                    {name: "4.3 Approval Workflows", status: "not-started", responsible: "Client", description: "Setup approval processes"},
-                    {name: "4.4 Integration Testing", status: "not-started", responsible: "Scaleup Finance", description: "Test Pleo to e-conomic integration"}
-                ]
-            },
-            {
-                phase: "Phase 5: Testing & Validation",
-                tasks: [
-                    {name: "5.1 System Testing", status: "not-started", responsible: "Scaleup Finance", description: "Functional testing of all systems"},
-                    {name: "5.2 User Acceptance Testing", status: "not-started", responsible: "Client", description: "Testing with end users"},
-                    {name: "5.3 Report Validation", status: "not-started", responsible: "Scaleup Finance", description: "Verify report accuracy"},
-                    {name: "5.4 Performance Testing", status: "not-started", responsible: "Scaleup Finance", description: "Test system performance"}
-                ]
-            },
-            {
-                phase: "Phase 6: Go-Live & Support",
-                tasks: [
-                    {name: "6.1 Production Implementation", status: "not-started", responsible: "Scaleup Finance", description: "Deploy to production environment"},
-                    {name: "6.2 User Training", status: "not-started", responsible: "Scaleup Finance", description: "Train all users"},
-                    {name: "6.3 Documentation", status: "not-started", responsible: "Scaleup Finance", description: "Create user manuals"},
-                    {name: "6.4 Post-Implementation Support", status: "not-started", responsible: "Scaleup Finance", description: "Ongoing support first month"}
+                    {name: "4.1 User Training", status: "not-started", responsible: "Scaleup Finance", description: "Train users", subtasks: []},
+                    {name: "4.2 Documentation", status: "not-started", responsible: "Scaleup Finance", description: "Create manuals", subtasks: []},
+                    {name: "4.3 Production Deploy", status: "not-started", responsible: "Scaleup Finance", description: "Go live", subtasks: []},
+                    {name: "4.4 Support", status: "not-started", responsible: "Scaleup Finance", description: "Post go-live support", subtasks: []}
                 ]
             }
         ];
-        
-        // Initialize Supabase
-        try {
-            if (supabaseUrl !== 'https://YOUR-PROJECT-ID.supabase.co') {
-                supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
-                console.log('✅ Supabase connected successfully!');
-                checkAuth();
-            } else {
-                console.error('❌ Opdater Supabase credentials først!');
-                alert('VIGTIGT: Du skal indsætte dine Supabase credentials i koden!\n\n1. Log ind på app.supabase.com\n2. Vælg dit projekt\n3. Gå til Settings > API\n4. Kopier Project URL og anon key\n5. Indsæt dem i HTML koden');
-            }
-        } catch (error) {
-            console.error('Supabase initialization error:', error);
-        }
-        
-        // Authentication Functions
-        async function checkAuth() {
-            if (!supabaseClient) return;
-            
-            const { data: { user } } = await supabaseClient.auth.getUser();
-            
-            if (user) {
-                currentUser = user;
-                showDashboard();
-            } else {
-                showLoginScreen();
-            }
-        }
-        
-        function showLoginScreen() {
-            document.getElementById('login-screen').style.display = 'flex';
-            document.getElementById('main-dashboard').style.display = 'none';
-        }
-        
-        function showDashboard() {
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('main-dashboard').style.display = 'block';
-            if (currentUser) {
-                document.getElementById('current-user-email').textContent = currentUser.email;
-            }
-            loadUserProjects();
-            initializeAdminPanel();
-        }
-        
-        function showLogin() {
-            document.getElementById('login-form').style.display = 'block';
-            document.getElementById('signup-form').style.display = 'none';
-            clearMessages();
-        }
-        
-        function showSignup() {
-            document.getElementById('login-form').style.display = 'none';
-            document.getElementById('signup-form').style.display = 'block';
-            clearMessages();
-        }
-        
-        function showError(message) {
-            const errorDiv = document.getElementById('error-message');
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-            setTimeout(() => errorDiv.style.display = 'none', 5000);
-        }
-        
-        function showSuccess(message) {
-            const successDiv = document.getElementById('success-message');
-            successDiv.textContent = message;
-            successDiv.style.display = 'block';
-            setTimeout(() => successDiv.style.display = 'none', 5000);
-        }
-        
-        function clearMessages() {
-            document.getElementById('error-message').style.display = 'none';
-            document.getElementById('success-message').style.display = 'none';
-        }
-        
-        async function handleLogin() {
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            
-            if (!email || !password) {
-                showError('Udfyld venligst alle felter');
-                return;
-            }
-            
-            const { data, error } = await supabaseClient.auth.signInWithPassword({
-                email: email,
-                password: password
-            });
-            
-            if (error) {
-                showError('Login fejlede: ' + error.message);
-            } else {
-                currentUser = data.user;
-                showDashboard();
-            }
-        }
-        
-        async function handleSignup() {
-            const email = document.getElementById('signup-email').value;
-            const password = document.getElementById('signup-password').value;
-            const companyName = document.getElementById('company-name').value;
-            
-            if (!email || !password || !companyName) {
-                showError('Udfyld venligst alle felter');
-                return;
-            }
-            
-            if (password.length < 6) {
-                showError('Password skal være mindst 6 tegn');
-                return;
-            }
-            
-            const { data, error } = await supabaseClient.auth.signUp({
-                email: email,
-                password: password,
-                options: {
-                    data: {
-                        company_name: companyName
-                    }
-                }
-            });
-            
-            if (error) {
-                showError('Oprettelse fejlede: ' + error.message);
-            } else {
-                showSuccess('Konto oprettet! Check din email for bekræftelse.');
-                setTimeout(() => showLogin(), 3000);
-            }
-        }
-        
-        async function handleLogout() {
-            const { error } = await supabaseClient.auth.signOut();
-            if (!error) {
-                currentUser = null;
-                showLoginScreen();
-            }
-        }
-        
-        // Project Management Functions
-        async function loadUserProjects() {
-            if (!supabaseClient || !currentUser) return;
-            
-            try {
-                const { data: projects, error } = await supabaseClient
-                    .from('projects')
-                    .select('project_id, client_data, shared_with')
-                    .or(`user_id.eq.${currentUser.id},shared_with.cs.{${currentUser.email}}`);
 
-                if (error) throw error;
-
-                const select = document.getElementById('project-select');
-                if (select) {
-                    select.innerHTML = '<option value="">Vælg eller opret et projekt...</option>';
+        // Logo Upload Handler
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Update preview
+                    document.getElementById('preview-image').src = e.target.result;
+                    document.getElementById('logo-preview').style.display = 'block';
                     
-                    if (projects && projects.length > 0) {
-                        projects.forEach(project => {
-                            const option = document.createElement('option');
-                            option.value = project.project_id;
-                            const clientName = project.client_data?.name || 'Unavngivet projekt';
-                            const isShared = project.shared_with?.includes(currentUser.email);
-                            option.textContent = clientName + (isShared ? ' (Delt med dig)' : '');
-                            select.appendChild(option);
-                        });
-                    }
-                }
-            } catch (error) {
-                console.error('Error loading projects:', error);
-            }
-        }
-        
-        async function createNewProject() {
-            if (!currentUser) {
-                alert('Du skal være logget ind for at oprette projekter');
-                return;
-            }
-            
-            const projectName = prompt('Indtast kundens firmanavn:');
-            if (!projectName) return;
-            
-            const projectId = generateProjectId(projectName);
-            currentProjectId = projectId;
-            
-            const newProject = {
-                project_id: projectId,
-                user_id: currentUser.id,
-                client_data: {
-                    name: projectName,
-                    scaleupPM: '',
-                    clientPM: '',
-                    notes: ''
-                },
-                team_members: [],
-                tasks: masterTemplate,
-                shared_with: [],
-                created_at: new Date().toISOString(),
-                last_updated: new Date().toISOString()
-            };
-            
-            if (supabaseClient) {
-                try {
-                    const { error } = await supabaseClient
-                        .from('projects')
-                        .insert([newProject]);
+                    // Update header logo
+                    const headerLogo = document.getElementById('header-logo');
+                    headerLogo.src = e.target.result;
+                    headerLogo.style.display = 'block';
+                    document.getElementById('logo-fallback').style.display = 'none';
                     
-                    if (error) throw error;
-                    
-                    await loadUserProjects();
-                    document.getElementById('project-select').value = projectId;
-                    loadProject(projectId);
-                } catch (error) {
-                    console.error('Error creating project:', error);
-                    alert('Fejl ved oprettelse af projekt: ' + error.message);
-                }
+                    // Store in clientData
+                    clientData.logo = e.target.result;
+                };
+                reader.readAsDataURL(file);
             }
         }
-        
-        async function loadProject(projectId) {
-            if (!projectId) {
-                currentProjectId = null;
-                resetUI();
-                return;
-            }
-            
-            currentProjectId = projectId;
-            
-            if (!supabaseClient) return;
-            
-            try {
-                const { data: project, error } = await supabaseClient
-                    .from('projects')
-                    .select('*')
-                    .eq('project_id', projectId)
-                    .single();
 
-                if (error) throw error;
-
-                if (project) {
-                    currentProjectData = project;
-                    populateUIFromProject(project);
-                }
-            } catch (error) {
-                console.error('Error loading project:', error);
-            }
-        }
-        
-        function populateUIFromProject(projectData) {
-            const clientData = projectData.client_data || {};
-            document.getElementById('client-name').value = clientData.name || '';
-            document.getElementById('scaleup-pm').value = clientData.scaleupPM || '';
-            document.getElementById('client-pm').value = clientData.clientPM || '';
-            document.getElementById('project-notes').value = clientData.notes || '';
-            
-            teamMembers = projectData.team_members || [];
-            updateTeamMembersList();
-            
-            checkSetup();
-            populateTable();
-            updateDashboard();
-        }
-        
-        async function saveToSupabase() {
-            if (!currentProjectId || !supabaseClient || !currentUser) return;
-            
-            const currentData = {
-                client_data: {
-                    name: document.getElementById('client-name').value.trim(),
-                    scaleupPM: document.getElementById('scaleup-pm').value.trim(),
-                    clientPM: document.getElementById('client-pm').value.trim(),
-                    notes: document.getElementById('project-notes').value.trim()
-                },
-                tasks: currentProjectData?.tasks || masterTemplate,
-                team_members: teamMembers,
-                last_updated: new Date().toISOString()
-            };
-            
-            try {
-                const { error } = await supabaseClient
-                    .from('projects')
-                    .update(currentData)
-                    .eq('project_id', currentProjectId);
-                
-                if (error) throw error;
-                
-                currentProjectData = { ...currentProjectData, ...currentData };
-            } catch (error) {
-                console.error('Failed to save to Supabase:', error);
-            }
-        }
-        
-        // Team Members Functions
+        // Team member functions
         function addTeamMember() {
-            const nameInput = document.getElementById('new-member-name');
-            const companySelect = document.getElementById('new-member-company');
-            
-            if (!nameInput || !companySelect) return;
-            
-            const name = nameInput.value.trim();
-            const company = companySelect.value;
+            const name = document.getElementById('new-member-name').value.trim();
+            const company = document.getElementById('new-member-company').value;
             
             if (!name) {
-                alert('Please enter a team member name');
+                alert('Please enter team member name');
                 return;
             }
             
-            if (teamMembers.find(member => member.name === name)) {
-                alert('Team member already exists');
-                return;
-            }
-            
-            teamMembers.push({ name: name, company: company });
-            nameInput.value = '';
+            teamMembers.push({ name, company });
+            document.getElementById('new-member-name').value = '';
             updateTeamMembersList();
-            saveToSupabase();
         }
-        
-        function removeTeamMember(name) {
-            if (confirm('Remove this team member?')) {
-                teamMembers = teamMembers.filter(member => member.name !== name);
-                updateTeamMembersList();
-                saveToSupabase();
-            }
-        }
-        
+
         function updateTeamMembersList() {
             const listDiv = document.getElementById('team-members-list');
-            if (!listDiv) return;
             
             if (teamMembers.length === 0) {
-                listDiv.innerHTML = '<p style="color: #6c757d; font-style: italic; text-align: center; padding: 20px;">No team members added yet. Add some above to get started!</p>';
+                listDiv.innerHTML = '<p style="color: #666; font-style: italic; text-align: center; padding: 20px;">No team members added yet</p>';
                 return;
             }
             
-            listDiv.innerHTML = teamMembers.map(member => `
+            listDiv.innerHTML = teamMembers.map((member, index) => `
                 <div class="team-member-item">
                     <div>
-                        <strong>${member.name}</strong>
-                        <span style="color: #6c757d; margin-left: 12px;">${member.company}</span>
+                        <strong>${member.name}</strong> - ${member.company}
                     </div>
-                    <button class="btn btn-danger" onclick="removeTeamMember('${member.name}')" style="padding: 6px 12px; font-size: 0.85em;">Remove</button>
+                    <button class="btn btn-danger" onclick="removeTeamMember(${index})">Remove</button>
                 </div>
             `).join('');
         }
-        
-        // UI Functions
+
+        function removeTeamMember(index) {
+            teamMembers.splice(index, 1);
+            updateTeamMembersList();
+        }
+
+        // Tab switching
         function switchTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
@@ -1300,28 +930,51 @@
             event.target.classList.add('active');
             checkSetup();
         }
-        
+
+        // Fill test data
+        function fillTestData() {
+            document.getElementById('client-name').value = 'ABC Corporation';
+            document.getElementById('scaleup-pm').value = 'Lars Jensen';
+            document.getElementById('client-pm').value = 'John Smith (CFO)';
+            document.getElementById('project-notes').value = 'Standard e-conomic implementation with Corpay and Pleo.';
+            
+            teamMembers = [
+                { name: 'Lars Jensen', company: 'Scaleup Finance' },
+                { name: 'Maria Petersen', company: 'Scaleup Finance' },
+                { name: 'John Smith', company: 'Client' },
+                { name: 'Sarah Johnson', company: 'Client' }
+            ];
+            updateTeamMembersList();
+        }
+
+        // Save setup
         function saveSetup() {
-            const clientData = {
-                name: document.getElementById('client-name').value.trim(),
-                scaleupPM: document.getElementById('scaleup-pm').value.trim()
-            };
+            clientData.name = document.getElementById('client-name').value.trim();
+            clientData.scaleupPM = document.getElementById('scaleup-pm').value.trim();
+            clientData.clientPM = document.getElementById('client-pm').value.trim();
+            clientData.notes = document.getElementById('project-notes').value.trim();
             
             if (!clientData.name || !clientData.scaleupPM) {
-                alert('Please fill in client name and Scaleup Finance PM');
+                alert('Please fill in required fields');
                 return;
             }
             
-            saveToSupabase();
+            // Update task responsibilities with client name
+            projectData.forEach(phase => {
+                phase.tasks.forEach(task => {
+                    if (task.responsible === 'Client') {
+                        task.responsible = clientData.name;
+                    }
+                });
+            });
+            
             switchTab('dashboard');
             document.querySelectorAll('.nav-tab')[1].click();
         }
-        
+
+        // Check setup
         function checkSetup() {
-            const hasProject = currentProjectId !== null;
-            const clientName = document.getElementById('client-name').value.trim();
-            const scaleupPM = document.getElementById('scaleup-pm').value.trim();
-            const hasSetup = hasProject && clientName && scaleupPM;
+            const hasSetup = clientData.name && clientData.scaleupPM;
             
             const dashboardWarning = document.getElementById('dashboard-warning');
             const dashboardContent = document.getElementById('dashboard-content');
@@ -1334,13 +987,11 @@
                 if (projectWarning) projectWarning.style.display = 'none';
                 if (projectContent) projectContent.style.display = 'block';
                 
-                const clientDisplay = document.getElementById('client-display');
-                if (clientDisplay) {
-                    clientDisplay.textContent = `${clientName} | PM: ${scaleupPM}`;
-                }
+                document.getElementById('client-display').textContent = `${clientData.name} | PM: ${clientData.scaleupPM}`;
                 
                 populateTable();
                 updateDashboard();
+                updateTeamTaskDistribution();
             } else {
                 if (dashboardWarning) dashboardWarning.style.display = 'block';
                 if (dashboardContent) dashboardContent.style.display = 'none';
@@ -1348,56 +999,230 @@
                 if (projectContent) projectContent.style.display = 'none';
             }
         }
-        
+
+        // Populate table
         function populateTable() {
             const tbody = document.getElementById('project-body');
-            if (!tbody || !currentProjectData?.tasks) return;
-            
             tbody.innerHTML = '';
             
-            currentProjectData.tasks.forEach((phase, phaseIndex) => {
+            const responsibleOptions = ['Scaleup Finance', clientData.name || 'Client'];
+            teamMembers.forEach(m => responsibleOptions.push(m.name));
+            
+            projectData.forEach(phase => {
+                // Phase header
                 const phaseRow = document.createElement('tr');
-                phaseRow.className = 'phase-header';
-                phaseRow.innerHTML = `<td colspan="4">${phase.phase}</td>`;
+                phaseRow.innerHTML = `<td colspan="4" style="background: #3a4a47; color: white; font-weight: bold; padding: 15px;">${phase.phase}</td>`;
                 tbody.appendChild(phaseRow);
                 
-                phase.tasks.forEach((task, taskIndex) => {
+                // Tasks
+                phase.tasks.forEach(task => {
                     const taskRow = document.createElement('tr');
+                    
+                    const responsibleDropdown = responsibleOptions.map(option => 
+                        `<option value="${option}" ${task.responsible === option ? 'selected' : ''}>${option}</option>`
+                    ).join('');
+                    
                     taskRow.innerHTML = `
-                        <td>${task.name}</td>
                         <td>
-                            <select class="status-select status-${task.status}" onchange="updateTaskStatus(${phaseIndex}, ${taskIndex}, this.value)">
+                            <div class="task-cell">
+                                <span class="task-name">${task.name}</span>
+                                <button class="add-subtask-btn" onclick="showSubtaskInput('${task.name}')">
+                                    ➕ Add Subtask
+                                </button>
+                            </div>
+                        </td>
+                        <td>
+                            <select class="status-select status-${task.status}" onchange="updateTaskStatus('${task.name}', this.value)">
                                 <option value="not-started" ${task.status === 'not-started' ? 'selected' : ''}>⏳ Not Started</option>
                                 <option value="in-progress" ${task.status === 'in-progress' ? 'selected' : ''}>🔄 In Progress</option>
                                 <option value="completed" ${task.status === 'completed' ? 'selected' : ''}>✅ Completed</option>
                             </select>
                         </td>
                         <td>
-                            <select style="width: 100%; padding: 6px; border: 2px solid #e9ecef; border-radius: 8px;" onchange="updateTaskResponsible(${phaseIndex}, ${taskIndex}, this.value)">
-                                <option value="Scaleup Finance" ${task.responsible === 'Scaleup Finance' ? 'selected' : ''}>Scaleup Finance</option>
-                                <option value="Client" ${task.responsible === 'Client' ? 'selected' : ''}>Client</option>
-                                ${teamMembers.map(member => `<option value="${member.name}" ${task.responsible === member.name ? 'selected' : ''}>${member.name}</option>`).join('')}
+                            <select style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px;" onchange="updateTaskResponsible('${task.name}', this.value)">
+                                ${responsibleDropdown}
                             </select>
                         </td>
                         <td>${task.description}</td>
                     `;
                     tbody.appendChild(taskRow);
+                    
+                    // Subtasks
+                    if (task.subtasks && task.subtasks.length > 0) {
+                        task.subtasks.forEach((subtask, index) => {
+                            const subtaskRow = document.createElement('tr');
+                            subtaskRow.className = 'subtask-row';
+                            
+                            const subtaskResponsibleDropdown = responsibleOptions.map(option => 
+                                `<option value="${option}" ${subtask.responsible === option ? 'selected' : ''}>${option}</option>`
+                            ).join('');
+                            
+                            subtaskRow.innerHTML = `
+                                <td>
+                                    <span style="color: #666;">└─</span> ${subtask.name}
+                                    <button onclick="removeSubtask('${task.name}', ${index})" style="background: #dc3545; color: white; border: none; padding: 2px 6px; border-radius: 3px; font-size: 0.7em; margin-left: 10px;">🗑️</button>
+                                </td>
+                                <td>
+                                    <select class="status-select status-${subtask.status}" onchange="updateSubtaskStatus('${task.name}', ${index}, this.value)">
+                                        <option value="not-started" ${subtask.status === 'not-started' ? 'selected' : ''}>⏳ Not Started</option>
+                                        <option value="in-progress" ${subtask.status === 'in-progress' ? 'selected' : ''}>🔄 In Progress</option>
+                                        <option value="completed" ${subtask.status === 'completed' ? 'selected' : ''}>✅ Completed</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select onchange="updateSubtaskResponsible('${task.name}', ${index}, this.value)">
+                                        ${subtaskResponsibleDropdown}
+                                    </select>
+                                </td>
+                                <td>${subtask.description}</td>
+                            `;
+                            tbody.appendChild(subtaskRow);
+                        });
+                    }
                 });
             });
         }
-        
-        function updateDashboard() {
-            if (!currentProjectData?.tasks) return;
+
+        // Subtask functions
+        function showSubtaskInput(taskName) {
+            currentTaskForSubtask = taskName;
+            document.getElementById('target-task').textContent = taskName;
+            document.getElementById('subtask-name').value = '';
+            document.getElementById('subtask-desc').value = '';
+            document.getElementById('subtask-input-area').style.display = 'block';
+            document.getElementById('subtask-name').focus();
+        }
+
+        function cancelSubtask() {
+            document.getElementById('subtask-input-area').style.display = 'none';
+            currentTaskForSubtask = '';
+        }
+
+        function createSubtask() {
+            const name = document.getElementById('subtask-name').value.trim();
+            const desc = document.getElementById('subtask-desc').value.trim();
             
+            if (!name) {
+                alert('Please enter subtask name');
+                return;
+            }
+            
+            for (let phase of projectData) {
+                for (let task of phase.tasks) {
+                    if (task.name === currentTaskForSubtask) {
+                        if (!task.subtasks) task.subtasks = [];
+                        
+                        const taskNumber = task.name.split(' ')[0];
+                        const subtaskNumber = task.subtasks.length + 1;
+                        const fullSubtaskNumber = `${taskNumber}.${subtaskNumber}`;
+                        
+                        task.subtasks.push({
+                            name: `${fullSubtaskNumber} ${name}`,
+                            status: 'not-started',
+                            responsible: task.responsible,
+                            description: desc || 'Subtask'
+                        });
+                        break;
+                    }
+                }
+            }
+            
+            cancelSubtask();
+            populateTable();
+            updateDashboard();
+            updateTeamTaskDistribution();
+        }
+
+        function removeSubtask(taskName, index) {
+            if (confirm('Remove this subtask?')) {
+                for (let phase of projectData) {
+                    for (let task of phase.tasks) {
+                        if (task.name === taskName && task.subtasks) {
+                            task.subtasks.splice(index, 1);
+                            break;
+                        }
+                    }
+                }
+                populateTable();
+                updateDashboard();
+                updateTeamTaskDistribution();
+            }
+        }
+
+        // Update functions
+        function updateTaskStatus(taskName, status) {
+            for (let phase of projectData) {
+                for (let task of phase.tasks) {
+                    if (task.name === taskName) {
+                        task.status = status;
+                        event.target.className = `status-select status-${status}`;
+                        updateDashboard();
+                        updateTeamTaskDistribution();
+                        break;
+                    }
+                }
+            }
+        }
+
+        function updateSubtaskStatus(taskName, subtaskIndex, status) {
+            for (let phase of projectData) {
+                for (let task of phase.tasks) {
+                    if (task.name === taskName && task.subtasks && task.subtasks[subtaskIndex]) {
+                        task.subtasks[subtaskIndex].status = status;
+                        event.target.className = `status-select status-${status}`;
+                        updateDashboard();
+                        updateTeamTaskDistribution();
+                        break;
+                    }
+                }
+            }
+        }
+
+        function updateTaskResponsible(taskName, newResponsible) {
+            for (let phase of projectData) {
+                for (let task of phase.tasks) {
+                    if (task.name === taskName) {
+                        task.responsible = newResponsible;
+                        updateDashboard();
+                        updateTeamTaskDistribution();
+                        break;
+                    }
+                }
+            }
+        }
+
+        function updateSubtaskResponsible(taskName, subtaskIndex, newResponsible) {
+            for (let phase of projectData) {
+                for (let task of phase.tasks) {
+                    if (task.name === taskName && task.subtasks && task.subtasks[subtaskIndex]) {
+                        task.subtasks[subtaskIndex].responsible = newResponsible;
+                        updateDashboard();
+                        updateTeamTaskDistribution();
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Update dashboard
+        function updateDashboard() {
             let totalTasks = 0;
             let completedTasks = 0;
             let ongoingTasks = 0;
             
-            currentProjectData.tasks.forEach(phase => {
+            projectData.forEach(phase => {
                 phase.tasks.forEach(task => {
                     totalTasks++;
                     if (task.status === 'completed') completedTasks++;
                     if (task.status === 'in-progress') ongoingTasks++;
+                    
+                    if (task.subtasks) {
+                        task.subtasks.forEach(subtask => {
+                            totalTasks++;
+                            if (subtask.status === 'completed') completedTasks++;
+                            if (subtask.status === 'in-progress') ongoingTasks++;
+                        });
+                    }
                 });
             });
             
@@ -1410,198 +1235,117 @@
             document.getElementById('ongoing-tasks').textContent = ongoingTasks;
             
             // Find next milestone
-            let nextMilestone = 'All tasks completed';
-            for (const phase of currentProjectData.tasks) {
+            let nextMilestone = 'All completed';
+            for (const phase of projectData) {
                 for (const task of phase.tasks) {
                     if (task.status !== 'completed') {
                         nextMilestone = task.name.split(' ').slice(1).join(' ');
                         break;
                     }
                 }
-                if (nextMilestone !== 'All tasks completed') break;
+                if (nextMilestone !== 'All completed') break;
             }
             document.getElementById('next-milestone').textContent = nextMilestone;
         }
-        
-        async function updateTaskStatus(phaseIndex, taskIndex, status) {
-            if (!currentProjectData?.tasks) return;
+
+        // Update team task distribution
+        function updateTeamTaskDistribution() {
+            const tasksByResponsible = {};
             
-            currentProjectData.tasks[phaseIndex].tasks[taskIndex].status = status;
-            if (event && event.target) {
-                event.target.className = `status-select status-${status}`;
-            }
-            updateDashboard();
-            await saveToSupabase();
-        }
-        
-        async function updateTaskResponsible(phaseIndex, taskIndex, responsible) {
-            if (!currentProjectData?.tasks) return;
-            
-            currentProjectData.tasks[phaseIndex].tasks[taskIndex].responsible = responsible;
-            updateDashboard();
-            await saveToSupabase();
-        }
-        
-        function resetUI() {
-            document.getElementById('client-name').value = '';
-            document.getElementById('scaleup-pm').value = '';
-            document.getElementById('client-pm').value = '';
-            document.getElementById('project-notes').value = '';
-            teamMembers = [];
-            updateTeamMembersList();
-            checkSetup();
-        }
-        
-        function generateProjectId(projectName) {
-            const cleanName = projectName.toLowerCase().replace(/[^a-z0-9]/g, '-');
-            const timestamp = Date.now().toString().slice(-6);
-            return `${cleanName}-${timestamp}`;
-        }
-        
-        function fillTestData() {
-            document.getElementById('client-name').value = 'FLEXeCHARGE';
-            document.getElementById('scaleup-pm').value = 'Michael Malec';
-            document.getElementById('client-pm').value = 'Jimmi Bonde (CFO)';
-            document.getElementById('project-notes').value = 'e-conomic dimensions implementation med Corpay og Pleo integration.';
-            
-            teamMembers = [
-                { name: 'Jimmi Bonde', company: 'Client' },
-                { name: 'Benedek', company: 'Client' },
-                { name: 'Michael Malec', company: 'Scaleup Finance' }
-            ];
-            updateTeamMembersList();
-        }
-        
-        async function shareProject() {
-            if (!currentProjectId) {
-                alert('Select a project first');
-                return;
-            }
-            
-            const email = prompt('Enter email address to share with:');
-            if (!email) return;
-            
-            try {
-                const { data: project } = await supabaseClient
-                    .from('projects')
-                    .select('shared_with')
-                    .eq('project_id', currentProjectId)
-                    .single();
-                
-                const sharedWith = project.shared_with || [];
-                if (!sharedWith.includes(email)) {
-                    sharedWith.push(email);
+            projectData.forEach(phase => {
+                phase.tasks.forEach(task => {
+                    if (!tasksByResponsible[task.responsible]) {
+                        tasksByResponsible[task.responsible] = {
+                            total: 0,
+                            completed: 0,
+                            'in-progress': 0,
+                            'not-started': 0
+                        };
+                    }
+                    tasksByResponsible[task.responsible].total++;
+                    tasksByResponsible[task.responsible][task.status]++;
                     
-                    await supabaseClient
-                        .from('projects')
-                        .update({ shared_with: sharedWith })
-                        .eq('project_id', currentProjectId);
-                    
-                    alert(`Project shared with ${email}`);
-                } else {
-                    alert('Project already shared with this user');
-                }
-            } catch (error) {
-                console.error('Error sharing project:', error);
-            }
+                    if (task.subtasks) {
+                        task.subtasks.forEach(subtask => {
+                            if (!tasksByResponsible[subtask.responsible]) {
+                                tasksByResponsible[subtask.responsible] = {
+                                    total: 0,
+                                    completed: 0,
+                                    'in-progress': 0,
+                                    'not-started': 0
+                                };
+                            }
+                            tasksByResponsible[subtask.responsible].total++;
+                            tasksByResponsible[subtask.responsible][subtask.status]++;
+                        });
+                    }
+                });
+            });
+            
+            const container = document.getElementById('team-task-distribution');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            Object.keys(tasksByResponsible).forEach(responsible => {
+                const data = tasksByResponsible[responsible];
+                const row = document.createElement('div');
+                row.className = 'person-task-row';
+                row.innerHTML = `
+                    <div class="person-name">👤 ${responsible}</div>
+                    <div class="task-counts">
+                        <span class="task-count count-completed">✅ ${data.completed} done</span>
+                        <span class="task-count count-progress">🔄 ${data['in-progress']} active</span>
+                        <span class="task-count count-total">📋 ${data.total} total</span>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
         }
-        
-        function exportProject() {
-            if (!currentProjectData) return;
+
+        // Export to CSV
+        function exportToCSV() {
+            let csv = 'Phase,Task,Subtask,Status,Responsible,Description\n';
             
-            const exportData = {
-                ...currentProjectData,
-                exportedAt: new Date().toISOString()
-            };
+            projectData.forEach(phase => {
+                phase.tasks.forEach(task => {
+                    const status = task.status.replace('-', ' ');
+                    csv += `"${phase.phase}","${task.name}","","${status}","${task.responsible}","${task.description}"\n`;
+                    
+                    if (task.subtasks) {
+                        task.subtasks.forEach(subtask => {
+                            const subStatus = subtask.status.replace('-', ' ');
+                            csv += `"${phase.phase}","${task.name}","${subtask.name}","${subStatus}","${subtask.responsible}","${subtask.description}"\n`;
+                        });
+                    }
+                });
+            });
             
-            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const blob = new Blob([csv], { type: 'text/csv' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `scaleup-project-${currentProjectId}.json`;
+            a.download = `scaleup_project_${clientData.name || 'export'}_${new Date().toISOString().slice(0,10)}.csv`;
             a.click();
         }
-        
-        // Admin Panel Functions
-        async function initializeAdminPanel() {
-            if (!currentUser) return;
-            
-            const ADMIN_EMAILS = ['mma@scaleup.finance', 'admin@scaleup.finance'];
-            const isAdmin = ADMIN_EMAILS.includes(currentUser.email);
-            
-            const adminStats = document.getElementById('admin-project-stats');
-            const adminUsers = document.getElementById('admin-users-list');
-            
-            if (isAdmin) {
-                // Load all projects for admin
-                try {
-                    const { data: allProjects } = await supabaseClient
-                        .from('projects')
-                        .select('*');
-                    
-                    if (adminStats) {
-                        adminStats.innerHTML = `
-                            <div style="display: flex; flex-direction: column; gap: 12px;">
-                                <div style="display: flex; justify-content: space-between;">
-                                    <span>Total Projects:</span>
-                                    <strong>${allProjects?.length || 0}</strong>
-                                </div>
-                                <div style="display: flex; justify-content: space-between;">
-                                    <span>Active Users:</span>
-                                    <strong>${new Set(allProjects?.map(p => p.user_id)).size || 0}</strong>
-                                </div>
-                            </div>
-                        `;
-                    }
-                    
-                    if (adminUsers) {
-                        const users = new Set(allProjects?.map(p => p.user_id));
-                        adminUsers.innerHTML = `
-                            <div style="max-height: 200px; overflow-y: auto;">
-                                ${Array.from(users).map(userId => `
-                                    <div style="padding: 8px; border-bottom: 1px solid #e9ecef;">
-                                        <small>${userId}</small>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        `;
-                    }
-                } catch (error) {
-                    console.error('Error loading admin data:', error);
-                }
-            } else {
-                if (adminStats) {
-                    adminStats.innerHTML = '<p style="color: #dc3545;">You need admin privileges</p>';
-                }
-                if (adminUsers) {
-                    adminUsers.innerHTML = '<p style="color: #dc3545;">Access denied</p>';
-                }
-            }
+
+        // Auth functions (demo mode)
+        function handleLogin() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-dashboard').style.display = 'block';
         }
-        
-        function managePermissions() {
-            alert('Permission management coming soon!');
+
+        function handleLogout() {
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('main-dashboard').style.display = 'none';
         }
-        
-        function addAdminUser() {
-            const email = prompt('Enter email for new admin:');
-            if (email) {
-                alert(`Admin invitation sent to ${email} (feature coming soon)`);
-            }
-        }
-        
-        // Add auth state listener
-        if (supabaseClient) {
-            supabaseClient.auth.onAuthStateChange((event, session) => {
-                if (event === 'SIGNED_IN') {
-                    currentUser = session.user;
-                    showDashboard();
-                } else if (event === 'SIGNED_OUT') {
-                    currentUser = null;
-                    showLoginScreen();
-                }
-            });
-        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Start with main dashboard visible (demo mode)
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-dashboard').style.display = 'block';
+        });
     </script>
 </body>
 </html>
