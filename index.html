@@ -249,6 +249,7 @@
         .btn-danger { background: #dc3545; color: white; }
         .btn-info { background: #17a2b8; color: white; }
         .btn-warning { background: #ffc107; color: #333; }
+        .btn-small { padding: 6px 12px !important; font-size: 0.85em !important; }
         
         /* Team Members Styles */
         .team-section {
@@ -701,6 +702,17 @@
                     <input type="text" id="client-pm" placeholder="e.g., John Smith (CFO)" onchange="saveToSupabase()">
                 </div>
                 
+                <div class="form-group">
+                    <label>Upload Company Logo</label>
+                    <div style="border: 2px dashed #dee2e6; border-radius: 8px; padding: 20px; text-align: center; background: #f8f9fa;">
+                        <input type="file" id="logo-upload" accept="image/*" style="margin-bottom: 10px;" onchange="handleLogoUpload(event)">
+                        <p style="color: #666; font-size: 0.9em; margin: 0;">Vælg en logofil (PNG, JPG, GIF)</p>
+                        <div id="upload-preview" style="margin-top: 15px; display: none;">
+                            <img id="preview-image" style="max-width: 100px; max-height: 100px; border-radius: 8px;">
+                        </div>
+                    </div>
+                </div>
+                
                 <!-- Team Members Section FIXED -->
                 <div class="team-section">
                     <h3>👥 Team Members</h3>
@@ -710,7 +722,7 @@
                         <input type="text" id="new-member-name" class="team-input" placeholder="Indtast team medlems navn..." maxlength="50">
                         <select id="new-member-company" class="team-select">
                             <option value="Scaleup Finance">Scaleup Finance</option>
-                            <option value="Client">Client</option>
+                            <option value="Client" id="client-company-option">Client</option>
                         </select>
                         <button type="button" class="btn btn-success btn-small" onclick="addTeamMember()">➕ Tilføj</button>
                     </div>
@@ -852,8 +864,8 @@
         
         // ADMIN EMAILS - TILFØJ DINE ADMIN EMAILS HER
         const ADMIN_EMAILS = [
-            'din-email@firma.dk',
-            'kollega@firma.dk'
+            'mma@scaleup.finance',
+            'jbo@scaleup.finance'
         ];
         
         // ROLLER DEFINITIONER
@@ -987,6 +999,59 @@
             console.error('Supabase initialization error:', error);
         }
         
+        // Logo upload handler
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Validate file type
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+            if (!validTypes.includes(file.type)) {
+                alert('Vælg venligst en gyldig billedfil (JPG, PNG, eller GIF)');
+                return;
+            }
+            
+            // Validate file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Billedet er for stort. Maksimal størrelse er 5MB.');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                // Update main header logo
+                const headerLogo = document.getElementById('header-logo');
+                const logoFallback = document.getElementById('logo-fallback');
+                
+                if (headerLogo) {
+                    headerLogo.src = e.target.result;
+                    headerLogo.style.display = 'block';
+                }
+                if (logoFallback) {
+                    logoFallback.style.display = 'none';
+                }
+                
+                // Show preview
+                const previewDiv = document.getElementById('upload-preview');
+                const previewImg = document.getElementById('preview-image');
+                if (previewDiv && previewImg) {
+                    previewImg.src = e.target.result;
+                    previewDiv.style.display = 'block';
+                }
+                
+                // Save logo data to project
+                if (currentProjectData) {
+                    if (!currentProjectData.client_data) {
+                        currentProjectData.client_data = {};
+                    }
+                    currentProjectData.client_data.logo = e.target.result;
+                    saveToSupabase();
+                }
+            };
+            
+            reader.readAsDataURL(file);
+        }
+        
         // Authentication Functions
         async function checkAuth() {
             if (!supabase) return;
@@ -1064,7 +1129,15 @@
             if (currentUser) {
                 document.getElementById('current-user-email').textContent = currentUser.email;
             }
-            loadUserProjects();
+            loadUserProjects().then(() => {
+                // Check if there's a project in URL parameters
+                const urlParams = new URLSearchParams(window.location.search);
+                const projectFromURL = urlParams.get('project');
+                if (projectFromURL) {
+                    document.getElementById('project-select').value = projectFromURL;
+                    loadProject(projectFromURL);
+                }
+            });
         }
         
         function showLogin() {
@@ -1176,7 +1249,7 @@
         
         // Load user's projects FIXED
         async function loadUserProjects() {
-            if (!supabase || !currentUser) return;
+            if (!supabase || !currentUser) return Promise.resolve();
             
             const role = USER_ROLES[currentUserRole];
             
@@ -1287,7 +1360,12 @@
             }
             
             const name = nameInput.value.trim();
-            const company = companySelect.value;
+            let company = companySelect.value;
+            
+            // Use actual client name if "Client" is selected
+            if (company === 'Client' && currentProjectData?.client_data?.name) {
+                company = currentProjectData.client_data.name;
+            }
             
             if (!name) {
                 alert('Indtast venligst et navn');
@@ -1324,6 +1402,9 @@
             
             // Save to database
             saveToSupabase();
+            
+            // Update table to show new member in dropdowns
+            populateTable();
             
             console.log('Team member added:', { name, company });
         }
@@ -1421,7 +1502,25 @@
                 
                 if (error) throw error;
                 
-                alert(`Projekt delt med ${email}! 🔗`);
+                // Create share link
+                const shareLink = `${window.location.origin}${window.location.pathname}?project=${currentProjectId}`;
+                
+                alert(`✅ Projekt delt med ${email}!\n\n` +
+                      `Send denne besked til brugeren:\n\n` +
+                      `"Du har fået adgang til projekt: ${currentProjectData.client_data?.name || 'Unavngivet'}\n\n` +
+                      `Link: ${shareLink}\n\n` +
+                      `Log ind med din email for at se projektet."`);
+                
+                // Note: For automatic email, you need to setup Supabase Edge Functions
+                // or use a service like SendGrid/Resend via Supabase Functions
+                // 
+                // Example Edge Function setup:
+                // 1. Install Supabase CLI
+                // 2. Create edge function: supabase functions new send-share-email
+                // 3. Add email service (Resend/SendGrid) in the function
+                // 4. Deploy: supabase functions deploy send-share-email
+                // 5. Call from here: await supabase.functions.invoke('send-share-email', { body: { email, projectId }})
+                
                 closeShareModal();
                 
             } catch (error) {
@@ -1488,6 +1587,26 @@
             document.getElementById('client-pm').value = clientData.clientPM || '';
             document.getElementById('project-notes').value = clientData.notes || '';
             
+            // Load logo if exists
+            if (clientData.logo) {
+                const headerLogo = document.getElementById('header-logo');
+                const logoFallback = document.getElementById('logo-fallback');
+                const previewDiv = document.getElementById('upload-preview');
+                const previewImg = document.getElementById('preview-image');
+                
+                if (headerLogo) {
+                    headerLogo.src = clientData.logo;
+                    headerLogo.style.display = 'block';
+                }
+                if (logoFallback) {
+                    logoFallback.style.display = 'none';
+                }
+                if (previewDiv && previewImg) {
+                    previewImg.src = clientData.logo;
+                    previewDiv.style.display = 'block';
+                }
+            }
+            
             checkSetup();
             populateTable();
             updateDashboard();
@@ -1497,13 +1616,20 @@
         async function saveToSupabase() {
             if (!currentProjectId || !supabase || !currentUser) return;
             
+            const clientData = {
+                name: document.getElementById('client-name').value.trim(),
+                scaleupPM: document.getElementById('scaleup-pm').value.trim(),
+                clientPM: document.getElementById('client-pm').value.trim(),
+                notes: document.getElementById('project-notes').value.trim()
+            };
+            
+            // Preserve logo if it exists
+            if (currentProjectData?.client_data?.logo) {
+                clientData.logo = currentProjectData.client_data.logo;
+            }
+            
             const currentData = {
-                client_data: {
-                    name: document.getElementById('client-name').value.trim(),
-                    scaleupPM: document.getElementById('scaleup-pm').value.trim(),
-                    clientPM: document.getElementById('client-pm').value.trim(),
-                    notes: document.getElementById('project-notes').value.trim()
-                },
+                client_data: clientData,
                 tasks: currentProjectData?.tasks || masterTemplate,
                 team_members: currentProjectData?.team_members || [],
                 shared_with: currentProjectData?.shared_with || [],
@@ -1706,6 +1832,12 @@
             const scaleupPM = document.getElementById('scaleup-pm').value.trim();
             const hasSetup = hasProject && clientName && scaleupPM;
             
+            // Update Client option in team member dropdown
+            const clientOption = document.getElementById('client-company-option');
+            if (clientOption && clientName) {
+                clientOption.textContent = clientName;
+            }
+            
             const dashboardWarning = document.getElementById('dashboard-warning');
             const dashboardContent = document.getElementById('dashboard-content');
             const projectWarning = document.getElementById('project-warning');
@@ -1739,15 +1871,50 @@
             
             tbody.innerHTML = '';
             
-            currentProjectData.tasks.forEach(phase => {
+            // Get all responsible options including team members
+            const responsibleOptions = ['Scaleup Finance'];
+            
+            // Add client company name or "Client"
+            const clientName = currentProjectData?.client_data?.name || 'Client';
+            responsibleOptions.push(clientName);
+            
+            // Add team members
+            if (currentProjectData.team_members && currentProjectData.team_members.length > 0) {
+                currentProjectData.team_members.forEach(member => {
+                    responsibleOptions.push(member.name);
+                });
+            }
+            
+            currentProjectData.tasks.forEach((phase, phaseIndex) => {
                 const phaseRow = document.createElement('tr');
                 phaseRow.innerHTML = `<td colspan="4" style="background: #3a4a47; color: white; font-weight: bold; padding: 15px;">${phase.phase}</td>`;
                 tbody.appendChild(phaseRow);
                 
-                phase.tasks.forEach(task => {
+                phase.tasks.forEach((task, taskIndex) => {
+                    // Main task row
                     const taskRow = document.createElement('tr');
+                    
+                    // Check if task responsible is "Client" and update to actual client name
+                    if (task.responsible === 'Client' && clientName !== 'Client') {
+                        task.responsible = clientName;
+                    }
+                    
+                    // Create responsible dropdown
+                    let responsibleDropdown = '<select onchange="updateTaskResponsible(\'' + task.name + '\', this.value)" style="width: 100%; padding: 6px;">';
+                    responsibleOptions.forEach(option => {
+                        responsibleDropdown += `<option value="${option}" ${task.responsible === option ? 'selected' : ''}>${option}</option>`;
+                    });
+                    responsibleDropdown += '</select>';
+                    
                     taskRow.innerHTML = `
-                        <td>${task.name}</td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span>${task.name}</span>
+                                <button class="btn btn-success btn-small" style="padding: 4px 8px; font-size: 0.8em;" onclick="showSubtaskDialog(${phaseIndex}, ${taskIndex})">
+                                    ➕ Add Subtask
+                                </button>
+                            </div>
+                        </td>
                         <td>
                             <select class="status-select status-${task.status}" onchange="updateTaskStatus('${task.name}', this.value)">
                                 <option value="not-started" ${task.status === 'not-started' ? 'selected' : ''}>⏳ Not Started</option>
@@ -1755,17 +1922,103 @@
                                 <option value="completed" ${task.status === 'completed' ? 'selected' : ''}>✅ Completed</option>
                             </select>
                         </td>
-                        <td>
-                            <select onchange="updateTaskResponsible('${task.name}', this.value)" style="width: 100%; padding: 6px;">
-                                <option value="Scaleup Finance" ${task.responsible === 'Scaleup Finance' ? 'selected' : ''}>Scaleup Finance</option>
-                                <option value="Client" ${task.responsible === 'Client' ? 'selected' : ''}>Client</option>
-                            </select>
-                        </td>
+                        <td>${responsibleDropdown}</td>
                         <td>${task.description}</td>
                     `;
                     tbody.appendChild(taskRow);
+                    
+                    // Add subtasks if any
+                    if (task.subtasks && task.subtasks.length > 0) {
+                        task.subtasks.forEach((subtask, subtaskIndex) => {
+                            // Check if subtask responsible is "Client" and update
+                            if (subtask.responsible === 'Client' && clientName !== 'Client') {
+                                subtask.responsible = clientName;
+                            }
+                            
+                            const subtaskRow = document.createElement('tr');
+                            subtaskRow.style.background = '#f8f9fa';
+                            
+                            let subtaskResponsibleDropdown = '<select onchange="updateSubtaskResponsible(' + phaseIndex + ', ' + taskIndex + ', ' + subtaskIndex + ', this.value)" style="width: 100%; padding: 4px; font-size: 0.9em;">';
+                            responsibleOptions.forEach(option => {
+                                subtaskResponsibleDropdown += `<option value="${option}" ${subtask.responsible === option ? 'selected' : ''}>${option}</option>`;
+                            });
+                            subtaskResponsibleDropdown += '</select>';
+                            
+                            subtaskRow.innerHTML = `
+                                <td style="padding-left: 40px;">
+                                    └─ ${subtask.name}
+                                    <button onclick="removeSubtask(${phaseIndex}, ${taskIndex}, ${subtaskIndex})" 
+                                        style="background: #dc3545; color: white; border: none; padding: 2px 6px; border-radius: 3px; font-size: 0.7em; margin-left: 10px;">
+                                        🗑️
+                                    </button>
+                                </td>
+                                <td>
+                                    <select class="status-select status-${subtask.status}" 
+                                        onchange="updateSubtaskStatus(${phaseIndex}, ${taskIndex}, ${subtaskIndex}, this.value)">
+                                        <option value="not-started" ${subtask.status === 'not-started' ? 'selected' : ''}>⏳ Not Started</option>
+                                        <option value="in-progress" ${subtask.status === 'in-progress' ? 'selected' : ''}>🔄 In Progress</option>
+                                        <option value="completed" ${subtask.status === 'completed' ? 'selected' : ''}>✅ Completed</option>
+                                    </select>
+                                </td>
+                                <td>${subtaskResponsibleDropdown}</td>
+                                <td style="font-size: 0.9em;">${subtask.description || 'Custom subtask'}</td>
+                            `;
+                            tbody.appendChild(subtaskRow);
+                        });
+                    }
                 });
             });
+        }
+        
+        // Subtask functions
+        function showSubtaskDialog(phaseIndex, taskIndex) {
+            const task = currentProjectData.tasks[phaseIndex].tasks[taskIndex];
+            const subtaskName = prompt(`Tilføj subtask til: ${task.name}\n\nIndtast subtask navn:`);
+            
+            if (subtaskName && subtaskName.trim()) {
+                if (!task.subtasks) {
+                    task.subtasks = [];
+                }
+                
+                const taskNumber = task.name.split(' ')[0];
+                const subtaskNumber = task.subtasks.length + 1;
+                const fullSubtaskNumber = `${taskNumber}.${subtaskNumber}`;
+                
+                task.subtasks.push({
+                    name: `${fullSubtaskNumber} ${subtaskName.trim()}`,
+                    status: 'not-started',
+                    responsible: task.responsible,
+                    description: 'Custom subtask'
+                });
+                
+                populateTable();
+                updateDashboard();
+                saveToSupabase();
+            }
+        }
+        
+        function removeSubtask(phaseIndex, taskIndex, subtaskIndex) {
+            if (confirm('Vil du fjerne denne subtask?')) {
+                currentProjectData.tasks[phaseIndex].tasks[taskIndex].subtasks.splice(subtaskIndex, 1);
+                populateTable();
+                updateDashboard();
+                saveToSupabase();
+            }
+        }
+        
+        function updateSubtaskStatus(phaseIndex, taskIndex, subtaskIndex, status) {
+            currentProjectData.tasks[phaseIndex].tasks[taskIndex].subtasks[subtaskIndex].status = status;
+            if (event && event.target) {
+                event.target.className = `status-select status-${status}`;
+            }
+            updateDashboard();
+            saveToSupabase();
+        }
+        
+        function updateSubtaskResponsible(phaseIndex, taskIndex, subtaskIndex, responsible) {
+            currentProjectData.tasks[phaseIndex].tasks[taskIndex].subtasks[subtaskIndex].responsible = responsible;
+            updateDashboard();
+            saveToSupabase();
         }
         
         // Update dashboard
@@ -1775,12 +2028,62 @@
             let totalTasks = 0;
             let completedTasks = 0;
             let ongoingTasks = 0;
+            let tasksByResponsible = {};
+            
+            // Get client name
+            const clientName = currentProjectData?.client_data?.name || 'Client';
             
             currentProjectData.tasks.forEach(phase => {
                 phase.tasks.forEach(task => {
+                    // Update task responsible if it's "Client"
+                    if (task.responsible === 'Client' && clientName !== 'Client') {
+                        task.responsible = clientName;
+                    }
+                    
                     totalTasks++;
                     if (task.status === 'completed') completedTasks++;
                     if (task.status === 'in-progress') ongoingTasks++;
+                    
+                    // Count by responsible
+                    if (!tasksByResponsible[task.responsible]) {
+                        tasksByResponsible[task.responsible] = {
+                            total: 0,
+                            completed: 0,
+                            inProgress: 0,
+                            notStarted: 0
+                        };
+                    }
+                    tasksByResponsible[task.responsible].total++;
+                    if (task.status === 'completed') tasksByResponsible[task.responsible].completed++;
+                    else if (task.status === 'in-progress') tasksByResponsible[task.responsible].inProgress++;
+                    else tasksByResponsible[task.responsible].notStarted++;
+                    
+                    // Count subtasks
+                    if (task.subtasks) {
+                        task.subtasks.forEach(subtask => {
+                            // Update subtask responsible if it's "Client"
+                            if (subtask.responsible === 'Client' && clientName !== 'Client') {
+                                subtask.responsible = clientName;
+                            }
+                            
+                            totalTasks++;
+                            if (subtask.status === 'completed') completedTasks++;
+                            if (subtask.status === 'in-progress') ongoingTasks++;
+                            
+                            if (!tasksByResponsible[subtask.responsible]) {
+                                tasksByResponsible[subtask.responsible] = {
+                                    total: 0,
+                                    completed: 0,
+                                    inProgress: 0,
+                                    notStarted: 0
+                                };
+                            }
+                            tasksByResponsible[subtask.responsible].total++;
+                            if (subtask.status === 'completed') tasksByResponsible[subtask.responsible].completed++;
+                            else if (subtask.status === 'in-progress') tasksByResponsible[subtask.responsible].inProgress++;
+                            else tasksByResponsible[subtask.responsible].notStarted++;
+                        });
+                    }
                 });
             });
             
@@ -1804,6 +2107,67 @@
                 if (nextMilestone !== 'All tasks completed') break;
             }
             document.getElementById('next-milestone').textContent = nextMilestone;
+            
+            // Update team performance dashboard
+            updateTeamPerformance(tasksByResponsible);
+        }
+        
+        // Team performance dashboard
+        function updateTeamPerformance(tasksByResponsible) {
+            // Add team performance section after KPI cards
+            let performanceSection = document.getElementById('team-performance');
+            if (!performanceSection) {
+                const dashboardContent = document.getElementById('dashboard-content');
+                if (!dashboardContent) return;
+                
+                performanceSection = document.createElement('div');
+                performanceSection.id = 'team-performance';
+                performanceSection.style.cssText = 'background: white; padding: 30px; border-radius: 12px; margin-top: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.08);';
+                dashboardContent.appendChild(performanceSection);
+            }
+            
+            let html = '<h3 style="color: #3a4a47; margin-bottom: 20px;">👥 Team Performance</h3>';
+            html += '<div style="display: grid; gap: 15px;">';
+            
+            const clientName = currentProjectData?.client_data?.name || 'Client';
+            
+            Object.keys(tasksByResponsible).forEach(responsible => {
+                const data = tasksByResponsible[responsible];
+                const completionRate = data.total > 0 ? Math.round((data.completed / data.total) * 100) : 0;
+                
+                // Determine icon based on responsible
+                let icon = '👤';
+                if (responsible === 'Scaleup Finance') {
+                    icon = '🏢';
+                } else if (responsible === clientName || responsible === 'Client') {
+                    icon = '🏛️';
+                }
+                
+                html += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #3a4a47;">
+                        <div style="font-weight: 600; color: #3a4a47;">
+                            ${icon} ${responsible}
+                        </div>
+                        <div style="display: flex; gap: 15px; align-items: center;">
+                            <span style="background: #d4edda; color: #155724; padding: 4px 12px; border-radius: 20px; font-size: 0.85em;">
+                                ✅ ${data.completed} done
+                            </span>
+                            <span style="background: #cce5ff; color: #004085; padding: 4px 12px; border-radius: 20px; font-size: 0.85em;">
+                                🔄 ${data.inProgress} active
+                            </span>
+                            <span style="background: #f8d7da; color: #721c24; padding: 4px 12px; border-radius: 20px; font-size: 0.85em;">
+                                ⏳ ${data.notStarted} waiting
+                            </span>
+                            <span style="background: #3a4a47; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600;">
+                                ${completionRate}%
+                            </span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            performanceSection.innerHTML = html;
         }
         
         // Update task status
