@@ -694,7 +694,9 @@
             </div>
             <div>
                 <button class="btn btn-success" onclick="createNewProject()">🔄 Nyt Projekt</button>
+                <button class="btn btn-info" onclick="shareProject()">🔗 Del Projekt</button>
                 <button class="btn btn-secondary" onclick="exportProject()">💾 Export</button>
+                <button class="btn btn-warning" id="admin-btn" onclick="showAdminPanel()" style="display: none;">⚙️ Admin</button>
             </div>
         </div>
 
@@ -742,7 +744,7 @@
                         <input type="text" id="new-member-name" class="team-input" placeholder="Enter team member name..." maxlength="50">
                         <select id="new-member-company" class="team-select">
                             <option value="Scaleup Finance">Scaleup Finance</option>
-                            <option value="Client">Client</option>
+                            <option value="client">Kunde</option>
                         </select>
                         <button type="button" class="btn btn-success btn-small" onclick="addTeamMember()">➕ Add Member</button>
                     </div>
@@ -760,7 +762,6 @@
                 </div>
                 
                 <button class="btn btn-primary" onclick="saveSetup()">💾 Save Client Setup</button>
-                <button class="btn btn-secondary" onclick="fillTestData()">🧪 Fill Test Data</button>
             </div>
         </div>
 
@@ -904,7 +905,7 @@
                 phase: "Phase 1: Analysis & Planning",
                 tasks: [
                     {name: "1.1 Requirements Analysis", status: "not-started", responsible: "Scaleup Finance", description: "Map dimension requirements and needs", visible: true, subtasks: []},
-                    {name: "1.2 System Mapping", status: "not-started", responsible: "Client", description: "Current setup in all systems", visible: true, subtasks: []},
+                    {name: "1.2 System Mapping", status: "not-started", responsible: "[CLIENT]", description: "Current setup in all systems", visible: true, subtasks: []},
                     {name: "1.3 Gap Analysis", status: "not-started", responsible: "Scaleup Finance", description: "Identify change requirements", visible: true, subtasks: []},
                     {name: "1.4 Technical Architecture", status: "not-started", responsible: "Scaleup Finance", description: "Design solution architecture", visible: true, subtasks: []}
                 ]
@@ -915,13 +916,13 @@
                     {name: "2.1 Dimension Setup", status: "not-started", responsible: "Scaleup Finance", description: "Create dimensions in e-conomic", visible: true, subtasks: []},
                     {name: "2.2 Chart of Accounts Adaptation", status: "not-started", responsible: "Scaleup Finance", description: "Update chart of accounts", visible: true, subtasks: []},
                     {name: "2.3 Report Configuration", status: "not-started", responsible: "Scaleup Finance", description: "Customize standard reports", visible: true, subtasks: []},
-                    {name: "2.4 User Permissions", status: "not-started", responsible: "Client", description: "Setup user access rights", visible: true, subtasks: []}
+                    {name: "2.4 User Permissions", status: "not-started", responsible: "[CLIENT]", description: "Setup user access rights", visible: true, subtasks: []}
                 ]
             },
             {
                 phase: "Phase 3: Corpay Integration",
                 tasks: [
-                    {name: "3.1 Corpay Setup", status: "not-started", responsible: "Client", description: "Configure dimensions in Corpay", visible: true, subtasks: []},
+                    {name: "3.1 Corpay Setup", status: "not-started", responsible: "[CLIENT]", description: "Configure dimensions in Corpay", visible: true, subtasks: []},
                     {name: "3.2 e-conomic Mapping", status: "not-started", responsible: "Scaleup Finance", description: "System mapping between platforms", visible: true, subtasks: []},
                     {name: "3.3 Data Import Testing", status: "not-started", responsible: "Scaleup Finance", description: "Test data transfer processes", visible: true, subtasks: []},
                     {name: "3.4 Automation Rules", status: "not-started", responsible: "Scaleup Finance", description: "Setup automatic posting rules", visible: true, subtasks: []}
@@ -930,9 +931,9 @@
             {
                 phase: "Phase 4: Pleo Integration",
                 tasks: [
-                    {name: "4.1 Pleo Setup", status: "not-started", responsible: "Client", description: "Configure dimensions in Pleo", visible: true, subtasks: []},
-                    {name: "4.2 Employee Training", status: "not-started", responsible: "Client", description: "Train employees on dimension usage", visible: true, subtasks: []},
-                    {name: "4.3 Approval Workflows", status: "not-started", responsible: "Client", description: "Setup approval processes", visible: true, subtasks: []},
+                    {name: "4.1 Pleo Setup", status: "not-started", responsible: "[CLIENT]", description: "Configure dimensions in Pleo", visible: true, subtasks: []},
+                    {name: "4.2 Employee Training", status: "not-started", responsible: "[CLIENT]", description: "Train employees on dimension usage", visible: true, subtasks: []},
+                    {name: "4.3 Approval Workflows", status: "not-started", responsible: "[CLIENT]", description: "Setup approval processes", visible: true, subtasks: []},
                     {name: "4.4 Integration Testing", status: "not-started", responsible: "Scaleup Finance", description: "Test Pleo to e-conomic integration", visible: true, subtasks: []}
                 ]
             },
@@ -940,7 +941,7 @@
                 phase: "Phase 5: Testing & Validation",
                 tasks: [
                     {name: "5.1 System Testing", status: "not-started", responsible: "Scaleup Finance", description: "Functional testing of all systems", visible: true, subtasks: []},
-                    {name: "5.2 User Acceptance Testing", status: "not-started", responsible: "Client", description: "Testing with end users", visible: true, subtasks: []},
+                    {name: "5.2 User Acceptance Testing", status: "not-started", responsible: "[CLIENT]", description: "Testing with end users", visible: true, subtasks: []},
                     {name: "5.3 Report Validation", status: "not-started", responsible: "Scaleup Finance", description: "Verify report accuracy", visible: true, subtasks: []},
                     {name: "5.4 Performance Testing", status: "not-started", responsible: "Scaleup Finance", description: "Test system performance", visible: true, subtasks: []}
                 ]
@@ -993,6 +994,7 @@
             document.getElementById('main-dashboard').style.display = 'block';
             if (currentUser) {
                 document.getElementById('current-user-email').textContent = currentUser.email;
+                checkAdminStatus(); // Check if user is admin
             }
             loadUserProjects();
         }
@@ -1096,23 +1098,33 @@
             if (!supabase || !currentUser) return;
             
             try {
-                const { data: projects, error } = await supabase
+                // Get own projects
+                const { data: ownProjects, error: ownError } = await supabase
                     .from('projects')
-                    .select('project_id, client_data')
+                    .select('project_id, client_data, is_admin')
                     .eq('user_id', currentUser.id);
 
-                if (error) throw error;
+                if (ownError) throw ownError;
+                
+                // Get shared projects
+                const { data: sharedProjects, error: sharedError } = await supabase
+                    .from('projects')
+                    .select('project_id, client_data, shared_with')
+                    .contains('shared_with', [currentUser.email]);
+                
+                const allProjects = [...(ownProjects || []), ...(sharedProjects || [])];
 
                 const select = document.getElementById('project-select');
                 if (select) {
                     select.innerHTML = '<option value="">Vælg eller opret et projekt...</option>';
                     
-                    if (projects && projects.length > 0) {
-                        projects.forEach(project => {
+                    if (allProjects.length > 0) {
+                        allProjects.forEach(project => {
                             const option = document.createElement('option');
                             option.value = project.project_id;
                             const clientName = project.client_data?.name || 'Unavngivet projekt';
-                            option.textContent = clientName;
+                            const isShared = !project.is_admin && project.shared_with?.includes(currentUser.email);
+                            option.textContent = clientName + (isShared ? ' (Delt)' : '');
                             select.appendChild(option);
                         });
                     }
@@ -1135,6 +1147,23 @@
             const projectId = generateProjectId(projectName);
             currentProjectId = projectId;
             
+            // Replace [CLIENT] with actual client name in template
+            const projectTasks = JSON.parse(JSON.stringify(masterTemplate));
+            projectTasks.forEach(phase => {
+                phase.tasks.forEach(task => {
+                    if (task.responsible === '[CLIENT]') {
+                        task.responsible = projectName;
+                    }
+                    if (task.subtasks) {
+                        task.subtasks.forEach(subtask => {
+                            if (subtask.responsible === '[CLIENT]') {
+                                subtask.responsible = projectName;
+                            }
+                        });
+                    }
+                });
+            });
+            
             const newProject = {
                 project_id: projectId,
                 user_id: currentUser.id,
@@ -1146,9 +1175,11 @@
                     logo: null
                 },
                 team_members: [],
-                tasks: masterTemplate, // Now includes visible property
+                tasks: projectTasks,
                 created_at: new Date().toISOString(),
-                last_updated: new Date().toISOString()
+                last_updated: new Date().toISOString(),
+                shared_with: [],
+                is_admin: true
             };
             
             if (supabase) {
@@ -1182,12 +1213,28 @@
             if (!supabase) return;
             
             try {
-                const { data: project, error } = await supabase
+                // First try to load as owner
+                let { data: project, error } = await supabase
                     .from('projects')
                     .select('*')
                     .eq('project_id', projectId)
                     .eq('user_id', currentUser.id)
                     .single();
+
+                // If not owner, try to load as shared
+                if (error || !project) {
+                    const { data: sharedProject, error: sharedError } = await supabase
+                        .from('projects')
+                        .select('*')
+                        .eq('project_id', projectId)
+                        .contains('shared_with', [currentUser.email])
+                        .single();
+                    
+                    if (sharedProject) {
+                        project = sharedProject;
+                        error = null;
+                    }
+                }
 
                 if (error) throw error;
 
@@ -1212,6 +1259,7 @@
                 }
             } catch (error) {
                 console.error('Error loading project:', error.message);
+                alert('Du har ikke adgang til dette projekt');
             }
         }
         
@@ -1222,6 +1270,24 @@
             document.getElementById('scaleup-pm').value = clientData.scaleupPM || '';
             document.getElementById('client-pm').value = clientData.clientPM || '';
             document.getElementById('project-notes').value = clientData.notes || '';
+            
+            // Replace [CLIENT] or "Client" with actual client name in tasks
+            if (clientData.name && projectData.tasks) {
+                projectData.tasks.forEach(phase => {
+                    phase.tasks.forEach(task => {
+                        if (task.responsible === '[CLIENT]' || task.responsible === 'Client') {
+                            task.responsible = clientData.name;
+                        }
+                        if (task.subtasks) {
+                            task.subtasks.forEach(subtask => {
+                                if (subtask.responsible === '[CLIENT]' || subtask.responsible === 'Client') {
+                                    subtask.responsible = clientData.name;
+                                }
+                            });
+                        }
+                    });
+                });
+            }
             
             // Load logo if exists
             if (clientData.logo) {
@@ -1246,9 +1312,28 @@
         async function saveToSupabase() {
             if (!currentProjectId || !supabase || !currentUser) return;
             
+            // Update tasks where responsible is "Client" to actual client name
+            const clientName = document.getElementById('client-name').value.trim();
+            if (clientName && currentProjectData?.tasks) {
+                currentProjectData.tasks.forEach(phase => {
+                    phase.tasks.forEach(task => {
+                        if (task.responsible === 'Client' || task.responsible === '[CLIENT]') {
+                            task.responsible = clientName;
+                        }
+                        if (task.subtasks) {
+                            task.subtasks.forEach(subtask => {
+                                if (subtask.responsible === 'Client' || subtask.responsible === '[CLIENT]') {
+                                    subtask.responsible = clientName;
+                                }
+                            });
+                        }
+                    });
+                });
+            }
+            
             const currentData = {
                 client_data: {
-                    name: document.getElementById('client-name').value.trim(),
+                    name: clientName,
                     scaleupPM: document.getElementById('scaleup-pm').value.trim(),
                     clientPM: document.getElementById('client-pm').value.trim(),
                     notes: document.getElementById('project-notes').value.trim(),
@@ -1264,7 +1349,7 @@
                     .from('projects')
                     .update(currentData)
                     .eq('project_id', currentProjectId)
-                    .eq('user_id', currentUser.id);
+                    .or(`user_id.eq.${currentUser.id},shared_with.cs.["${currentUser.email}"]`);
                 
                 if (error) throw error;
             } catch (error) {
@@ -1307,7 +1392,12 @@
             const companySelect = document.getElementById('new-member-company');
             
             const name = nameInput.value.trim();
-            const company = companySelect.value;
+            let company = companySelect.value;
+            
+            // If "client" is selected, use the actual client name
+            if (company === 'client' && currentProjectData?.client_data?.name) {
+                company = currentProjectData.client_data.name;
+            }
             
             if (!name) {
                 alert('Please enter a team member name');
@@ -1358,10 +1448,17 @@
             `).join('');
         }
         
-        // Get responsible options (including team members)
+        // Get responsible options (including team members and client name)
         function getResponsibleOptions() {
-            let options = ['Scaleup Finance', 'Client'];
+            let options = ['Scaleup Finance'];
             
+            // Add client name
+            const clientName = currentProjectData?.client_data?.name;
+            if (clientName) {
+                options.push(clientName);
+            }
+            
+            // Add team members
             if (currentProjectData?.team_members) {
                 currentProjectData.team_members.forEach(member => {
                     options.push(member.name);
@@ -1369,6 +1466,98 @@
             }
             
             return options;
+        }
+        
+        // Share project function
+        async function shareProject() {
+            if (!currentProjectId) {
+                alert('Vælg venligst et projekt først');
+                return;
+            }
+            
+            const email = prompt('Indtast email på personen du vil dele projektet med:');
+            if (!email) return;
+            
+            if (supabase && currentProjectData) {
+                try {
+                    // Add email to shared_with array
+                    const sharedWith = currentProjectData.shared_with || [];
+                    if (!sharedWith.includes(email)) {
+                        sharedWith.push(email);
+                        
+                        const { error } = await supabase
+                            .from('projects')
+                            .update({ 
+                                shared_with: sharedWith,
+                                last_updated: new Date().toISOString()
+                            })
+                            .eq('project_id', currentProjectId)
+                            .eq('user_id', currentUser.id);
+                        
+                        if (error) throw error;
+                        
+                        alert(`Projektet er nu delt med ${email}`);
+                        currentProjectData.shared_with = sharedWith;
+                    } else {
+                        alert('Projektet er allerede delt med denne bruger');
+                    }
+                } catch (error) {
+                    console.error('Error sharing project:', error);
+                    alert('Fejl ved deling af projekt: ' + error.message);
+                }
+            }
+        }
+        
+        // Admin panel function
+        function showAdminPanel() {
+            const adminContent = `
+                <h3>Admin Panel</h3>
+                <p>Projekt ID: ${currentProjectId}</p>
+                <p>Ejer: ${currentUser?.email}</p>
+                <p>Delt med: ${currentProjectData?.shared_with?.join(', ') || 'Ingen'}</p>
+                <h4>Handlinger:</h4>
+                <button onclick="deleteProject()">Slet projekt</button>
+                <button onclick="revokeAccess()">Fjern adgang</button>
+            `;
+            
+            const modal = document.createElement('div');
+            modal.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.3); z-index: 1000;';
+            modal.innerHTML = adminContent + '<button onclick="this.parentElement.remove()">Luk</button>';
+            document.body.appendChild(modal);
+        }
+        
+        // Delete project function
+        async function deleteProject() {
+            if (!confirm('Er du sikker på at du vil slette dette projekt permanent?')) return;
+            
+            if (supabase && currentProjectId) {
+                try {
+                    const { error } = await supabase
+                        .from('projects')
+                        .delete()
+                        .eq('project_id', currentProjectId)
+                        .eq('user_id', currentUser.id);
+                    
+                    if (error) throw error;
+                    
+                    alert('Projekt slettet');
+                    location.reload();
+                } catch (error) {
+                    alert('Fejl ved sletning: ' + error.message);
+                }
+            }
+        }
+        
+        // Check if user is admin
+        
+        // Check if user is admin
+        function checkAdminStatus() {
+            // Add your admin emails here - replace with your actual admin emails
+            const adminEmails = ['mma@scaleup.finance', 'jbo@scaleup.finance']; 
+            if (currentUser && adminEmails.includes(currentUser.email)) {
+                const adminBtn = document.getElementById('admin-btn');
+                if (adminBtn) adminBtn.style.display = 'block';
+            }
         }
         
         // Generate project ID
@@ -1386,21 +1575,6 @@
             document.getElementById('project-notes').value = '';
             document.getElementById('team-members-list').innerHTML = '<p style="color: #666; font-style: italic; text-align: center; padding: 20px;">No team members added yet.</p>';
             checkSetup();
-        }
-        
-        // Fill test data
-        function fillTestData() {
-            document.getElementById('client-name').value = 'ABC Corporation';
-            document.getElementById('scaleup-pm').value = 'Lars Jensen';
-            document.getElementById('client-pm').value = 'John Smith (CFO)';
-            document.getElementById('project-notes').value = 'Standard e-conomic dimensions implementation.';
-            
-            currentProjectData.team_members = [
-                { name: 'Maria Petersen', company: 'Scaleup Finance' },
-                { name: 'Thomas Nielsen', company: 'Client' }
-            ];
-            updateTeamMembersList();
-            saveToSupabase();
         }
         
         // Switch tabs
@@ -1845,6 +2019,11 @@
         // Update task responsible
         async function updateTaskResponsible(taskName, newResponsible) {
             if (!currentProjectData?.tasks) return;
+            
+            // Convert "Client" to actual client name
+            if (newResponsible === 'Client' && currentProjectData?.client_data?.name) {
+                newResponsible = currentProjectData.client_data.name;
+            }
             
             for (let phase of currentProjectData.tasks) {
                 for (let task of phase.tasks) {
