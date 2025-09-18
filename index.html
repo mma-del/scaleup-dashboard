@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scaleup Finance - Complete Project Dashboard</title>
+    <title>Scaleup Finance - e-conomic Dimensions Dashboard</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', sans-serif; background: #f5f7fa; color: #333; }
@@ -40,6 +40,10 @@
             background-clip: text;
         }
         
+        .auth-form {
+            margin-top: 20px;
+        }
+        
         .auth-form input {
             width: 100%;
             padding: 12px;
@@ -67,6 +71,18 @@
             box-shadow: 0 5px 15px rgba(58, 74, 71, 0.3);
         }
         
+        .auth-toggle {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+        
+        .auth-toggle a {
+            color: #3a4a47;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
         .error-message {
             background: #f8d7da;
             color: #721c24;
@@ -76,7 +92,16 @@
             display: none;
         }
         
-        /* User Bar */
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
+        }
+        
+        /* User Info Bar */
         .user-bar {
             background: white;
             padding: 15px 20px;
@@ -99,7 +124,7 @@
             color: #3a4a47;
         }
         
-        /* Header */
+        /* CENTERED HEADER */
         .header { 
             background: linear-gradient(135deg, #3a4a47 0%, #2d3a36 100%);
             color: white; 
@@ -138,7 +163,7 @@
         
         .logo-fallback {
             color: #3a4a47; 
-            font-size: 48px; 
+            font-size: 36px; 
             font-weight: 800;
         }
         
@@ -148,159 +173,126 @@
             color: white;
         }
         
-        /* Navigation */
-        .nav-tabs { 
-            display: flex; 
-            background: white; 
-            border-radius: 12px; 
-            overflow: hidden; 
-            margin-bottom: 30px; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08); 
+        .header-description {
+            font-size: 1.3em;
+            opacity: 0.9;
+            text-align: center;
         }
         
-        .nav-tab { 
-            flex: 1; 
-            padding: 15px 25px; 
-            background: #f8f9fa; 
-            border: none; 
-            cursor: pointer; 
-            font-size: 1.1em; 
-            font-weight: 600; 
-            transition: all 0.3s; 
+        /* Project Controls */
+        .project-controls {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         
-        .nav-tab.active { 
-            background: linear-gradient(135deg, #3a4a47, #2d3a36); 
-            color: white; 
+        .project-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
+        
+        .project-select {
+            padding: 10px 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1em;
+            min-width: 250px;
+        }
+        
+        .nav-tabs { display: flex; background: white; border-radius: 12px; overflow: hidden; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+        .nav-tab { flex: 1; padding: 15px 25px; background: #f8f9fa; border: none; cursor: pointer; font-size: 1.1em; font-weight: 600; transition: all 0.3s; }
+        .nav-tab.active { background: linear-gradient(135deg, #3a4a47, #2d3a36); color: white; }
         
         .tab-content { display: none; }
         .tab-content.active { display: block; }
         
-        /* Forms */
-        .setup-form { 
-            background: white; 
-            padding: 30px; 
-            border-radius: 12px; 
-            margin-bottom: 20px; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08); 
-        }
+        .setup-form { background: white; padding: 30px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #495057; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 2px solid #dee2e6; border-radius: 8px; font-size: 1em; font-family: 'Segoe UI', sans-serif; }
         
-        .form-group { 
-            margin-bottom: 20px; 
-        }
-        
-        .form-group label { 
-            display: block; 
-            font-weight: 600; 
-            margin-bottom: 8px; 
-            color: #495057; 
-        }
-        
-        .form-group input, .form-group textarea { 
-            width: 100%; 
-            padding: 12px; 
-            border: 2px solid #dee2e6; 
-            border-radius: 8px; 
-            font-size: 1em; 
-            font-family: 'Segoe UI', sans-serif; 
-        }
-        
-        /* Logo Upload Area */
-        .logo-upload-area {
-            border: 2px dashed #dee2e6;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            background: #f8f9fa;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .logo-upload-area:hover {
-            border-color: #3a4a47;
-            background: #e9ecef;
-        }
-        
-        .logo-preview {
-            margin-top: 15px;
-            display: none;
-        }
-        
-        .logo-preview img {
-            max-width: 150px;
-            max-height: 150px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        /* Buttons */
-        .btn { 
-            padding: 12px 25px; 
-            border: none; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-size: 1em; 
-            margin: 5px; 
-            transition: all 0.3s; 
-        }
-        
+        .btn { padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 1em; margin: 5px; transition: all 0.3s; }
         .btn-primary { background: #3a4a47; color: white; }
         .btn-primary:hover { background: #2d3a36; transform: translateY(-2px); }
         .btn-secondary { background: #6c757d; color: white; }
         .btn-success { background: #28a745; color: white; }
         .btn-danger { background: #dc3545; color: white; }
+        .btn-info { background: #17a2b8; color: white; }
+        .btn-warning { background: #ffc107; color: #212529; }
         
-        /* Team Members Section */
-        .team-section {
-            background: #f8f9fa; 
-            padding: 20px; 
-            border-radius: 8px; 
-            margin: 20px 0;
-            border: 2px solid #3a4a47;
-        }
-        
-        .team-section h3 {
-            color: #3a4a47; 
-            margin-bottom: 15px;
-        }
-        
-        .team-input-row {
-            display: flex; 
-            gap: 10px; 
-            margin-bottom: 15px;
+        /* Task Visibility Controls */
+        .visibility-controls {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         
-        .team-input {
-            flex: 1; 
-            padding: 10px; 
-            border: 1px solid #ddd; 
-            border-radius: 4px;
-            font-size: 1em;
+        .visibility-toggle-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
         
-        .team-select {
-            padding: 10px; 
-            border: 1px solid #ddd; 
+        .visibility-toggle-section label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .visibility-toggle-section input[type="checkbox"] {
+            transform: scale(1.2);
+        }
+        
+        /* Task Visibility Styles */
+        .task-visibility-toggle {
+            cursor: pointer;
+            padding: 4px 8px;
+            margin-right: 8px;
+            border: 1px solid #ddd;
             border-radius: 4px;
             background: white;
-            min-width: 150px;
+            font-size: 14px;
+            transition: all 0.2s;
         }
         
-        .team-member-item {
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 12px 15px; 
-            background: white; 
-            border-radius: 6px; 
-            margin: 8px 0; 
-            border: 1px solid #ddd;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        .task-visibility-toggle:hover {
+            background: #f8f9fa;
+            border-color: #3a4a47;
         }
         
-        /* Dashboard KPIs */
+        .task-hidden {
+            background-color: #f8f9fa !important;
+            opacity: 0.6;
+        }
+        
+        .task-hidden .task-name {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+        
+        .task-hidden select,
+        .task-hidden input {
+            pointer-events: none;
+            background-color: #e9ecef;
+        }
+        
+        /* Dashboard Styles */
         .dashboard-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
@@ -314,8 +306,10 @@
             border-radius: 20px; 
             box-shadow: 0 10px 30px rgba(58, 74, 71, 0.15); 
             text-align: center; 
-            transition: all 0.4s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 1px solid rgba(58, 74, 71, 0.1);
+            position: relative;
+            overflow: hidden;
         }
         
         .kpi-card:hover {
@@ -334,6 +328,7 @@
             justify-content: center;
             font-size: 24px;
             color: white;
+            box-shadow: 0 8px 16px rgba(58, 74, 71, 0.3);
         }
         
         .kpi-value { 
@@ -366,36 +361,80 @@
         
         .progress-fill { 
             height: 100%; 
-            background: linear-gradient(90deg, #3a4a47, #2d3a36); 
+            background: linear-gradient(90deg, #3a4a47, #2d3a36, #3a4a47); 
             border-radius: 10px; 
-            transition: width 1s;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .kpi-subtitle {
+            font-size: 0.9em;
+            color: #3a4a47;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        .dashboard-intro {
+            background: linear-gradient(135deg, rgba(58, 74, 71, 0.05) 0%, rgba(45, 58, 54, 0.05) 100%);
+            border: 1px solid rgba(58, 74, 71, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .dashboard-intro h2 {
+            color: #3a4a47;
+            font-size: 2.2em;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .dashboard-intro p {
+            color: #666;
+            font-size: 1.1em;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
         }
         
         /* Team Performance Dashboard */
-        .team-distribution { 
+        .team-distribution {
             background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            padding: 35px; 
-            border-radius: 20px; 
+            padding: 35px;
+            border-radius: 20px;
             box-shadow: 0 10px 30px rgba(58, 74, 71, 0.15);
             border: 1px solid rgba(58, 74, 71, 0.1);
             margin-top: 30px;
         }
         
-        .team-distribution h3 { 
-            color: #3a4a47; 
-            margin-bottom: 30px; 
+        .team-distribution h3 {
+            color: #3a4a47;
+            margin-bottom: 30px;
             text-align: center;
             font-size: 1.6em;
             font-weight: 700;
+            position: relative;
         }
         
-        .person-task-row { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 20px 25px; 
+        .team-distribution h3::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #3a4a47, #2d3a36);
+            border-radius: 2px;
+        }
+        
+        .person-task-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
             border-bottom: 1px solid rgba(58, 74, 71, 0.1);
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             border-radius: 10px;
             margin: 0 -10px;
         }
@@ -405,198 +444,182 @@
             transform: translateX(5px);
         }
         
-        .person-name { 
-            font-weight: 700; 
-            color: #3a4a47; 
+        .person-name {
+            font-weight: 700;
+            color: #3a4a47;
             font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
-        .task-counts { 
-            display: flex; 
-            gap: 20px; 
+        .task-counts {
+            display: flex;
+            gap: 20px;
             align-items: center;
         }
         
-        .task-count { 
-            font-size: 0.95em; 
+        .task-count {
+            font-size: 0.95em;
             font-weight: 600;
             padding: 8px 16px;
             border-radius: 20px;
+            transition: all 0.3s ease;
         }
         
-        .count-completed { 
-            color: #28a745; 
+        .count-completed {
+            color: #28a745;
             background: rgba(40, 167, 69, 0.1);
             border: 1px solid rgba(40, 167, 69, 0.2);
         }
         
-        .count-progress { 
-            color: #3a4a47; 
+        .count-progress {
+            color: #3a4a47;
             background: rgba(58, 74, 71, 0.1);
             border: 1px solid rgba(58, 74, 71, 0.2);
         }
         
-        .count-total { 
+        .count-total {
             color: #666;
             background: rgba(102, 102, 102, 0.1);
             border: 1px solid rgba(102, 102, 102, 0.2);
         }
         
-        /* Project Table */
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            background: white; 
-            border-radius: 12px; 
-            overflow: hidden; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08); 
-        }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #dee2e6; }
+        th { background: #f8f9fa; font-weight: 600; color: #495057; }
         
-        th, td { 
-            padding: 15px; 
-            text-align: left; 
-            border-bottom: 1px solid #dee2e6; 
-        }
+        .table-header { background: #3a4a47; color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .client-info { font-size: 1.1em; opacity: 0.9; }
         
-        th { 
+        .status-select { padding: 8px 12px; border: none; border-radius: 6px; background: white; cursor: pointer; font-weight: 600; }
+        .status-completed { background: #28a745; color: white; }
+        .status-in-progress { background: #3a4a47; color: white; }
+        .status-not-started { background: #e9ecef; color: #495057; }
+        
+        .warning-message { background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        
+        /* Team Section */
+        .team-section {
             background: #f8f9fa; 
-            font-weight: 600; 
-            color: #495057; 
-        }
-        
-        .table-header { 
-            background: #3a4a47; 
-            color: white; 
             padding: 20px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
+            border-radius: 8px; 
+            margin: 20px 0;
+            border: 2px solid #3a4a47;
         }
         
-        /* Task Row Styling */
-        .task-cell {
+        .team-section h3 {
+            color: #3a4a47; 
+            margin-bottom: 15px;
+        }
+        
+        .team-input-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        
+        .team-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+        
+        .team-select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            min-width: 150px;
+        }
+        
+        .team-member-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 10px;
+            padding: 12px 15px;
+            background: white;
+            border-radius: 6px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
-        .task-name {
-            flex: 1;
+        .team-member-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .team-member-name {
+            font-weight: 600;
+            color: #3a4a47;
+        }
+        
+        .team-member-company {
+            font-size: 0.9em;
+            color: #666;
         }
         
         /* Subtask Styles */
         .subtask-input-area {
-            background: #fff3cd; 
-            border: 2px solid #3a4a47; 
-            border-radius: 8px; 
-            padding: 20px; 
-            margin: 15px 0; 
+            background: #f8f9fa;
+            border: 2px solid #3a4a47;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
             display: none;
         }
         
-        .subtask-input { 
-            width: 100%; 
-            padding: 10px; 
-            margin: 10px 0; 
-            border: 1px solid #ddd; 
-            border-radius: 4px; 
+        .subtask-input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
         
-        .subtask-row { 
-            background-color: #f8f9fa; 
-            border-left: 4px solid #3a4a47; 
+        .subtask-row {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3a4a47;
         }
         
-        .subtask-row td { 
-            padding-left: 35px; 
-            font-size: 0.95em; 
+        .subtask-row td {
+            padding-left: 35px;
+            font-size: 0.95em;
         }
         
         .add-subtask-btn {
             background: #28a745;
             color: white;
             border: none;
-            padding: 6px 14px;
-            border-radius: 5px;
-            font-size: 0.85em;
-            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-left: 10px;
             cursor: pointer;
-            white-space: nowrap;
             transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
         }
         
         .add-subtask-btn:hover {
             background: #218838;
             transform: translateY(-1px);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
         }
         
-        /* Status Select */
-        .status-select { 
-            padding: 8px 12px; 
-            border: none; 
-            border-radius: 6px; 
-            background: white; 
-            cursor: pointer; 
-            font-weight: 600; 
+        .btn-small {
+            padding: 4px 8px;
+            font-size: 0.8em;
         }
         
-        .status-completed { background: #28a745; color: white; }
-        .status-in-progress { background: #3a4a47; color: white; }
-        .status-not-started { background: #e9ecef; color: #495057; }
-        
-        .warning-message { 
-            background: #fff3cd; 
-            border: 1px solid #ffeaa7; 
-            color: #856404; 
-            padding: 15px; 
-            border-radius: 8px; 
-            margin-bottom: 20px; 
-        }
-        
-        /* Configuration Panel */
-        .config-panel {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            width: 300px;
-            display: none;
-            z-index: 1000;
-        }
-        
-        .config-panel h3 {
-            margin-bottom: 15px;
-            color: #3a4a47;
-        }
-        
-        .config-input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 0.9em;
-        }
-        
-        .config-toggle {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background: #3a4a47;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            z-index: 999;
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            font-size: 1.2em;
+            color: #666;
         }
     </style>
 </head>
@@ -606,42 +629,73 @@
         <div class="login-box">
             <div class="login-logo">
                 <h1>Scaleup Finance</h1>
-                <p>Project Management Dashboard</p>
+                <p>e-conomic Dimensions Dashboard</p>
             </div>
             
             <div id="error-message" class="error-message"></div>
+            <div id="success-message" class="success-message"></div>
             
-            <div class="auth-form">
-                <h2 style="margin-bottom: 20px;">Login</h2>
-                <input type="email" id="login-email" placeholder="Email">
-                <input type="password" id="login-password" placeholder="Password">
-                <button onclick="handleLogin()">Log In</button>
+            <!-- Login Form -->
+            <div id="login-form" class="auth-form">
+                <h2 style="margin-bottom: 20px;">Log ind</h2>
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button onclick="handleLogin()">Log ind</button>
+                <div class="auth-toggle">
+                    Ny bruger? <a href="#" onclick="showSignup(); return false;">Opret konto</a>
+                </div>
+            </div>
+            
+            <!-- Signup Form -->
+            <div id="signup-form" class="auth-form" style="display: none;">
+                <h2 style="margin-bottom: 20px;">Opret konto</h2>
+                <input type="email" id="signup-email" placeholder="Email" required>
+                <input type="password" id="signup-password" placeholder="Password (min. 6 tegn)" required>
+                <input type="text" id="company-name" placeholder="Firmanavn" required>
+                <button onclick="handleSignup()">Opret konto</button>
+                <div class="auth-toggle">
+                    Har du allerede en konto? <a href="#" onclick="showLogin(); return false;">Log ind</a>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Main Dashboard -->
-    <div id="main-dashboard" class="container">
+    <!-- Main Dashboard (hidden until logged in) -->
+    <div id="main-dashboard" class="container" style="display: none;">
         
         <!-- User Bar -->
         <div class="user-bar">
             <div class="user-info">
-                <span>Logged in as:</span>
-                <span class="user-email" id="current-user-email">demo@scaleup.dk</span>
+                <span>Logget ind som:</span>
+                <span class="user-email" id="current-user-email">-</span>
             </div>
-            <button class="btn btn-danger" onclick="handleLogout()">Log Out</button>
+            <button class="btn btn-danger" onclick="handleLogout()">Log ud</button>
         </div>
         
-        <!-- Header -->
+        <!-- CENTERED HEADER -->
         <div class="header">
             <div class="header-content">
                 <div class="scaleup-logo">
                     <img id="header-logo" style="display: none;" alt="Company Logo">
-                    <div class="logo-fallback" id="logo-fallback">8</div>
+                    <div class="logo-fallback" id="logo-fallback">SF</div>
                 </div>
                 <div class="company-name">Scaleup Finance</div>
             </div>
             <div class="header-description">e-conomic Dimensions Implementation Dashboard</div>
+        </div>
+
+        <!-- Project Controls -->
+        <div class="project-controls">
+            <div class="project-info">
+                <label style="font-weight: 600; color: #495057;">Current Project:</label>
+                <select id="project-select" class="project-select" onchange="loadProject(this.value)">
+                    <option value="">Vælg eller opret et projekt...</option>
+                </select>
+            </div>
+            <div>
+                <button class="btn btn-success" onclick="createNewProject()">🔄 Nyt Projekt</button>
+                <button class="btn btn-secondary" onclick="exportProject()">💾 Export</button>
+            </div>
         </div>
 
         <!-- Navigation -->
@@ -659,56 +713,50 @@
                 
                 <div class="form-group">
                     <label>Client Company Name *</label>
-                    <input type="text" id="client-name" placeholder="e.g., ABC Corporation">
+                    <input type="text" id="client-name" placeholder="e.g., ABC Corporation" onchange="saveToSupabase()">
                 </div>
                 
                 <div class="form-group">
                     <label>Upload Company Logo</label>
-                    <div class="logo-upload-area" onclick="document.getElementById('logo-upload').click()">
-                        <input type="file" id="logo-upload" accept="image/*" style="display: none;" onchange="handleLogoUpload(event)">
-                        <p style="color: #666;">📷 Click to upload logo (PNG, JPG, GIF)</p>
-                        <div class="logo-preview" id="logo-preview">
-                            <img id="preview-image" alt="Logo preview">
-                        </div>
-                    </div>
+                    <input type="file" id="logo-upload" accept="image/*" onchange="handleLogoUpload(event)">
                 </div>
                 
                 <div class="form-group">
                     <label>Scaleup Finance Project Manager *</label>
-                    <input type="text" id="scaleup-pm" placeholder="e.g., Lars Jensen">
+                    <input type="text" id="scaleup-pm" placeholder="e.g., Lars Jensen" onchange="saveToSupabase()">
                 </div>
                 
                 <div class="form-group">
                     <label>Client Project Manager</label>
-                    <input type="text" id="client-pm" placeholder="e.g., John Smith (CFO)">
+                    <input type="text" id="client-pm" placeholder="e.g., John Smith (CFO)" onchange="saveToSupabase()">
                 </div>
-                
+
                 <!-- Team Members Section -->
                 <div class="team-section">
                     <h3>👥 Team Members</h3>
                     <p style="color: #666; margin-bottom: 15px; font-size: 0.9em;">
-                        Add team members who can be assigned to specific tasks
+                        Add team members who can be assigned to specific tasks.
                     </p>
                     
                     <div class="team-input-row">
-                        <input type="text" id="new-member-name" class="team-input" placeholder="Enter team member name...">
+                        <input type="text" id="new-member-name" class="team-input" placeholder="Enter team member name..." maxlength="50">
                         <select id="new-member-company" class="team-select">
                             <option value="Scaleup Finance">Scaleup Finance</option>
                             <option value="Client">Client</option>
                         </select>
-                        <button class="btn btn-success" onclick="addTeamMember()">➕ Add Member</button>
+                        <button type="button" class="btn btn-success btn-small" onclick="addTeamMember()">➕ Add Member</button>
                     </div>
 
                     <div id="team-members-list">
                         <p style="color: #666; font-style: italic; text-align: center; padding: 20px;">
-                            No team members added yet
+                            No team members added yet.
                         </p>
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <label>Project Notes (Optional)</label>
-                    <textarea id="project-notes" rows="3" placeholder="Any specific notes..."></textarea>
+                    <textarea id="project-notes" rows="3" placeholder="Any specific notes about this implementation..." onchange="saveToSupabase()"></textarea>
                 </div>
                 
                 <button class="btn btn-primary" onclick="saveSetup()">💾 Save Client Setup</button>
@@ -719,10 +767,15 @@
         <!-- Dashboard Tab -->
         <div id="dashboard-tab" class="tab-content">
             <div id="dashboard-warning" class="warning-message">
-                ⚠️ Please complete the Client Setup first to view the dashboard.
+                ⚠️ Please select a project and complete the Client Setup first to view the dashboard.
             </div>
             
             <div id="dashboard-content" style="display: none;">
+                <div class="dashboard-intro">
+                    <h2>📊 Project Overview</h2>
+                    <p>Monitor your e-conomic dimensions implementation progress.</p>
+                </div>
+                
                 <div class="dashboard-grid">
                     <div class="kpi-card">
                         <div class="kpi-icon">📈</div>
@@ -731,34 +784,38 @@
                         <div class="progress-bar">
                             <div class="progress-fill" id="overall-progress-bar" style="width: 0%"></div>
                         </div>
+                        <div class="kpi-subtitle">Implementation Status</div>
                     </div>
                     
                     <div class="kpi-card">
                         <div class="kpi-icon">✅</div>
                         <div class="kpi-label">Completed Tasks</div>
                         <div class="kpi-value" id="completed-tasks">0</div>
-                        <div style="color: #666;">of <span id="total-tasks">0</span> total</div>
+                        <div class="kpi-subtitle">of <span id="total-tasks">0</span> total tasks</div>
                     </div>
                     
                     <div class="kpi-card">
                         <div class="kpi-icon">🔄</div>
                         <div class="kpi-label">Active Tasks</div>
                         <div class="kpi-value" id="ongoing-tasks">0</div>
-                        <div style="color: #666;">in progress</div>
+                        <div class="kpi-subtitle">currently in progress</div>
                     </div>
                     
                     <div class="kpi-card">
                         <div class="kpi-icon">🎯</div>
                         <div class="kpi-label">Next Milestone</div>
-                        <div class="kpi-value" style="font-size: 1.5em;" id="next-milestone">Requirements</div>
+                        <div class="kpi-value" style="font-size: 1.8em; line-height: 1.2;" id="next-milestone">Requirements Analysis</div>
+                        <div class="kpi-subtitle">Phase 1 - Analysis</div>
                     </div>
                 </div>
-                
+
                 <!-- Team Performance Dashboard -->
                 <div class="team-distribution">
                     <h3>👥 Team Performance Dashboard</h3>
                     <div id="team-task-distribution">
-                        <!-- Will be populated dynamically -->
+                        <div style="text-align: center; padding: 40px; color: #666;">
+                            <p>No tasks assigned yet.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -767,28 +824,44 @@
         <!-- Project Plan Tab -->
         <div id="project-tab" class="tab-content">
             <div id="project-warning" class="warning-message">
-                ⚠️ Please complete the Client Setup first to access the project plan.
+                ⚠️ Please select a project and complete the Client Setup first to access the project plan.
             </div>
             
             <div id="project-content" style="display: none;">
+                <!-- Task Visibility Controls -->
+                <div class="visibility-controls">
+                    <div class="visibility-toggle-section">
+                        <label>
+                            <input type="checkbox" id="show-hidden-tasks" onchange="toggleHiddenTasksView()">
+                            <span>👁️ Vis skjulte opgaver</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" id="count-hidden-tasks" onchange="updateDashboard()">
+                            <span>📊 Medregn skjulte i statistik</span>
+                        </label>
+                    </div>
+                    <div>
+                        <button class="btn btn-warning" onclick="showAllTasks()">👁️ Vis alle opgaver</button>
+                        <button class="btn btn-info" onclick="hideAllTasks()">🙈 Skjul alle opgaver</button>
+                        <button class="btn btn-primary" onclick="exportToCSV()">📊 Export to CSV</button>
+                    </div>
+                </div>
+
                 <!-- Subtask Input Area -->
                 <div id="subtask-input-area" class="subtask-input-area">
                     <h4>✏️ Create New Subtask</h4>
                     <p><strong>Adding to:</strong> <span id="target-task">Unknown Task</span></p>
-                    <input type="text" id="subtask-name" class="subtask-input" placeholder="Enter subtask name...">
-                    <input type="text" id="subtask-desc" class="subtask-input" placeholder="Optional description...">
+                    <input type="text" id="subtask-name" class="subtask-input" placeholder="Enter subtask name..." maxlength="100">
+                    <input type="text" id="subtask-desc" class="subtask-input" placeholder="Optional description..." maxlength="200">
                     <button class="btn btn-success" onclick="createSubtask()">➕ Create Subtask</button>
                     <button class="btn btn-secondary" onclick="cancelSubtask()">Cancel</button>
                 </div>
-                
+
+                <!-- Project Table -->
                 <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.08);">
                     <div class="table-header">
                         <h2>📋 Detailed Project Plan</h2>
-                        <div id="client-display">No client selected</div>
-                    </div>
-                    
-                    <div style="padding: 15px; background: #f8f9fa;">
-                        <button class="btn btn-primary" onclick="exportToCSV()">📊 Export to CSV</button>
+                        <div class="client-info" id="client-display">No project selected</div>
                     </div>
                     
                     <table>
@@ -800,7 +873,11 @@
                                 <th>Description</th>
                             </tr>
                         </thead>
-                        <tbody id="project-body"></tbody>
+                        <tbody id="project-body">
+                            <tr>
+                                <td colspan="4" class="loading">Select a project to view tasks...</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -809,120 +886,524 @@
 
     <!-- Supabase SDK -->
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-    
+
     <script>
-        // SUPABASE CONFIGURATION - UPDATE THESE VALUES
-        const SUPABASE_URL = 'https://swlnojbzlfosjdtqswjd.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3bG5vamJ6bGZvc2pkdHFzd2pkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTczNDUzNzIsImV4cCI6MjA3MjkyMTM3Mn0.weAmKGGMeUaerNwyAoz6dpFufK0Fz1YbrdaUzsKiYk8';
+        // Supabase Configuration - REPLACE WITH YOUR VALUES
+        const supabaseUrl = 'https://swlnojbzlfosjdtqswjd.supabase.co'
+        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3bG5vamJ6bGZvc2pkdHFzd2pkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTczNDUzNzIsImV4cCI6MjA3MjkyMTM3Mn0.weAmKGGMeUaerNwyAoz6dpFufK0Fz1YbrdaUzsKiYk8';
         
-        // Initialize Supabase (optional - uncomment to enable)
-        // const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        
-        // Global data
-        let clientData = { name: '', scaleupPM: '', clientPM: '', notes: '', logo: null };
-        let teamMembers = [];
+        let supabase = null;
+        let currentUser = null;
+        let currentProjectId = null;
+        let currentProjectData = null;
         let currentTaskForSubtask = '';
-        let projectData = [
+        
+        // Master template for new projects - now includes visible property
+        const masterTemplate = [
             {
                 phase: "Phase 1: Analysis & Planning",
                 tasks: [
-                    {name: "1.1 Requirements Analysis", status: "not-started", responsible: "Scaleup Finance", description: "Map dimension requirements", subtasks: []},
-                    {name: "1.2 System Mapping", status: "not-started", responsible: "Client", description: "Current setup in all systems", subtasks: []},
-                    {name: "1.3 Gap Analysis", status: "not-started", responsible: "Scaleup Finance", description: "Identify changes", subtasks: []},
-                    {name: "1.4 Technical Architecture", status: "not-started", responsible: "Scaleup Finance", description: "Design solution", subtasks: []}
+                    {name: "1.1 Requirements Analysis", status: "not-started", responsible: "Scaleup Finance", description: "Map dimension requirements and needs", visible: true, subtasks: []},
+                    {name: "1.2 System Mapping", status: "not-started", responsible: "Client", description: "Current setup in all systems", visible: true, subtasks: []},
+                    {name: "1.3 Gap Analysis", status: "not-started", responsible: "Scaleup Finance", description: "Identify change requirements", visible: true, subtasks: []},
+                    {name: "1.4 Technical Architecture", status: "not-started", responsible: "Scaleup Finance", description: "Design solution architecture", visible: true, subtasks: []}
                 ]
             },
             {
                 phase: "Phase 2: e-conomic Configuration",
                 tasks: [
-                    {name: "2.1 Dimension Setup", status: "not-started", responsible: "Scaleup Finance", description: "Create dimensions", subtasks: []},
-                    {name: "2.2 Chart of Accounts", status: "not-started", responsible: "Scaleup Finance", description: "Update accounts", subtasks: []},
-                    {name: "2.3 Report Configuration", status: "not-started", responsible: "Scaleup Finance", description: "Customize reports", subtasks: []},
-                    {name: "2.4 User Permissions", status: "not-started", responsible: "Client", description: "Setup access", subtasks: []}
+                    {name: "2.1 Dimension Setup", status: "not-started", responsible: "Scaleup Finance", description: "Create dimensions in e-conomic", visible: true, subtasks: []},
+                    {name: "2.2 Chart of Accounts Adaptation", status: "not-started", responsible: "Scaleup Finance", description: "Update chart of accounts", visible: true, subtasks: []},
+                    {name: "2.3 Report Configuration", status: "not-started", responsible: "Scaleup Finance", description: "Customize standard reports", visible: true, subtasks: []},
+                    {name: "2.4 User Permissions", status: "not-started", responsible: "Client", description: "Setup user access rights", visible: true, subtasks: []}
                 ]
             },
             {
-                phase: "Phase 3: Integrations",
+                phase: "Phase 3: Corpay Integration",
                 tasks: [
-                    {name: "3.1 Corpay Setup", status: "not-started", responsible: "Client", description: "Configure Corpay", subtasks: []},
-                    {name: "3.2 Pleo Setup", status: "not-started", responsible: "Client", description: "Configure Pleo", subtasks: []},
-                    {name: "3.3 Integration Testing", status: "not-started", responsible: "Scaleup Finance", description: "Test integrations", subtasks: []},
-                    {name: "3.4 Data Validation", status: "not-started", responsible: "Scaleup Finance", description: "Verify data flow", subtasks: []}
+                    {name: "3.1 Corpay Setup", status: "not-started", responsible: "Client", description: "Configure dimensions in Corpay", visible: true, subtasks: []},
+                    {name: "3.2 e-conomic Mapping", status: "not-started", responsible: "Scaleup Finance", description: "System mapping between platforms", visible: true, subtasks: []},
+                    {name: "3.3 Data Import Testing", status: "not-started", responsible: "Scaleup Finance", description: "Test data transfer processes", visible: true, subtasks: []},
+                    {name: "3.4 Automation Rules", status: "not-started", responsible: "Scaleup Finance", description: "Setup automatic posting rules", visible: true, subtasks: []}
                 ]
             },
             {
-                phase: "Phase 4: Go-Live",
+                phase: "Phase 4: Pleo Integration",
                 tasks: [
-                    {name: "4.1 User Training", status: "not-started", responsible: "Scaleup Finance", description: "Train users", subtasks: []},
-                    {name: "4.2 Documentation", status: "not-started", responsible: "Scaleup Finance", description: "Create manuals", subtasks: []},
-                    {name: "4.3 Production Deploy", status: "not-started", responsible: "Scaleup Finance", description: "Go live", subtasks: []},
-                    {name: "4.4 Support", status: "not-started", responsible: "Scaleup Finance", description: "Post go-live support", subtasks: []}
+                    {name: "4.1 Pleo Setup", status: "not-started", responsible: "Client", description: "Configure dimensions in Pleo", visible: true, subtasks: []},
+                    {name: "4.2 Employee Training", status: "not-started", responsible: "Client", description: "Train employees on dimension usage", visible: true, subtasks: []},
+                    {name: "4.3 Approval Workflows", status: "not-started", responsible: "Client", description: "Setup approval processes", visible: true, subtasks: []},
+                    {name: "4.4 Integration Testing", status: "not-started", responsible: "Scaleup Finance", description: "Test Pleo to e-conomic integration", visible: true, subtasks: []}
+                ]
+            },
+            {
+                phase: "Phase 5: Testing & Validation",
+                tasks: [
+                    {name: "5.1 System Testing", status: "not-started", responsible: "Scaleup Finance", description: "Functional testing of all systems", visible: true, subtasks: []},
+                    {name: "5.2 User Acceptance Testing", status: "not-started", responsible: "Client", description: "Testing with end users", visible: true, subtasks: []},
+                    {name: "5.3 Report Validation", status: "not-started", responsible: "Scaleup Finance", description: "Verify report accuracy", visible: true, subtasks: []},
+                    {name: "5.4 Performance Testing", status: "not-started", responsible: "Scaleup Finance", description: "Test system performance", visible: true, subtasks: []}
+                ]
+            },
+            {
+                phase: "Phase 6: Go-Live & Support",
+                tasks: [
+                    {name: "6.1 Production Implementation", status: "not-started", responsible: "Scaleup Finance", description: "Deploy to production environment", visible: true, subtasks: []},
+                    {name: "6.2 User Training", status: "not-started", responsible: "Scaleup Finance", description: "Train all users", visible: true, subtasks: []},
+                    {name: "6.3 Documentation", status: "not-started", responsible: "Scaleup Finance", description: "Create user manuals", visible: true, subtasks: []},
+                    {name: "6.4 Post-Implementation Support", status: "not-started", responsible: "Scaleup Finance", description: "Ongoing support first month", visible: true, subtasks: []}
                 ]
             }
         ];
-
-        // Logo Upload Handler
-        function handleLogoUpload(event) {
-            const file = event.target.files[0];
-            if (file && file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    // Update preview
-                    document.getElementById('preview-image').src = e.target.result;
-                    document.getElementById('logo-preview').style.display = 'block';
-                    
-                    // Update header logo
-                    const headerLogo = document.getElementById('header-logo');
-                    headerLogo.src = e.target.result;
-                    headerLogo.style.display = 'block';
-                    document.getElementById('logo-fallback').style.display = 'none';
-                    
-                    // Store in clientData
-                    clientData.logo = e.target.result;
-                };
-                reader.readAsDataURL(file);
+        
+        // Initialize Supabase
+        try {
+            if (supabaseUrl !== 'https://YOUR-PROJECT-REF.supabase.co') {
+                supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+                checkAuth();
+            } else {
+                console.error('Please configure Supabase credentials');
+                alert('Supabase er ikke konfigureret. Opdater credentials i HTML filen.');
+            }
+        } catch (error) {
+            console.error('Supabase initialization error:', error);
+        }
+        
+        // Authentication Functions
+        async function checkAuth() {
+            if (!supabase) return;
+            
+            const { data: { user } } = await supabase.auth.getUser();
+            
+            if (user) {
+                currentUser = user;
+                showDashboard();
+            } else {
+                showLoginScreen();
             }
         }
-
-        // Team member functions
-        function addTeamMember() {
-            const name = document.getElementById('new-member-name').value.trim();
-            const company = document.getElementById('new-member-company').value;
+        
+        function showLoginScreen() {
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('main-dashboard').style.display = 'none';
+        }
+        
+        function showDashboard() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-dashboard').style.display = 'block';
+            if (currentUser) {
+                document.getElementById('current-user-email').textContent = currentUser.email;
+            }
+            loadUserProjects();
+        }
+        
+        function showLogin() {
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('signup-form').style.display = 'none';
+            clearMessages();
+        }
+        
+        function showSignup() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('signup-form').style.display = 'block';
+            clearMessages();
+        }
+        
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => errorDiv.style.display = 'none', 5000);
+        }
+        
+        function showSuccess(message) {
+            const successDiv = document.getElementById('success-message');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            setTimeout(() => successDiv.style.display = 'none', 5000);
+        }
+        
+        function clearMessages() {
+            document.getElementById('error-message').style.display = 'none';
+            document.getElementById('success-message').style.display = 'none';
+        }
+        
+        async function handleLogin() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
             
-            if (!name) {
-                alert('Please enter team member name');
+            if (!email || !password) {
+                showError('Udfyld venligst alle felter');
                 return;
             }
             
-            teamMembers.push({ name, company });
-            document.getElementById('new-member-name').value = '';
-            updateTeamMembersList();
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
+            
+            if (error) {
+                showError('Login fejlede: ' + error.message);
+            } else {
+                currentUser = data.user;
+                showDashboard();
+            }
         }
+        
+        async function handleSignup() {
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const companyName = document.getElementById('company-name').value;
+            
+            if (!email || !password || !companyName) {
+                showError('Udfyld venligst alle felter');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showError('Password skal være mindst 6 tegn');
+                return;
+            }
+            
+            const { data, error } = await supabase.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    data: {
+                        company_name: companyName
+                    }
+                }
+            });
+            
+            if (error) {
+                showError('Oprettelse fejlede: ' + error.message);
+            } else {
+                showSuccess('Konto oprettet! Du kan nu logge ind.');
+                setTimeout(() => showLogin(), 3000);
+            }
+        }
+        
+        async function handleLogout() {
+            const { error } = await supabase.auth.signOut();
+            if (!error) {
+                currentUser = null;
+                showLoginScreen();
+            }
+        }
+        
+        // Load user's projects
+        async function loadUserProjects() {
+            if (!supabase || !currentUser) return;
+            
+            try {
+                const { data: projects, error } = await supabase
+                    .from('projects')
+                    .select('project_id, client_data')
+                    .eq('user_id', currentUser.id);
 
+                if (error) throw error;
+
+                const select = document.getElementById('project-select');
+                if (select) {
+                    select.innerHTML = '<option value="">Vælg eller opret et projekt...</option>';
+                    
+                    if (projects && projects.length > 0) {
+                        projects.forEach(project => {
+                            const option = document.createElement('option');
+                            option.value = project.project_id;
+                            const clientName = project.client_data?.name || 'Unavngivet projekt';
+                            option.textContent = clientName;
+                            select.appendChild(option);
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading projects:', error.message);
+            }
+        }
+        
+        // Create new project
+        async function createNewProject() {
+            if (!currentUser) {
+                alert('Du skal være logget ind for at oprette projekter');
+                return;
+            }
+            
+            const projectName = prompt('Indtast kundens firmanavn:');
+            if (!projectName) return;
+            
+            const projectId = generateProjectId(projectName);
+            currentProjectId = projectId;
+            
+            const newProject = {
+                project_id: projectId,
+                user_id: currentUser.id,
+                client_data: {
+                    name: projectName,
+                    scaleupPM: '',
+                    clientPM: '',
+                    notes: '',
+                    logo: null
+                },
+                team_members: [],
+                tasks: masterTemplate, // Now includes visible property
+                created_at: new Date().toISOString(),
+                last_updated: new Date().toISOString()
+            };
+            
+            if (supabase) {
+                try {
+                    const { error } = await supabase
+                        .from('projects')
+                        .insert([newProject]);
+                    
+                    if (error) throw error;
+                    
+                    await loadUserProjects();
+                    document.getElementById('project-select').value = projectId;
+                    loadProject(projectId);
+                } catch (error) {
+                    console.error('Error creating project:', error.message);
+                    alert('Fejl ved oprettelse af projekt: ' + error.message);
+                }
+            }
+        }
+        
+        // Load project
+        async function loadProject(projectId) {
+            if (!projectId) {
+                currentProjectId = null;
+                resetUI();
+                return;
+            }
+            
+            currentProjectId = projectId;
+            
+            if (!supabase) return;
+            
+            try {
+                const { data: project, error } = await supabase
+                    .from('projects')
+                    .select('*')
+                    .eq('project_id', projectId)
+                    .eq('user_id', currentUser.id)
+                    .single();
+
+                if (error) throw error;
+
+                if (project) {
+                    currentProjectData = project;
+                    
+                    // Ensure all tasks have visible property
+                    if (currentProjectData.tasks) {
+                        currentProjectData.tasks.forEach(phase => {
+                            phase.tasks.forEach(task => {
+                                if (task.visible === undefined) {
+                                    task.visible = true;
+                                }
+                                if (!task.subtasks) {
+                                    task.subtasks = [];
+                                }
+                            });
+                        });
+                    }
+                    
+                    populateUIFromProject(project);
+                }
+            } catch (error) {
+                console.error('Error loading project:', error.message);
+            }
+        }
+        
+        // Populate UI from project data
+        function populateUIFromProject(projectData) {
+            const clientData = projectData.client_data || {};
+            document.getElementById('client-name').value = clientData.name || '';
+            document.getElementById('scaleup-pm').value = clientData.scaleupPM || '';
+            document.getElementById('client-pm').value = clientData.clientPM || '';
+            document.getElementById('project-notes').value = clientData.notes || '';
+            
+            // Load logo if exists
+            if (clientData.logo) {
+                const logoElement = document.getElementById('header-logo');
+                logoElement.src = clientData.logo;
+                logoElement.style.display = 'block';
+                document.getElementById('logo-fallback').style.display = 'none';
+            }
+            
+            // Load team members
+            if (projectData.team_members) {
+                currentProjectData.team_members = projectData.team_members;
+                updateTeamMembersList();
+            }
+            
+            checkSetup();
+            populateTable();
+            updateDashboard();
+        }
+        
+        // Save to Supabase
+        async function saveToSupabase() {
+            if (!currentProjectId || !supabase || !currentUser) return;
+            
+            const currentData = {
+                client_data: {
+                    name: document.getElementById('client-name').value.trim(),
+                    scaleupPM: document.getElementById('scaleup-pm').value.trim(),
+                    clientPM: document.getElementById('client-pm').value.trim(),
+                    notes: document.getElementById('project-notes').value.trim(),
+                    logo: currentProjectData?.client_data?.logo || null
+                },
+                team_members: currentProjectData?.team_members || [],
+                tasks: currentProjectData?.tasks || masterTemplate,
+                last_updated: new Date().toISOString()
+            };
+            
+            try {
+                const { error } = await supabase
+                    .from('projects')
+                    .update(currentData)
+                    .eq('project_id', currentProjectId)
+                    .eq('user_id', currentUser.id);
+                
+                if (error) throw error;
+            } catch (error) {
+                console.error('Failed to save to Supabase:', error.message);
+            }
+            
+            currentProjectData = { ...currentProjectData, ...currentData };
+        }
+        
+        // Logo upload handler
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const logoData = e.target.result;
+                
+                // Update UI
+                const logoElement = document.getElementById('header-logo');
+                logoElement.src = logoData;
+                logoElement.style.display = 'block';
+                document.getElementById('logo-fallback').style.display = 'none';
+                
+                // Save to project data
+                if (currentProjectData) {
+                    if (!currentProjectData.client_data) {
+                        currentProjectData.client_data = {};
+                    }
+                    currentProjectData.client_data.logo = logoData;
+                    saveToSupabase();
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        // Team member functions
+        function addTeamMember() {
+            const nameInput = document.getElementById('new-member-name');
+            const companySelect = document.getElementById('new-member-company');
+            
+            const name = nameInput.value.trim();
+            const company = companySelect.value;
+            
+            if (!name) {
+                alert('Please enter a team member name');
+                return;
+            }
+            
+            if (!currentProjectData.team_members) {
+                currentProjectData.team_members = [];
+            }
+            
+            if (currentProjectData.team_members.find(member => member.name === name)) {
+                alert('Team member already exists');
+                return;
+            }
+            
+            currentProjectData.team_members.push({ name, company });
+            nameInput.value = '';
+            updateTeamMembersList();
+            saveToSupabase();
+        }
+        
+        function removeTeamMember(name) {
+            if (confirm('Remove this team member?')) {
+                currentProjectData.team_members = currentProjectData.team_members.filter(
+                    member => member.name !== name
+                );
+                updateTeamMembersList();
+                saveToSupabase();
+            }
+        }
+        
         function updateTeamMembersList() {
             const listDiv = document.getElementById('team-members-list');
             
-            if (teamMembers.length === 0) {
-                listDiv.innerHTML = '<p style="color: #666; font-style: italic; text-align: center; padding: 20px;">No team members added yet</p>';
+            if (!currentProjectData?.team_members || currentProjectData.team_members.length === 0) {
+                listDiv.innerHTML = '<p style="color: #666; font-style: italic; text-align: center; padding: 20px;">No team members added yet.</p>';
                 return;
             }
             
-            listDiv.innerHTML = teamMembers.map((member, index) => `
+            listDiv.innerHTML = currentProjectData.team_members.map(member => `
                 <div class="team-member-item">
-                    <div>
-                        <strong>${member.name}</strong> - ${member.company}
+                    <div class="team-member-info">
+                        <div class="team-member-name">${member.name}</div>
+                        <div class="team-member-company">${member.company}</div>
                     </div>
-                    <button class="btn btn-danger" onclick="removeTeamMember(${index})">Remove</button>
+                    <button onclick="removeTeamMember('${member.name}')" class="btn btn-danger btn-small">Remove</button>
                 </div>
             `).join('');
         }
-
-        function removeTeamMember(index) {
-            teamMembers.splice(index, 1);
-            updateTeamMembersList();
+        
+        // Get responsible options (including team members)
+        function getResponsibleOptions() {
+            let options = ['Scaleup Finance', 'Client'];
+            
+            if (currentProjectData?.team_members) {
+                currentProjectData.team_members.forEach(member => {
+                    options.push(member.name);
+                });
+            }
+            
+            return options;
         }
-
-        // Tab switching
+        
+        // Generate project ID
+        function generateProjectId(projectName) {
+            const cleanName = projectName.toLowerCase().replace(/[^a-z0-9]/g, '-');
+            const timestamp = Date.now().toString().slice(-6);
+            return `${cleanName}-${timestamp}`;
+        }
+        
+        // Reset UI
+        function resetUI() {
+            document.getElementById('client-name').value = '';
+            document.getElementById('scaleup-pm').value = '';
+            document.getElementById('client-pm').value = '';
+            document.getElementById('project-notes').value = '';
+            document.getElementById('team-members-list').innerHTML = '<p style="color: #666; font-style: italic; text-align: center; padding: 20px;">No team members added yet.</p>';
+            checkSetup();
+        }
+        
+        // Fill test data
+        function fillTestData() {
+            document.getElementById('client-name').value = 'ABC Corporation';
+            document.getElementById('scaleup-pm').value = 'Lars Jensen';
+            document.getElementById('client-pm').value = 'John Smith (CFO)';
+            document.getElementById('project-notes').value = 'Standard e-conomic dimensions implementation.';
+            
+            currentProjectData.team_members = [
+                { name: 'Maria Petersen', company: 'Scaleup Finance' },
+                { name: 'Thomas Nielsen', company: 'Client' }
+            ];
+            updateTeamMembersList();
+            saveToSupabase();
+        }
+        
+        // Switch tabs
         function switchTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
@@ -930,51 +1411,32 @@
             event.target.classList.add('active');
             checkSetup();
         }
-
-        // Fill test data
-        function fillTestData() {
-            document.getElementById('client-name').value = 'ABC Corporation';
-            document.getElementById('scaleup-pm').value = 'Lars Jensen';
-            document.getElementById('client-pm').value = 'John Smith (CFO)';
-            document.getElementById('project-notes').value = 'Standard e-conomic implementation with Corpay and Pleo.';
-            
-            teamMembers = [
-                { name: 'Lars Jensen', company: 'Scaleup Finance' },
-                { name: 'Maria Petersen', company: 'Scaleup Finance' },
-                { name: 'John Smith', company: 'Client' },
-                { name: 'Sarah Johnson', company: 'Client' }
-            ];
-            updateTeamMembersList();
-        }
-
+        
         // Save setup
         function saveSetup() {
-            clientData.name = document.getElementById('client-name').value.trim();
-            clientData.scaleupPM = document.getElementById('scaleup-pm').value.trim();
-            clientData.clientPM = document.getElementById('client-pm').value.trim();
-            clientData.notes = document.getElementById('project-notes').value.trim();
+            const clientData = {
+                name: document.getElementById('client-name').value.trim(),
+                scaleupPM: document.getElementById('scaleup-pm').value.trim(),
+                clientPM: document.getElementById('client-pm').value.trim(),
+                notes: document.getElementById('project-notes').value.trim()
+            };
             
             if (!clientData.name || !clientData.scaleupPM) {
-                alert('Please fill in required fields');
+                alert('Udfyld venligst kundenavn og Scaleup Finance PM');
                 return;
             }
             
-            // Update task responsibilities with client name
-            projectData.forEach(phase => {
-                phase.tasks.forEach(task => {
-                    if (task.responsible === 'Client') {
-                        task.responsible = clientData.name;
-                    }
-                });
-            });
-            
+            saveToSupabase();
             switchTab('dashboard');
             document.querySelectorAll('.nav-tab')[1].click();
         }
-
+        
         // Check setup
         function checkSetup() {
-            const hasSetup = clientData.name && clientData.scaleupPM;
+            const hasProject = currentProjectId !== null;
+            const clientName = document.getElementById('client-name').value.trim();
+            const scaleupPM = document.getElementById('scaleup-pm').value.trim();
+            const hasSetup = hasProject && clientName && scaleupPM;
             
             const dashboardWarning = document.getElementById('dashboard-warning');
             const dashboardContent = document.getElementById('dashboard-content');
@@ -987,11 +1449,12 @@
                 if (projectWarning) projectWarning.style.display = 'none';
                 if (projectContent) projectContent.style.display = 'block';
                 
-                document.getElementById('client-display').textContent = `${clientData.name} | PM: ${clientData.scaleupPM}`;
+                const clientDisplay = document.getElementById('client-display');
+                if (clientDisplay) {
+                    clientDisplay.textContent = `${clientName} | PM: ${scaleupPM}`;
+                }
                 
-                populateTable();
                 updateDashboard();
-                updateTeamTaskDistribution();
             } else {
                 if (dashboardWarning) dashboardWarning.style.display = 'block';
                 if (dashboardContent) dashboardContent.style.display = 'none';
@@ -999,47 +1462,108 @@
                 if (projectContent) projectContent.style.display = 'none';
             }
         }
-
-        // Populate table
+        
+        // TASK VISIBILITY FUNCTIONS
+        
+        // Toggle task visibility
+        function toggleTaskVisibility(taskName) {
+            if (!currentProjectData?.tasks) return;
+            
+            for (let phase of currentProjectData.tasks) {
+                for (let task of phase.tasks) {
+                    if (task.name === taskName) {
+                        task.visible = !task.visible;
+                        populateTable();
+                        updateDashboard();
+                        saveToSupabase();
+                        break;
+                    }
+                }
+            }
+        }
+        
+        // Toggle showing hidden tasks
+        function toggleHiddenTasksView() {
+            populateTable();
+        }
+        
+        // Show all tasks
+        function showAllTasks() {
+            if (!currentProjectData?.tasks) return;
+            
+            currentProjectData.tasks.forEach(phase => {
+                phase.tasks.forEach(task => {
+                    task.visible = true;
+                });
+            });
+            
+            populateTable();
+            updateDashboard();
+            saveToSupabase();
+        }
+        
+        // Hide all tasks
+        function hideAllTasks() {
+            if (!currentProjectData?.tasks) return;
+            
+            currentProjectData.tasks.forEach(phase => {
+                phase.tasks.forEach(task => {
+                    task.visible = false;
+                });
+            });
+            
+            populateTable();
+            updateDashboard();
+            saveToSupabase();
+        }
+        
+        // Populate table with visibility controls
         function populateTable() {
             const tbody = document.getElementById('project-body');
+            if (!tbody || !currentProjectData?.tasks) return;
+            
             tbody.innerHTML = '';
+            const showHidden = document.getElementById('show-hidden-tasks')?.checked || false;
+            const responsibleOptions = getResponsibleOptions();
             
-            const responsibleOptions = ['Scaleup Finance', clientData.name || 'Client'];
-            teamMembers.forEach(m => responsibleOptions.push(m.name));
-            
-            projectData.forEach(phase => {
-                // Phase header
+            currentProjectData.tasks.forEach(phase => {
+                // Check if any tasks in this phase are visible or if we should show hidden
+                const hasVisibleTasks = phase.tasks.some(task => task.visible || showHidden);
+                if (!hasVisibleTasks) return;
+                
                 const phaseRow = document.createElement('tr');
                 phaseRow.innerHTML = `<td colspan="4" style="background: #3a4a47; color: white; font-weight: bold; padding: 15px;">${phase.phase}</td>`;
                 tbody.appendChild(phaseRow);
                 
-                // Tasks
                 phase.tasks.forEach(task => {
-                    const taskRow = document.createElement('tr');
+                    // Skip hidden tasks unless showing them
+                    if (!task.visible && !showHidden) return;
                     
+                    const taskRow = document.createElement('tr');
+                    if (!task.visible) taskRow.className = 'task-hidden';
+                    
+                    const visibilityIcon = task.visible ? '👁️' : '🙈';
                     const responsibleDropdown = responsibleOptions.map(option => 
                         `<option value="${option}" ${task.responsible === option ? 'selected' : ''}>${option}</option>`
                     ).join('');
                     
                     taskRow.innerHTML = `
                         <td>
-                            <div class="task-cell">
-                                <span class="task-name">${task.name}</span>
-                                <button class="add-subtask-btn" onclick="showSubtaskInput('${task.name}')">
-                                    ➕ Add Subtask
-                                </button>
-                            </div>
+                            <button class="task-visibility-toggle" onclick="toggleTaskVisibility('${task.name}')" title="${task.visible ? 'Skjul opgave' : 'Vis opgave'}">
+                                ${visibilityIcon}
+                            </button>
+                            <span class="task-name">${task.name}</span>
+                            <button class="add-subtask-btn" onclick="showSubtaskInput('${task.name}')">➕ Subtask</button>
                         </td>
                         <td>
-                            <select class="status-select status-${task.status}" onchange="updateTaskStatus('${task.name}', this.value)">
+                            <select class="status-select status-${task.status}" onchange="updateTaskStatus('${task.name}', this.value)" ${!task.visible ? 'disabled' : ''}>
                                 <option value="not-started" ${task.status === 'not-started' ? 'selected' : ''}>⏳ Not Started</option>
                                 <option value="in-progress" ${task.status === 'in-progress' ? 'selected' : ''}>🔄 In Progress</option>
                                 <option value="completed" ${task.status === 'completed' ? 'selected' : ''}>✅ Completed</option>
                             </select>
                         </td>
                         <td>
-                            <select style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px;" onchange="updateTaskResponsible('${task.name}', this.value)">
+                            <select onchange="updateTaskResponsible('${task.name}', this.value)" ${!task.visible ? 'disabled' : ''} style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px;">
                                 ${responsibleDropdown}
                             </select>
                         </td>
@@ -1047,11 +1571,12 @@
                     `;
                     tbody.appendChild(taskRow);
                     
-                    // Subtasks
+                    // Add subtasks
                     if (task.subtasks && task.subtasks.length > 0) {
                         task.subtasks.forEach((subtask, index) => {
                             const subtaskRow = document.createElement('tr');
                             subtaskRow.className = 'subtask-row';
+                            if (!task.visible) subtaskRow.classList.add('task-hidden');
                             
                             const subtaskResponsibleDropdown = responsibleOptions.map(option => 
                                 `<option value="${option}" ${subtask.responsible === option ? 'selected' : ''}>${option}</option>`
@@ -1059,18 +1584,18 @@
                             
                             subtaskRow.innerHTML = `
                                 <td>
-                                    <span style="color: #666;">└─</span> ${subtask.name}
+                                    <span style="margin-left: 35px; color: #666;">└─</span> ${subtask.name}
                                     <button onclick="removeSubtask('${task.name}', ${index})" style="background: #dc3545; color: white; border: none; padding: 2px 6px; border-radius: 3px; font-size: 0.7em; margin-left: 10px;">🗑️</button>
                                 </td>
                                 <td>
-                                    <select class="status-select status-${subtask.status}" onchange="updateSubtaskStatus('${task.name}', ${index}, this.value)">
+                                    <select class="status-select status-${subtask.status}" onchange="updateSubtaskStatus('${task.name}', ${index}, this.value)" ${!task.visible ? 'disabled' : ''}>
                                         <option value="not-started" ${subtask.status === 'not-started' ? 'selected' : ''}>⏳ Not Started</option>
                                         <option value="in-progress" ${subtask.status === 'in-progress' ? 'selected' : ''}>🔄 In Progress</option>
                                         <option value="completed" ${subtask.status === 'completed' ? 'selected' : ''}>✅ Completed</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <select onchange="updateSubtaskResponsible('${task.name}', ${index}, this.value)">
+                                    <select onchange="updateSubtaskResponsible('${task.name}', ${index}, this.value)" ${!task.visible ? 'disabled' : ''} style="width: 100%; padding: 4px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.85em;">
                                         ${subtaskResponsibleDropdown}
                                     </select>
                                 </td>
@@ -1082,178 +1607,28 @@
                 });
             });
         }
-
-        // Subtask functions
-        function showSubtaskInput(taskName) {
-            currentTaskForSubtask = taskName;
-            document.getElementById('target-task').textContent = taskName;
-            document.getElementById('subtask-name').value = '';
-            document.getElementById('subtask-desc').value = '';
-            document.getElementById('subtask-input-area').style.display = 'block';
-            document.getElementById('subtask-name').focus();
-        }
-
-        function cancelSubtask() {
-            document.getElementById('subtask-input-area').style.display = 'none';
-            currentTaskForSubtask = '';
-        }
-
-        function createSubtask() {
-            const name = document.getElementById('subtask-name').value.trim();
-            const desc = document.getElementById('subtask-desc').value.trim();
-            
-            if (!name) {
-                alert('Please enter subtask name');
-                return;
-            }
-            
-            for (let phase of projectData) {
-                for (let task of phase.tasks) {
-                    if (task.name === currentTaskForSubtask) {
-                        if (!task.subtasks) task.subtasks = [];
-                        
-                        const taskNumber = task.name.split(' ')[0];
-                        const subtaskNumber = task.subtasks.length + 1;
-                        const fullSubtaskNumber = `${taskNumber}.${subtaskNumber}`;
-                        
-                        task.subtasks.push({
-                            name: `${fullSubtaskNumber} ${name}`,
-                            status: 'not-started',
-                            responsible: task.responsible,
-                            description: desc || 'Subtask'
-                        });
-                        break;
-                    }
-                }
-            }
-            
-            cancelSubtask();
-            populateTable();
-            updateDashboard();
-            updateTeamTaskDistribution();
-        }
-
-        function removeSubtask(taskName, index) {
-            if (confirm('Remove this subtask?')) {
-                for (let phase of projectData) {
-                    for (let task of phase.tasks) {
-                        if (task.name === taskName && task.subtasks) {
-                            task.subtasks.splice(index, 1);
-                            break;
-                        }
-                    }
-                }
-                populateTable();
-                updateDashboard();
-                updateTeamTaskDistribution();
-            }
-        }
-
-        // Update functions
-        function updateTaskStatus(taskName, status) {
-            for (let phase of projectData) {
-                for (let task of phase.tasks) {
-                    if (task.name === taskName) {
-                        task.status = status;
-                        event.target.className = `status-select status-${status}`;
-                        updateDashboard();
-                        updateTeamTaskDistribution();
-                        break;
-                    }
-                }
-            }
-        }
-
-        function updateSubtaskStatus(taskName, subtaskIndex, status) {
-            for (let phase of projectData) {
-                for (let task of phase.tasks) {
-                    if (task.name === taskName && task.subtasks && task.subtasks[subtaskIndex]) {
-                        task.subtasks[subtaskIndex].status = status;
-                        event.target.className = `status-select status-${status}`;
-                        updateDashboard();
-                        updateTeamTaskDistribution();
-                        break;
-                    }
-                }
-            }
-        }
-
-        function updateTaskResponsible(taskName, newResponsible) {
-            for (let phase of projectData) {
-                for (let task of phase.tasks) {
-                    if (task.name === taskName) {
-                        task.responsible = newResponsible;
-                        updateDashboard();
-                        updateTeamTaskDistribution();
-                        break;
-                    }
-                }
-            }
-        }
-
-        function updateSubtaskResponsible(taskName, subtaskIndex, newResponsible) {
-            for (let phase of projectData) {
-                for (let task of phase.tasks) {
-                    if (task.name === taskName && task.subtasks && task.subtasks[subtaskIndex]) {
-                        task.subtasks[subtaskIndex].responsible = newResponsible;
-                        updateDashboard();
-                        updateTeamTaskDistribution();
-                        break;
-                    }
-                }
-            }
-        }
-
-        // Update dashboard
+        
+        // Update dashboard with visibility consideration
         function updateDashboard() {
+            if (!currentProjectData?.tasks) return;
+            
+            const countHidden = document.getElementById('count-hidden-tasks')?.checked || false;
+            
             let totalTasks = 0;
             let completedTasks = 0;
             let ongoingTasks = 0;
+            let tasksByResponsible = {};
             
-            projectData.forEach(phase => {
+            currentProjectData.tasks.forEach(phase => {
                 phase.tasks.forEach(task => {
+                    // Only count visible tasks unless countHidden is checked
+                    if (!task.visible && !countHidden) return;
+                    
                     totalTasks++;
                     if (task.status === 'completed') completedTasks++;
                     if (task.status === 'in-progress') ongoingTasks++;
                     
-                    if (task.subtasks) {
-                        task.subtasks.forEach(subtask => {
-                            totalTasks++;
-                            if (subtask.status === 'completed') completedTasks++;
-                            if (subtask.status === 'in-progress') ongoingTasks++;
-                        });
-                    }
-                });
-            });
-            
-            const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
-            
-            document.getElementById('overall-progress').textContent = progressPercent + '%';
-            document.getElementById('overall-progress-bar').style.width = progressPercent + '%';
-            document.getElementById('completed-tasks').textContent = completedTasks;
-            document.getElementById('total-tasks').textContent = totalTasks;
-            document.getElementById('ongoing-tasks').textContent = ongoingTasks;
-            
-            // Find next milestone
-            let nextMilestone = 'All completed';
-            for (const phase of projectData) {
-                for (const task of phase.tasks) {
-                    if (task.status !== 'completed') {
-                        nextMilestone = task.name.split(' ').slice(1).join(' ');
-                        break;
-                    }
-                }
-                if (nextMilestone !== 'All completed') break;
-            }
-            document.getElementById('next-milestone').textContent = nextMilestone;
-        }
-
-        // Update team task distribution
-        function updateTeamTaskDistribution() {
-            const tasksByResponsible = {};
-            
-            projectData.forEach(phase => {
-                phase.tasks.forEach(task => {
+                    // Track by responsible
                     if (!tasksByResponsible[task.responsible]) {
                         tasksByResponsible[task.responsible] = {
                             total: 0,
@@ -1265,8 +1640,13 @@
                     tasksByResponsible[task.responsible].total++;
                     tasksByResponsible[task.responsible][task.status]++;
                     
-                    if (task.subtasks) {
+                    // Count subtasks
+                    if (task.subtasks && task.subtasks.length > 0) {
                         task.subtasks.forEach(subtask => {
+                            totalTasks++;
+                            if (subtask.status === 'completed') completedTasks++;
+                            if (subtask.status === 'in-progress') ongoingTasks++;
+                            
                             if (!tasksByResponsible[subtask.responsible]) {
                                 tasksByResponsible[subtask.responsible] = {
                                     total: 0,
@@ -1282,13 +1662,47 @@
                 });
             });
             
+            const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            
+            document.getElementById('overall-progress').textContent = progressPercent + '%';
+            document.getElementById('overall-progress-bar').style.width = progressPercent + '%';
+            document.getElementById('completed-tasks').textContent = completedTasks;
+            document.getElementById('total-tasks').textContent = totalTasks;
+            document.getElementById('ongoing-tasks').textContent = ongoingTasks;
+            
+            // Find next milestone (only from visible tasks)
+            let nextMilestone = 'All tasks completed';
+            for (const phase of currentProjectData.tasks) {
+                for (const task of phase.tasks) {
+                    if (task.visible && task.status !== 'completed') {
+                        nextMilestone = task.name.split(' ').slice(1).join(' ');
+                        break;
+                    }
+                }
+                if (nextMilestone !== 'All tasks completed') break;
+            }
+            document.getElementById('next-milestone').textContent = nextMilestone;
+            
+            // Update team distribution
+            updateTeamDistribution(tasksByResponsible);
+        }
+        
+        // Update team distribution
+        function updateTeamDistribution(tasksByResponsible) {
             const container = document.getElementById('team-task-distribution');
             if (!container) return;
             
             container.innerHTML = '';
             
+            if (Object.keys(tasksByResponsible).length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;"><p>No tasks assigned yet.</p></div>';
+                return;
+            }
+            
             Object.keys(tasksByResponsible).forEach(responsible => {
                 const data = tasksByResponsible[responsible];
+                const completionRate = data.total > 0 ? Math.round((data.completed / data.total) * 100) : 0;
+                
                 const row = document.createElement('div');
                 row.className = 'person-task-row';
                 row.innerHTML = `
@@ -1296,26 +1710,175 @@
                     <div class="task-counts">
                         <span class="task-count count-completed">✅ ${data.completed} done</span>
                         <span class="task-count count-progress">🔄 ${data['in-progress']} active</span>
-                        <span class="task-count count-total">📋 ${data.total} total</span>
+                        <span class="task-count count-total">📋 ${data.total} total (${completionRate}%)</span>
                     </div>
                 `;
                 container.appendChild(row);
             });
         }
-
+        
+        // SUBTASK FUNCTIONS
+        
+        function showSubtaskInput(taskName) {
+            currentTaskForSubtask = taskName;
+            document.getElementById('target-task').textContent = taskName;
+            document.getElementById('subtask-name').value = '';
+            document.getElementById('subtask-desc').value = '';
+            document.getElementById('subtask-input-area').style.display = 'block';
+            document.getElementById('subtask-name').focus();
+        }
+        
+        function cancelSubtask() {
+            document.getElementById('subtask-input-area').style.display = 'none';
+            currentTaskForSubtask = '';
+        }
+        
+        function createSubtask() {
+            const name = document.getElementById('subtask-name').value.trim();
+            const desc = document.getElementById('subtask-desc').value.trim();
+            
+            if (!name) {
+                alert('Please enter a subtask name');
+                return;
+            }
+            
+            if (!currentProjectData?.tasks) return;
+            
+            for (let phase of currentProjectData.tasks) {
+                for (let task of phase.tasks) {
+                    if (task.name === currentTaskForSubtask) {
+                        if (!task.subtasks) task.subtasks = [];
+                        
+                        const taskNumber = task.name.split(' ')[0];
+                        const subtaskNumber = task.subtasks.length + 1;
+                        const fullSubtaskNumber = `${taskNumber}.${subtaskNumber}`;
+                        
+                        task.subtasks.push({
+                            name: `${fullSubtaskNumber} ${name}`,
+                            status: 'not-started',
+                            responsible: task.responsible,
+                            description: desc || 'Custom subtask'
+                        });
+                        
+                        break;
+                    }
+                }
+            }
+            
+            cancelSubtask();
+            populateTable();
+            updateDashboard();
+            saveToSupabase();
+        }
+        
+        function removeSubtask(taskName, subtaskIndex) {
+            if (!confirm('Remove this subtask?')) return;
+            
+            if (!currentProjectData?.tasks) return;
+            
+            for (let phase of currentProjectData.tasks) {
+                for (let task of phase.tasks) {
+                    if (task.name === taskName && task.subtasks) {
+                        task.subtasks.splice(subtaskIndex, 1);
+                        break;
+                    }
+                }
+            }
+            
+            populateTable();
+            updateDashboard();
+            saveToSupabase();
+        }
+        
+        function updateSubtaskStatus(taskName, subtaskIndex, status) {
+            if (!currentProjectData?.tasks) return;
+            
+            for (let phase of currentProjectData.tasks) {
+                for (let task of phase.tasks) {
+                    if (task.name === taskName && task.subtasks && task.subtasks[subtaskIndex]) {
+                        task.subtasks[subtaskIndex].status = status;
+                        if (event && event.target) {
+                            event.target.className = `status-select status-${status}`;
+                        }
+                        updateDashboard();
+                        saveToSupabase();
+                        break;
+                    }
+                }
+            }
+        }
+        
+        function updateSubtaskResponsible(taskName, subtaskIndex, newResponsible) {
+            if (!currentProjectData?.tasks) return;
+            
+            for (let phase of currentProjectData.tasks) {
+                for (let task of phase.tasks) {
+                    if (task.name === taskName && task.subtasks && task.subtasks[subtaskIndex]) {
+                        task.subtasks[subtaskIndex].responsible = newResponsible;
+                        updateDashboard();
+                        saveToSupabase();
+                        break;
+                    }
+                }
+            }
+        }
+        
+        // Update task status
+        async function updateTaskStatus(taskName, status) {
+            if (!currentProjectData?.tasks) return;
+            
+            for (let phase of currentProjectData.tasks) {
+                for (let task of phase.tasks) {
+                    if (task.name === taskName) {
+                        task.status = status;
+                        if (event && event.target) {
+                            event.target.className = `status-select status-${status}`;
+                        }
+                        updateDashboard();
+                        await saveToSupabase();
+                        break;
+                    }
+                }
+            }
+        }
+        
+        // Update task responsible
+        async function updateTaskResponsible(taskName, newResponsible) {
+            if (!currentProjectData?.tasks) return;
+            
+            for (let phase of currentProjectData.tasks) {
+                for (let task of phase.tasks) {
+                    if (task.name === taskName) {
+                        task.responsible = newResponsible;
+                        updateDashboard();
+                        await saveToSupabase();
+                        break;
+                    }
+                }
+            }
+        }
+        
         // Export to CSV
         function exportToCSV() {
-            let csv = 'Phase,Task,Subtask,Status,Responsible,Description\n';
+            if (!currentProjectData) return;
             
-            projectData.forEach(phase => {
+            let csv = 'Client,Scaleup PM,Client PM,Phase,Task,Subtask,Status,Responsible,Description,Visible\n';
+            
+            currentProjectData.tasks.forEach(phase => {
                 phase.tasks.forEach(task => {
-                    const status = task.status.replace('-', ' ');
-                    csv += `"${phase.phase}","${task.name}","","${status}","${task.responsible}","${task.description}"\n`;
+                    const statusText = task.status === 'not-started' ? 'Not Started' : 
+                                     task.status === 'in-progress' ? 'In Progress' : 'Completed';
+                    const clientName = currentProjectData.client_data?.name || '';
+                    const scaleupPM = currentProjectData.client_data?.scaleupPM || '';
+                    const clientPM = currentProjectData.client_data?.clientPM || '';
                     
-                    if (task.subtasks) {
+                    csv += `"${clientName}","${scaleupPM}","${clientPM}","${phase.phase}","${task.name}","","${statusText}","${task.responsible}","${task.description}","${task.visible ? 'Yes' : 'No'}"\n`;
+                    
+                    if (task.subtasks && task.subtasks.length > 0) {
                         task.subtasks.forEach(subtask => {
-                            const subStatus = subtask.status.replace('-', ' ');
-                            csv += `"${phase.phase}","${task.name}","${subtask.name}","${subStatus}","${subtask.responsible}","${subtask.description}"\n`;
+                            const subtaskStatusText = subtask.status === 'not-started' ? 'Not Started' : 
+                                                    subtask.status === 'in-progress' ? 'In Progress' : 'Completed';
+                            csv += `"${clientName}","${scaleupPM}","${clientPM}","${phase.phase}","${task.name}","${subtask.name}","${subtaskStatusText}","${subtask.responsible}","${subtask.description}","${task.visible ? 'Yes' : 'No'}"\n`;
                         });
                     }
                 });
@@ -1325,26 +1888,50 @@
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `scaleup_project_${clientData.name || 'export'}_${new Date().toISOString().slice(0,10)}.csv`;
+            a.download = `scaleup-project-${currentProjectId}.csv`;
             a.click();
         }
-
-        // Auth functions (demo mode)
-        function handleLogin() {
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('main-dashboard').style.display = 'block';
+        
+        // Export project
+        function exportProject() {
+            if (!currentProjectData) return;
+            
+            const exportData = {
+                ...currentProjectData,
+                exportedAt: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `scaleup-project-${currentProjectId}.json`;
+            a.click();
         }
-
-        function handleLogout() {
-            document.getElementById('login-screen').style.display = 'flex';
-            document.getElementById('main-dashboard').style.display = 'none';
+        
+        // Add auth state listener
+        if (supabase) {
+            supabase.auth.onAuthStateChange((event, session) => {
+                if (event === 'SIGNED_IN') {
+                    currentUser = session.user;
+                    showDashboard();
+                } else if (event === 'SIGNED_OUT') {
+                    currentUser = null;
+                    showLoginScreen();
+                }
+            });
         }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            // Start with main dashboard visible (demo mode)
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('main-dashboard').style.display = 'block';
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            const subtaskArea = document.getElementById('subtask-input-area');
+            if (subtaskArea && subtaskArea.style.display === 'block') {
+                if (e.key === 'Enter') {
+                    createSubtask();
+                } else if (e.key === 'Escape') {
+                    cancelSubtask();
+                }
+            }
         });
     </script>
 </body>
