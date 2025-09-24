@@ -214,13 +214,6 @@
             font-weight: 600;
         }
         
-        .role-super_admin {
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #333;
-            font-weight: bold;
-            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
-        }
-        
         .role-owner {
             background: #3a4a47;
             color: white;
@@ -287,14 +280,6 @@
             font-size: 0.85em;
             font-weight: 600;
             margin-left: 15px;
-        }
-        
-        .access-badge.super_admin {
-            background: linear-gradient(135deg, #FFD700, #FFA500) !important;
-            color: #333 !important;
-            font-weight: bold;
-            box-shadow: 0 2px 10px rgba(255, 215, 0, 0.4);
-            border: none;
         }
         
         .access-badge.owner {
@@ -464,20 +449,6 @@
                 <input type="email" id="login-email" placeholder="Email" required>
                 <input type="password" id="login-password" placeholder="Password" required>
                 <button onclick="handleLogin()">Log ind</button>
-                <div class="auth-toggle">
-                    Ny bruger? <a href="#" onclick="showSignup(); return false;">Opret konto</a>
-                </div>
-            </div>
-            
-            <!-- Signup Form -->
-            <div id="signup-form" class="auth-form" style="display: none;">
-                <h2 style="margin-bottom: 20px;">Opret konto</h2>
-                <input type="email" id="signup-email" placeholder="Email" required>
-                <input type="password" id="signup-password" placeholder="Password (min. 6 tegn)" required>
-                <button onclick="handleSignup()">Opret konto</button>
-                <div class="auth-toggle">
-                    Har du allerede en konto? <a href="#" onclick="showLogin(); return false;">Log ind</a>
-                </div>
             </div>
         </div>
     </div>
@@ -767,31 +738,12 @@
                 const listDiv = document.getElementById('collaborators-list');
                 listDiv.innerHTML = '';
                 
-                // Add super admins to the list (they always have access)
-                if (currentProjectId !== 'GLOBAL_ADMIN') {
-                    SUPER_ADMINS.forEach(adminEmail => {
-                        const item = document.createElement('div');
-                        item.className = 'collaborator-item';
-                        item.innerHTML = `
-                            <div class="collaborator-info">
-                                <span class="collaborator-email">${adminEmail}</span>
-                                <span class="role-badge role-super_admin">🌟 SUPER ADMIN</span>
-                            </div>
-                        `;
-                        listDiv.appendChild(item);
-                    });
-                }
-                
-                // Add regular collaborators
                 collaborators.forEach(collab => {
-                    // Skip if it's a super admin (already shown above)
-                    if (SUPER_ADMINS.includes(collab.user_email)) return;
-                    
                     const item = document.createElement('div');
                     item.className = 'collaborator-item';
                     
                     const isOwner = collab.role === 'owner';
-                    const canRemove = currentUserRole === 'owner' || currentUserRole === 'admin' || currentUserRole === 'super_admin';
+                    const canRemove = currentUserRole === 'owner' || currentUserRole === 'admin';
                     
                     item.innerHTML = `
                         <div class="collaborator-info">
@@ -888,23 +840,9 @@
             }
         }
         
-        // Super admin emails
-        const SUPER_ADMINS = ['mma@scaleup.finance', 'jbo@scaleup.finance'];
-        
-        // Check if user is super admin
-        function isSuperAdmin() {
-            return currentUser && SUPER_ADMINS.includes(currentUser.email);
-        }
-        
         // Check user's role for current project
         async function checkUserRole(projectId) {
             if (!supabase || !currentUser) return 'viewer';
-            
-            // Super admins always have full access
-            if (isSuperAdmin()) {
-                currentUserRole = 'super_admin';
-                return 'super_admin';
-            }
             
             try {
                 // Check if user is owner
@@ -946,40 +884,24 @@
             const badge = document.getElementById('user-role-badge');
             if (badge) {
                 badge.className = `access-badge ${role}`;
-                if (role === 'super_admin') {
-                    badge.textContent = '🌟 SUPER ADMIN';
-                    badge.style.background = 'linear-gradient(135deg, #FFD700, #FFA500)';
-                    badge.style.color = '#333';
-                    badge.style.fontWeight = 'bold';
-                } else {
-                    badge.textContent = role.toUpperCase();
-                }
+                badge.textContent = role.toUpperCase();
             }
             
             // Enable/disable editing based on role
-            const canEdit = role === 'owner' || role === 'admin' || role === 'editor' || role === 'super_admin';
+            const canEdit = role === 'owner' || role === 'admin' || role === 'editor';
             
-            // Super admins can always edit everything
-            if (role !== 'super_admin') {
-                // Disable/enable form inputs for regular users
-                document.querySelectorAll('input, textarea, select').forEach(element => {
-                    if (!element.id.includes('login') && !element.id.includes('share') && 
-                        !element.id.includes('collaborator') && element.id !== 'project-select') {
-                        element.disabled = !canEdit;
-                    }
-                });
-            }
+            // Disable/enable form inputs
+            document.querySelectorAll('input, textarea, select').forEach(element => {
+                if (!element.id.includes('login') && !element.id.includes('share') && 
+                    !element.id.includes('collaborator') && element.id !== 'project-select') {
+                    element.disabled = !canEdit;
+                }
+            });
             
             // Show/hide action buttons based on role
-            const canManage = role === 'owner' || role === 'admin' || role === 'super_admin';
+            const canManage = role === 'owner' || role === 'admin';
             
-            // Show super admin indicator in header if applicable
-            if (role === 'super_admin') {
-                const header = document.querySelector('.header-description');
-                if (header && !header.textContent.includes('Super Admin')) {
-                    header.innerHTML += '<br><span style="color: #FFD700; font-size: 0.9em;">⚡ Super Admin Mode</span>';
-                }
-            }
+            // You can add more UI adjustments here based on role
         }
         
         // Authentication Functions
@@ -1007,19 +929,6 @@
             document.getElementById('main-dashboard').style.display = 'block';
             if (currentUser) {
                 document.getElementById('current-user-email').textContent = currentUser.email;
-                
-                // Show super admin badge immediately if user is super admin
-                if (isSuperAdmin()) {
-                    const badge = document.getElementById('user-role-badge');
-                    if (badge) {
-                        badge.className = 'access-badge super_admin';
-                        badge.textContent = '🌟 SUPER ADMIN';
-                        badge.style.background = 'linear-gradient(135deg, #FFD700, #FFA500)';
-                        badge.style.color = '#333';
-                        badge.style.fontWeight = 'bold';
-                        badge.style.display = 'inline-flex';
-                    }
-                }
             }
             loadUserProjects();
         }
@@ -1047,62 +956,11 @@
             }
         }
         
-        function showLogin() {
-            document.getElementById('login-form').style.display = 'block';
-            document.getElementById('signup-form').style.display = 'none';
-            clearMessages();
-        }
-        
-        function showSignup() {
-            document.getElementById('login-form').style.display = 'none';
-            document.getElementById('signup-form').style.display = 'block';
-            clearMessages();
-        }
-        
         function showError(message) {
             const errorDiv = document.getElementById('error-message');
             errorDiv.textContent = message;
             errorDiv.style.display = 'block';
             setTimeout(() => errorDiv.style.display = 'none', 5000);
-        }
-        
-        function showSuccess(message) {
-            const successDiv = document.getElementById('success-message');
-            successDiv.textContent = message;
-            successDiv.style.display = 'block';
-            setTimeout(() => successDiv.style.display = 'none', 5000);
-        }
-        
-        function clearMessages() {
-            document.getElementById('error-message').style.display = 'none';
-            document.getElementById('success-message').style.display = 'none';
-        }
-        
-        async function handleSignup() {
-            const email = document.getElementById('signup-email').value;
-            const password = document.getElementById('signup-password').value;
-            
-            if (!email || !password) {
-                showError('Udfyld venligst alle felter');
-                return;
-            }
-            
-            if (password.length < 6) {
-                showError('Password skal være mindst 6 tegn');
-                return;
-            }
-            
-            const { data, error } = await supabase.auth.signUp({
-                email: email,
-                password: password
-            });
-            
-            if (error) {
-                showError('Oprettelse fejlede: ' + error.message);
-            } else {
-                showSuccess('Konto oprettet! Check din email for at bekræfte.');
-                setTimeout(() => showLogin(), 3000);
-            }
         }
         
         async function handleLogout() {
@@ -1119,97 +977,62 @@
             if (!supabase || !currentUser) return;
             
             try {
-                let allProjects = [];
-                let ownedProjects = [];
-                let sharedProjects = [];
+                // Get owned projects
+                const { data: ownedProjects, error: ownError } = await supabase
+                    .from('projects')
+                    .select('project_id, client_data')
+                    .eq('user_id', currentUser.id);
                 
-                // Super admins can see ALL projects
-                if (isSuperAdmin()) {
-                    const { data: allData, error } = await supabase
-                        .from('projects')
-                        .select('project_id, client_data, user_id')
-                        .order('created_at', { ascending: false });
-                    
-                    if (allData) {
-                        allProjects = allData;
-                        // Separate owned vs others
-                        ownedProjects = allData.filter(p => p.user_id === currentUser.id);
-                        sharedProjects = allData.filter(p => p.user_id !== currentUser.id);
-                    }
-                } else {
-                    // Regular users: get owned projects
-                    const { data: owned, error: ownError } = await supabase
+                // Get shared projects
+                const { data: sharedAccess, error: sharedError } = await supabase
+                    .from('project_access')
+                    .select('project_id, role')
+                    .eq('user_id', currentUser.id);
+                
+                let sharedProjects = [];
+                if (sharedAccess && sharedAccess.length > 0) {
+                    const sharedIds = sharedAccess.map(a => a.project_id);
+                    const { data: sharedData, error } = await supabase
                         .from('projects')
                         .select('project_id, client_data')
-                        .eq('user_id', currentUser.id);
+                        .in('project_id', sharedIds);
                     
-                    ownedProjects = owned || [];
-                    
-                    // Get shared projects
-                    const { data: sharedAccess, error: sharedError } = await supabase
-                        .from('project_access')
-                        .select('project_id, role')
-                        .eq('user_id', currentUser.id);
-                    
-                    if (sharedAccess && sharedAccess.length > 0) {
-                        const sharedIds = sharedAccess.map(a => a.project_id);
-                        const { data: sharedData, error } = await supabase
-                            .from('projects')
-                            .select('project_id, client_data')
-                            .in('project_id', sharedIds);
-                        
-                        sharedProjects = sharedData || [];
-                    }
+                    sharedProjects = sharedData || [];
                 }
                 
                 const select = document.getElementById('project-select');
                 if (select) {
                     select.innerHTML = '<option value="">Vælg eller opret et projekt...</option>';
                     
-                    // Super admin sees all projects
-                    if (isSuperAdmin() && allProjects.length > 0) {
-                        const allGroup = document.createElement('optgroup');
-                        allGroup.label = '🌟 Alle Projekter (Super Admin)';
+                    // Add owned projects
+                    if (ownedProjects && ownedProjects.length > 0) {
+                        const ownedGroup = document.createElement('optgroup');
+                        ownedGroup.label = 'Mine projekter';
                         
-                        allProjects.forEach(project => {
+                        ownedProjects.forEach(project => {
                             const option = document.createElement('option');
                             option.value = project.project_id;
                             option.textContent = project.client_data?.name || 'Unavngivet projekt';
-                            allGroup.appendChild(option);
+                            ownedGroup.appendChild(option);
                         });
                         
-                        select.appendChild(allGroup);
-                    } else {
-                        // Regular view for non-super admins
-                        // Add owned projects
-                        if (ownedProjects && ownedProjects.length > 0) {
-                            const ownedGroup = document.createElement('optgroup');
-                            ownedGroup.label = 'Mine projekter';
-                            
-                            ownedProjects.forEach(project => {
-                                const option = document.createElement('option');
-                                option.value = project.project_id;
-                                option.textContent = project.client_data?.name || 'Unavngivet projekt';
-                                ownedGroup.appendChild(option);
-                            });
-                            
-                            select.appendChild(ownedGroup);
-                        }
+                        select.appendChild(ownedGroup);
+                    }
+                    
+                    // Add shared projects
+                    if (sharedProjects.length > 0) {
+                        const sharedGroup = document.createElement('optgroup');
+                        sharedGroup.label = 'Delte projekter';
                         
-                        // Add shared projects
-                        if (sharedProjects.length > 0) {
-                            const sharedGroup = document.createElement('optgroup');
-                            sharedGroup.label = 'Delte projekter';
-                            
-                            sharedProjects.forEach(project => {
-                                const option = document.createElement('option');
-                                option.value = project.project_id;
-                                option.textContent = `${project.client_data?.name || 'Unavngivet'}`;
-                                sharedGroup.appendChild(option);
-                            });
-                            
-                            select.appendChild(sharedGroup);
-                        }
+                        sharedProjects.forEach(project => {
+                            const access = sharedAccess.find(a => a.project_id === project.project_id);
+                            const option = document.createElement('option');
+                            option.value = project.project_id;
+                            option.textContent = `${project.client_data?.name || 'Unavngivet'} (${access.role})`;
+                            sharedGroup.appendChild(option);
+                        });
+                        
+                        select.appendChild(sharedGroup);
                     }
                 }
             } catch (error) {
@@ -1234,27 +1057,17 @@
             if (!supabase) return;
             
             try {
-                // Super admins and owners can access any project
-                const canAccessAnyProject = isSuperAdmin();
-                
-                let query = supabase
+                const { data: project, error } = await supabase
                     .from('projects')
                     .select('*')
-                    .eq('project_id', projectId);
-                
-                // If not super admin, add user filter
-                if (!canAccessAnyProject) {
-                    // This will be checked via checkUserRole instead
-                }
-                
-                const { data: project, error } = await query.single();
+                    .eq('project_id', projectId)
+                    .single();
 
                 if (error) throw error;
 
                 if (project) {
                     currentProjectData = project;
                     // Additional UI updates would go here
-                    console.log('Loaded project:', project.client_data?.name, 'Role:', role);
                 }
             } catch (error) {
                 console.error('Error loading project:', error.message);
