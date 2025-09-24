@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scaleup Finance - e-conomic Dimensions Dashboard</title>
+    <title>Scaleup Finance - Secure Dashboard</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', sans-serif; background: #f5f7fa; color: #333; }
@@ -71,34 +71,250 @@
             box-shadow: 0 5px 15px rgba(58, 74, 71, 0.3);
         }
         
-        .auth-toggle {
-            text-align: center;
-            margin-top: 20px;
-            color: #666;
+        /* Share Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
         }
         
-        .auth-toggle a {
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, #3a4a47 0%, #2d3a36 100%);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .close-modal {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        
+        .close-modal:hover {
+            opacity: 0.8;
+        }
+        
+        .share-section {
+            margin-bottom: 25px;
+        }
+        
+        .share-section h3 {
             color: #3a4a47;
-            text-decoration: none;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .share-link-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .share-link-input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #dee2e6;
+            border-radius: 6px;
+            background: #f8f9fa;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        
+        .copy-link-btn {
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
             font-weight: 600;
         }
         
-        .error-message {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            display: none;
+        .copy-link-btn:hover {
+            background: #218838;
         }
         
-        .success-message {
-            background: #d4edda;
-            color: #155724;
+        .permission-select {
+            width: 100%;
             padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            display: none;
+            border: 2px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+        
+        .permission-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        
+        .permission-info p {
+            margin: 5px 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .collaborators-list {
+            margin-top: 20px;
+        }
+        
+        .collaborator-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .collaborator-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .collaborator-email {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .role-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        
+        .role-super_admin {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #333;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+        }
+        
+        .role-owner {
+            background: #3a4a47;
+            color: white;
+        }
+        
+        .role-admin {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .role-editor {
+            background: #007bff;
+            color: white;
+        }
+        
+        .role-viewer {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .add-collaborator-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .add-email-input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #dee2e6;
+            border-radius: 6px;
+        }
+        
+        .add-role-select {
+            width: 150px;
+            padding: 10px;
+            border: 2px solid #dee2e6;
+            border-radius: 6px;
+        }
+        
+        .add-collaborator-btn {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .add-collaborator-btn:hover {
+            background: #0056b3;
+        }
+        
+        /* Access Info Badge */
+        .access-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-left: 15px;
+        }
+        
+        .access-badge.super_admin {
+            background: linear-gradient(135deg, #FFD700, #FFA500) !important;
+            color: #333 !important;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(255, 215, 0, 0.4);
+            border: none;
+        }
+        
+        .access-badge.owner {
+            border-color: #3a4a47;
+            color: #3a4a47;
+        }
+        
+        .access-badge.admin {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+        
+        .access-badge.editor {
+            border-color: #007bff;
+            color: #007bff;
+        }
+        
+        .access-badge.viewer {
+            border-color: #6c757d;
+            color: #6c757d;
         }
         
         /* User Info Bar */
@@ -124,7 +340,7 @@
             color: #3a4a47;
         }
         
-        /* CENTERED HEADER */
+        /* Header */
         .header { 
             background: linear-gradient(135deg, #3a4a47 0%, #2d3a36 100%);
             color: white; 
@@ -151,20 +367,9 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-        
-        .scaleup-logo img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-        
-        .logo-fallback {
-            color: #3a4a47; 
-            font-size: 36px; 
+            font-size: 48px;
             font-weight: 800;
+            color: #3a4a47;
         }
         
         .company-name {
@@ -214,11 +419,6 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
         
-        .setup-form { background: white; padding: 30px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #495057; }
-        .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 2px solid #dee2e6; border-radius: 8px; font-size: 1em; font-family: 'Segoe UI', sans-serif; }
-        
         .btn { padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 1em; margin: 5px; transition: all 0.3s; }
         .btn-primary { background: #3a4a47; color: white; }
         .btn-primary:hover { background: #2d3a36; transform: translateY(-2px); }
@@ -226,400 +426,23 @@
         .btn-success { background: #28a745; color: white; }
         .btn-danger { background: #dc3545; color: white; }
         .btn-info { background: #17a2b8; color: white; }
-        .btn-warning { background: #ffc107; color: #212529; }
         
-        /* Task Visibility Controls */
-        .visibility-controls {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        
-        .visibility-toggle-section {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .visibility-toggle-section label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        
-        .visibility-toggle-section input[type="checkbox"] {
-            transform: scale(1.2);
-        }
-        
-        /* Task Visibility Styles */
-        .task-visibility-toggle {
-            cursor: pointer;
-            padding: 4px 8px;
-            margin-right: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background: white;
-            font-size: 14px;
-            transition: all 0.2s;
-        }
-        
-        .task-visibility-toggle:hover {
-            background: #f8f9fa;
-            border-color: #3a4a47;
-        }
-        
-        .task-hidden {
-            background-color: #f8f9fa !important;
-            opacity: 0.6;
-        }
-        
-        .task-hidden .task-name {
-            text-decoration: line-through;
-            color: #6c757d;
-        }
-        
-        .task-hidden select,
-        .task-hidden input {
-            pointer-events: none;
-            background-color: #e9ecef;
-        }
-        
-        /* Dashboard Styles */
-        .dashboard-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-            gap: 25px; 
-            margin-bottom: 40px; 
-        }
-        
-        .kpi-card { 
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            padding: 30px; 
-            border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(58, 74, 71, 0.15); 
-            text-align: center; 
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid rgba(58, 74, 71, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .kpi-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(58, 74, 71, 0.2);
-        }
-        
-        .kpi-icon {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 20px;
-            background: linear-gradient(135deg, #3a4a47, #2d3a36);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: white;
-            box-shadow: 0 8px 16px rgba(58, 74, 71, 0.3);
-        }
-        
-        .kpi-value { 
-            font-size: 3.5em; 
-            font-weight: 800; 
-            margin: 20px 0 10px; 
-            background: linear-gradient(135deg, #3a4a47, #2d3a36);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .kpi-label { 
-            color: #666; 
-            font-size: 1.1em; 
-            font-weight: 600;
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-            margin-bottom: 15px;
-        }
-        
-        .progress-bar { 
-            width: 100%; 
-            height: 8px; 
-            background: #e9ecef; 
-            border-radius: 10px; 
-            overflow: hidden; 
-            margin: 20px 0 10px;
-        }
-        
-        .progress-fill { 
-            height: 100%; 
-            background: linear-gradient(90deg, #3a4a47, #2d3a36, #3a4a47); 
-            border-radius: 10px; 
-            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .kpi-subtitle {
-            font-size: 0.9em;
-            color: #3a4a47;
-            font-weight: 600;
-            margin-top: 10px;
-        }
-        
-        .dashboard-intro {
-            background: linear-gradient(135deg, rgba(58, 74, 71, 0.05) 0%, rgba(45, 58, 54, 0.05) 100%);
-            border: 1px solid rgba(58, 74, 71, 0.1);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        
-        .dashboard-intro h2 {
-            color: #3a4a47;
-            font-size: 2.2em;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-        
-        .dashboard-intro p {
-            color: #666;
-            font-size: 1.1em;
-            line-height: 1.6;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        /* Team Performance Dashboard */
-        .team-distribution {
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            padding: 35px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(58, 74, 71, 0.15);
-            border: 1px solid rgba(58, 74, 71, 0.1);
-            margin-top: 30px;
-        }
-        
-        .team-distribution h3 {
-            color: #3a4a47;
-            margin-bottom: 30px;
-            text-align: center;
-            font-size: 1.6em;
-            font-weight: 700;
-            position: relative;
-        }
-        
-        .team-distribution h3::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, #3a4a47, #2d3a36);
-            border-radius: 2px;
-        }
-        
-        .person-task-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 25px;
-            border-bottom: 1px solid rgba(58, 74, 71, 0.1);
-            transition: all 0.3s ease;
-            border-radius: 10px;
-            margin: 0 -10px;
-        }
-        
-        .person-task-row:hover {
-            background: rgba(58, 74, 71, 0.05);
-            transform: translateX(5px);
-        }
-        
-        .person-name {
-            font-weight: 700;
-            color: #3a4a47;
-            font-size: 1.1em;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .task-counts {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-        
-        .task-count {
-            font-size: 0.95em;
-            font-weight: 600;
-            padding: 8px 16px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-        }
-        
-        .count-completed {
-            color: #28a745;
-            background: rgba(40, 167, 69, 0.1);
-            border: 1px solid rgba(40, 167, 69, 0.2);
-        }
-        
-        .count-progress {
-            color: #3a4a47;
-            background: rgba(58, 74, 71, 0.1);
-            border: 1px solid rgba(58, 74, 71, 0.2);
-        }
-        
-        .count-total {
-            color: #666;
-            background: rgba(102, 102, 102, 0.1);
-            border: 1px solid rgba(102, 102, 102, 0.2);
-        }
-        
-        table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
-        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #dee2e6; }
-        th { background: #f8f9fa; font-weight: 600; color: #495057; }
-        
-        .table-header { background: #3a4a47; color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
-        .client-info { font-size: 1.1em; opacity: 0.9; }
-        
-        .status-select { padding: 8px 12px; border: none; border-radius: 6px; background: white; cursor: pointer; font-weight: 600; }
-        .status-completed { background: #28a745; color: white; }
-        .status-in-progress { background: #3a4a47; color: white; }
-        .status-not-started { background: #e9ecef; color: #495057; }
-        
-        .warning-message { background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
-        
-        /* Team Section */
-        .team-section {
-            background: #f8f9fa; 
-            padding: 20px; 
-            border-radius: 8px; 
-            margin: 20px 0;
-            border: 2px solid #3a4a47;
-        }
-        
-        .team-section h3 {
-            color: #3a4a47; 
-            margin-bottom: 15px;
-        }
-        
-        .team-input-row {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            align-items: center;
-        }
-        
-        .team-input {
-            flex: 1;
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
             padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1em;
-        }
-        
-        .team-select {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background: white;
-            min-width: 150px;
-        }
-        
-        .team-member-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 15px;
-            background: white;
-            border-radius: 6px;
-            margin: 8px 0;
-            border: 1px solid #ddd;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .team-member-info {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .team-member-name {
-            font-weight: 600;
-            color: #3a4a47;
-        }
-        
-        .team-member-company {
-            font-size: 0.9em;
-            color: #666;
-        }
-        
-        /* Subtask Styles */
-        .subtask-input-area {
-            background: #f8f9fa;
-            border: 2px solid #3a4a47;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 15px 0;
+            border-radius: 5px;
+            margin-bottom: 15px;
             display: none;
         }
         
-        .subtask-input {
-            width: 100%;
+        .success-message {
+            background: #d4edda;
+            color: #155724;
             padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        
-        .subtask-row {
-            background-color: #f8f9fa;
-            border-left: 4px solid #3a4a47;
-        }
-        
-        .subtask-row td {
-            padding-left: 35px;
-            font-size: 0.95em;
-        }
-        
-        .add-subtask-btn {
-            background: #28a745;
-            color: white;
-            border: none;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8em;
-            margin-left: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .add-subtask-btn:hover {
-            background: #218838;
-            transform: translateY(-1px);
-        }
-        
-        .btn-small {
-            padding: 4px 8px;
-            font-size: 0.8em;
-        }
-        
-        .loading {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px;
-            font-size: 1.2em;
-            color: #666;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
         }
     </style>
 </head>
@@ -651,10 +474,57 @@
                 <h2 style="margin-bottom: 20px;">Opret konto</h2>
                 <input type="email" id="signup-email" placeholder="Email" required>
                 <input type="password" id="signup-password" placeholder="Password (min. 6 tegn)" required>
-                <input type="text" id="company-name" placeholder="Firmanavn" required>
                 <button onclick="handleSignup()">Opret konto</button>
                 <div class="auth-toggle">
                     Har du allerede en konto? <a href="#" onclick="showLogin(); return false;">Log ind</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div id="share-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Del Projekt</h2>
+                <button class="close-modal" onclick="closeShareModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Share Link Section -->
+                <div class="share-section">
+                    <h3>🔗 Del med link</h3>
+                    <div class="share-link-container">
+                        <input type="text" id="share-link" class="share-link-input" readonly>
+                        <button class="copy-link-btn" onclick="copyShareLink()">📋 Kopier</button>
+                    </div>
+                    
+                    <select id="link-permission" class="permission-select" onchange="updateShareLink()">
+                        <option value="viewer">Kun visning</option>
+                        <option value="editor">Kan redigere</option>
+                        <option value="admin">Administrator</option>
+                    </select>
+                    
+                    <div class="permission-info">
+                        <p id="permission-desc">Personer med dette link kan se projektet</p>
+                    </div>
+                </div>
+
+                <!-- Collaborators Section -->
+                <div class="share-section">
+                    <h3>👥 Projektmedlemmer</h3>
+                    <div id="collaborators-list" class="collaborators-list">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                    
+                    <div class="add-collaborator-form">
+                        <input type="email" id="new-collaborator-email" class="add-email-input" placeholder="Email adresse">
+                        <select id="new-collaborator-role" class="add-role-select">
+                            <option value="viewer">Viewer</option>
+                            <option value="editor">Editor</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                        <button class="add-collaborator-btn" onclick="addCollaborator()">Tilføj</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -668,17 +538,15 @@
             <div class="user-info">
                 <span>Logget ind som:</span>
                 <span class="user-email" id="current-user-email">-</span>
+                <span id="user-role-badge" class="access-badge"></span>
             </div>
             <button class="btn btn-danger" onclick="handleLogout()">Log ud</button>
         </div>
         
-        <!-- CENTERED HEADER -->
+        <!-- Header -->
         <div class="header">
             <div class="header-content">
-                <div class="scaleup-logo">
-                    <img id="header-logo" style="display: none;" alt="Company Logo">
-                    <div class="logo-fallback" id="logo-fallback">SF</div>
-                </div>
+                <div class="scaleup-logo">8</div>
                 <div class="company-name">Scaleup Finance</div>
             </div>
             <div class="header-description">e-conomic Dimensions Implementation Dashboard</div>
@@ -693,196 +561,20 @@
                 </select>
             </div>
             <div>
-                <button class="btn btn-success" onclick="createNewProject()">🔄 Nyt Projekt</button>
-                <button class="btn btn-info" onclick="shareProject()">🔗 Del Projekt</button>
+                <button class="btn btn-info" onclick="openShareModal()">🔗 Del Projekt</button>
+                <button class="btn btn-success" onclick="createNewProject()">➕ Nyt Projekt</button>
                 <button class="btn btn-secondary" onclick="exportProject()">💾 Export</button>
-                <button class="btn btn-warning" id="admin-btn" onclick="showAdminPanel()" style="display: none;">⚙️ Admin</button>
             </div>
         </div>
 
-        <!-- Navigation -->
+        <!-- Navigation Tabs -->
         <div class="nav-tabs">
             <button class="nav-tab active" onclick="switchTab('setup')">🔧 Client Setup</button>
             <button class="nav-tab" onclick="switchTab('dashboard')">📊 Dashboard</button>
             <button class="nav-tab" onclick="switchTab('project')">📋 Project Plan</button>
         </div>
 
-        <!-- Client Setup Tab -->
-        <div id="setup-tab" class="tab-content active">
-            <div class="setup-form">
-                <h2>Client Information Setup</h2>
-                <p style="margin-bottom: 25px; color: #666;">Configure client details for this project.</p>
-                
-                <div class="form-group">
-                    <label>Client Company Name *</label>
-                    <input type="text" id="client-name" placeholder="e.g., ABC Corporation" onchange="saveToSupabase()">
-                </div>
-                
-                <div class="form-group">
-                    <label>Upload Company Logo</label>
-                    <input type="file" id="logo-upload" accept="image/*" onchange="handleLogoUpload(event)">
-                </div>
-                
-                <div class="form-group">
-                    <label>Scaleup Finance Project Manager *</label>
-                    <input type="text" id="scaleup-pm" placeholder="e.g., Lars Jensen" onchange="saveToSupabase()">
-                </div>
-                
-                <div class="form-group">
-                    <label>Client Project Manager</label>
-                    <input type="text" id="client-pm" placeholder="e.g., John Smith (CFO)" onchange="saveToSupabase()">
-                </div>
-
-                <!-- Team Members Section -->
-                <div class="team-section">
-                    <h3>👥 Team Members</h3>
-                    <p style="color: #666; margin-bottom: 15px; font-size: 0.9em;">
-                        Add team members who can be assigned to specific tasks.
-                    </p>
-                    
-                    <div class="team-input-row">
-                        <input type="text" id="new-member-name" class="team-input" placeholder="Enter team member name..." maxlength="50">
-                        <select id="new-member-company" class="team-select">
-                            <option value="Scaleup Finance">Scaleup Finance</option>
-                            <option value="client">Kunde</option>
-                        </select>
-                        <button type="button" class="btn btn-success btn-small" onclick="addTeamMember()">➕ Add Member</button>
-                    </div>
-
-                    <div id="team-members-list">
-                        <p style="color: #666; font-style: italic; text-align: center; padding: 20px;">
-                            No team members added yet.
-                        </p>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Project Notes (Optional)</label>
-                    <textarea id="project-notes" rows="3" placeholder="Any specific notes about this implementation..." onchange="saveToSupabase()"></textarea>
-                </div>
-                
-                <button class="btn btn-primary" onclick="saveSetup()">💾 Save Client Setup</button>
-            </div>
-        </div>
-
-        <!-- Dashboard Tab -->
-        <div id="dashboard-tab" class="tab-content">
-            <div id="dashboard-warning" class="warning-message">
-                ⚠️ Please select a project and complete the Client Setup first to view the dashboard.
-            </div>
-            
-            <div id="dashboard-content" style="display: none;">
-                <div class="dashboard-intro">
-                    <h2>📊 Project Overview</h2>
-                    <p>Monitor your e-conomic dimensions implementation progress.</p>
-                </div>
-                
-                <div class="dashboard-grid">
-                    <div class="kpi-card">
-                        <div class="kpi-icon">📈</div>
-                        <div class="kpi-label">Overall Progress</div>
-                        <div class="kpi-value" id="overall-progress">0%</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="overall-progress-bar" style="width: 0%"></div>
-                        </div>
-                        <div class="kpi-subtitle">Implementation Status</div>
-                    </div>
-                    
-                    <div class="kpi-card">
-                        <div class="kpi-icon">✅</div>
-                        <div class="kpi-label">Completed Tasks</div>
-                        <div class="kpi-value" id="completed-tasks">0</div>
-                        <div class="kpi-subtitle">of <span id="total-tasks">0</span> total tasks</div>
-                    </div>
-                    
-                    <div class="kpi-card">
-                        <div class="kpi-icon">🔄</div>
-                        <div class="kpi-label">Active Tasks</div>
-                        <div class="kpi-value" id="ongoing-tasks">0</div>
-                        <div class="kpi-subtitle">currently in progress</div>
-                    </div>
-                    
-                    <div class="kpi-card">
-                        <div class="kpi-icon">🎯</div>
-                        <div class="kpi-label">Next Milestone</div>
-                        <div class="kpi-value" style="font-size: 1.8em; line-height: 1.2;" id="next-milestone">Requirements Analysis</div>
-                        <div class="kpi-subtitle">Phase 1 - Analysis</div>
-                    </div>
-                </div>
-
-                <!-- Team Performance Dashboard -->
-                <div class="team-distribution">
-                    <h3>👥 Team Performance Dashboard</h3>
-                    <div id="team-task-distribution">
-                        <div style="text-align: center; padding: 40px; color: #666;">
-                            <p>No tasks assigned yet.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Project Plan Tab -->
-        <div id="project-tab" class="tab-content">
-            <div id="project-warning" class="warning-message">
-                ⚠️ Please select a project and complete the Client Setup first to access the project plan.
-            </div>
-            
-            <div id="project-content" style="display: none;">
-                <!-- Task Visibility Controls -->
-                <div class="visibility-controls">
-                    <div class="visibility-toggle-section">
-                        <label>
-                            <input type="checkbox" id="show-hidden-tasks" onchange="toggleHiddenTasksView()">
-                            <span>👁️ Vis skjulte opgaver</span>
-                        </label>
-                        <label>
-                            <input type="checkbox" id="count-hidden-tasks" onchange="updateDashboard()">
-                            <span>📊 Medregn skjulte i statistik</span>
-                        </label>
-                    </div>
-                    <div>
-                        <button class="btn btn-warning" onclick="showAllTasks()">👁️ Vis alle opgaver</button>
-                        <button class="btn btn-info" onclick="hideAllTasks()">🙈 Skjul alle opgaver</button>
-                        <button class="btn btn-primary" onclick="exportToCSV()">📊 Export to CSV</button>
-                    </div>
-                </div>
-
-                <!-- Subtask Input Area -->
-                <div id="subtask-input-area" class="subtask-input-area">
-                    <h4>✏️ Create New Subtask</h4>
-                    <p><strong>Adding to:</strong> <span id="target-task">Unknown Task</span></p>
-                    <input type="text" id="subtask-name" class="subtask-input" placeholder="Enter subtask name..." maxlength="100">
-                    <input type="text" id="subtask-desc" class="subtask-input" placeholder="Optional description..." maxlength="200">
-                    <button class="btn btn-success" onclick="createSubtask()">➕ Create Subtask</button>
-                    <button class="btn btn-secondary" onclick="cancelSubtask()">Cancel</button>
-                </div>
-
-                <!-- Project Table -->
-                <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.08);">
-                    <div class="table-header">
-                        <h2>📋 Detailed Project Plan</h2>
-                        <div class="client-info" id="client-display">No project selected</div>
-                    </div>
-                    
-                    <table>
-                        <thead>
-                            <tr>
-                                <th style="width: 400px">Task</th>
-                                <th style="width: 150px">Status</th>
-                                <th style="width: 200px">Responsible</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody id="project-body">
-                            <tr>
-                                <td colspan="4" class="loading">Select a project to view tasks...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+        <!-- Content will be added here -->
     </div>
 
     <!-- Supabase SDK -->
@@ -897,65 +589,7 @@
         let currentUser = null;
         let currentProjectId = null;
         let currentProjectData = null;
-        let currentTaskForSubtask = '';
-        
-        // Master template for new projects - now includes visible property
-        const masterTemplate = [
-            {
-                phase: "Phase 1: Analysis & Planning",
-                tasks: [
-                    {name: "1.1 Requirements Analysis", status: "not-started", responsible: "Scaleup Finance", description: "Map dimension requirements and needs", visible: true, subtasks: []},
-                    {name: "1.2 System Mapping", status: "not-started", responsible: "[CLIENT]", description: "Current setup in all systems", visible: true, subtasks: []},
-                    {name: "1.3 Gap Analysis", status: "not-started", responsible: "Scaleup Finance", description: "Identify change requirements", visible: true, subtasks: []},
-                    {name: "1.4 Technical Architecture", status: "not-started", responsible: "Scaleup Finance", description: "Design solution architecture", visible: true, subtasks: []}
-                ]
-            },
-            {
-                phase: "Phase 2: e-conomic Configuration",
-                tasks: [
-                    {name: "2.1 Dimension Setup", status: "not-started", responsible: "Scaleup Finance", description: "Create dimensions in e-conomic", visible: true, subtasks: []},
-                    {name: "2.2 Chart of Accounts Adaptation", status: "not-started", responsible: "Scaleup Finance", description: "Update chart of accounts", visible: true, subtasks: []},
-                    {name: "2.3 Report Configuration", status: "not-started", responsible: "Scaleup Finance", description: "Customize standard reports", visible: true, subtasks: []},
-                    {name: "2.4 User Permissions", status: "not-started", responsible: "[CLIENT]", description: "Setup user access rights", visible: true, subtasks: []}
-                ]
-            },
-            {
-                phase: "Phase 3: Corpay Integration",
-                tasks: [
-                    {name: "3.1 Corpay Setup", status: "not-started", responsible: "[CLIENT]", description: "Configure dimensions in Corpay", visible: true, subtasks: []},
-                    {name: "3.2 e-conomic Mapping", status: "not-started", responsible: "Scaleup Finance", description: "System mapping between platforms", visible: true, subtasks: []},
-                    {name: "3.3 Data Import Testing", status: "not-started", responsible: "Scaleup Finance", description: "Test data transfer processes", visible: true, subtasks: []},
-                    {name: "3.4 Automation Rules", status: "not-started", responsible: "Scaleup Finance", description: "Setup automatic posting rules", visible: true, subtasks: []}
-                ]
-            },
-            {
-                phase: "Phase 4: Pleo Integration",
-                tasks: [
-                    {name: "4.1 Pleo Setup", status: "not-started", responsible: "[CLIENT]", description: "Configure dimensions in Pleo", visible: true, subtasks: []},
-                    {name: "4.2 Employee Training", status: "not-started", responsible: "[CLIENT]", description: "Train employees on dimension usage", visible: true, subtasks: []},
-                    {name: "4.3 Approval Workflows", status: "not-started", responsible: "[CLIENT]", description: "Setup approval processes", visible: true, subtasks: []},
-                    {name: "4.4 Integration Testing", status: "not-started", responsible: "Scaleup Finance", description: "Test Pleo to e-conomic integration", visible: true, subtasks: []}
-                ]
-            },
-            {
-                phase: "Phase 5: Testing & Validation",
-                tasks: [
-                    {name: "5.1 System Testing", status: "not-started", responsible: "Scaleup Finance", description: "Functional testing of all systems", visible: true, subtasks: []},
-                    {name: "5.2 User Acceptance Testing", status: "not-started", responsible: "[CLIENT]", description: "Testing with end users", visible: true, subtasks: []},
-                    {name: "5.3 Report Validation", status: "not-started", responsible: "Scaleup Finance", description: "Verify report accuracy", visible: true, subtasks: []},
-                    {name: "5.4 Performance Testing", status: "not-started", responsible: "Scaleup Finance", description: "Test system performance", visible: true, subtasks: []}
-                ]
-            },
-            {
-                phase: "Phase 6: Go-Live & Support",
-                tasks: [
-                    {name: "6.1 Production Implementation", status: "not-started", responsible: "Scaleup Finance", description: "Deploy to production environment", visible: true, subtasks: []},
-                    {name: "6.2 User Training", status: "not-started", responsible: "Scaleup Finance", description: "Train all users", visible: true, subtasks: []},
-                    {name: "6.3 Documentation", status: "not-started", responsible: "Scaleup Finance", description: "Create user manuals", visible: true, subtasks: []},
-                    {name: "6.4 Post-Implementation Support", status: "not-started", responsible: "Scaleup Finance", description: "Ongoing support first month", visible: true, subtasks: []}
-                ]
-            }
-        ];
+        let currentUserRole = null;
         
         // Initialize Supabase
         try {
@@ -970,6 +604,384 @@
             console.error('Supabase initialization error:', error);
         }
         
+        // Check if user came from share link
+        function checkShareLink() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const shareId = urlParams.get('share');
+            const permission = urlParams.get('permission') || 'viewer';
+            
+            if (shareId) {
+                // Store share link info in session storage
+                sessionStorage.setItem('shareId', shareId);
+                sessionStorage.setItem('sharePermission', permission);
+                
+                // If user is logged in, grant access
+                if (currentUser) {
+                    grantAccessFromShareLink(shareId, permission);
+                }
+            }
+        }
+        
+        // Grant access from share link
+        async function grantAccessFromShareLink(shareId, permission) {
+            if (!supabase || !currentUser) return;
+            
+            try {
+                // First, find the project with this share ID
+                const { data: project, error: projectError } = await supabase
+                    .from('projects')
+                    .select('project_id')
+                    .eq('share_id', shareId)
+                    .single();
+                
+                if (projectError) throw projectError;
+                
+                // Check if user already has access
+                const { data: existingAccess, error: accessError } = await supabase
+                    .from('project_access')
+                    .select('role')
+                    .eq('project_id', project.project_id)
+                    .eq('user_id', currentUser.id)
+                    .single();
+                
+                if (!existingAccess) {
+                    // Grant new access
+                    const { error: insertError } = await supabase
+                        .from('project_access')
+                        .insert({
+                            project_id: project.project_id,
+                            user_id: currentUser.id,
+                            user_email: currentUser.email,
+                            role: permission,
+                            granted_by: 'share_link',
+                            created_at: new Date().toISOString()
+                        });
+                    
+                    if (insertError) throw insertError;
+                    
+                    alert(`Du har nu ${permission} adgang til projektet!`);
+                }
+                
+                // Clear share link from URL and session
+                window.history.replaceState({}, document.title, window.location.pathname);
+                sessionStorage.removeItem('shareId');
+                sessionStorage.removeItem('sharePermission');
+                
+                // Load the project
+                await loadUserProjects();
+                loadProject(project.project_id);
+                
+            } catch (error) {
+                console.error('Error granting access from share link:', error);
+            }
+        }
+        
+        // Generate unique share ID
+        function generateShareId() {
+            return 'share_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+        }
+        
+        // Open share modal
+        async function openShareModal() {
+            if (!currentProjectId) {
+                alert('Vælg venligst et projekt først');
+                return;
+            }
+            
+            document.getElementById('share-modal').style.display = 'block';
+            
+            // Generate share link
+            updateShareLink();
+            
+            // Load collaborators
+            await loadCollaborators();
+        }
+        
+        // Close share modal
+        function closeShareModal() {
+            document.getElementById('share-modal').style.display = 'none';
+        }
+        
+        // Update share link based on permission
+        async function updateShareLink() {
+            if (!currentProjectData) return;
+            
+            const permission = document.getElementById('link-permission').value;
+            
+            // Ensure project has share_id
+            if (!currentProjectData.share_id) {
+                currentProjectData.share_id = generateShareId();
+                
+                // Update in database
+                if (supabase) {
+                    await supabase
+                        .from('projects')
+                        .update({ share_id: currentProjectData.share_id })
+                        .eq('project_id', currentProjectId);
+                }
+            }
+            
+            const shareUrl = `${window.location.origin}${window.location.pathname}?share=${currentProjectData.share_id}&permission=${permission}`;
+            document.getElementById('share-link').value = shareUrl;
+            
+            // Update permission description
+            const descriptions = {
+                'viewer': 'Personer med dette link kan se projektet',
+                'editor': 'Personer med dette link kan redigere projektet',
+                'admin': 'Personer med dette link får administrator rettigheder'
+            };
+            
+            document.getElementById('permission-desc').textContent = descriptions[permission];
+        }
+        
+        // Copy share link to clipboard
+        function copyShareLink() {
+            const linkInput = document.getElementById('share-link');
+            linkInput.select();
+            document.execCommand('copy');
+            
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = '✓ Kopieret!';
+            btn.style.background = '#28a745';
+            
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = '';
+            }, 2000);
+        }
+        
+        // Load collaborators
+        async function loadCollaborators() {
+            if (!supabase || !currentProjectId) return;
+            
+            try {
+                const { data: collaborators, error } = await supabase
+                    .from('project_access')
+                    .select('*')
+                    .eq('project_id', currentProjectId)
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                
+                const listDiv = document.getElementById('collaborators-list');
+                listDiv.innerHTML = '';
+                
+                // Add super admins to the list (they always have access)
+                if (currentProjectId !== 'GLOBAL_ADMIN') {
+                    SUPER_ADMINS.forEach(adminEmail => {
+                        const item = document.createElement('div');
+                        item.className = 'collaborator-item';
+                        item.innerHTML = `
+                            <div class="collaborator-info">
+                                <span class="collaborator-email">${adminEmail}</span>
+                                <span class="role-badge role-super_admin">🌟 SUPER ADMIN</span>
+                            </div>
+                        `;
+                        listDiv.appendChild(item);
+                    });
+                }
+                
+                // Add regular collaborators
+                collaborators.forEach(collab => {
+                    // Skip if it's a super admin (already shown above)
+                    if (SUPER_ADMINS.includes(collab.user_email)) return;
+                    
+                    const item = document.createElement('div');
+                    item.className = 'collaborator-item';
+                    
+                    const isOwner = collab.role === 'owner';
+                    const canRemove = currentUserRole === 'owner' || currentUserRole === 'admin' || currentUserRole === 'super_admin';
+                    
+                    item.innerHTML = `
+                        <div class="collaborator-info">
+                            <span class="collaborator-email">${collab.user_email}</span>
+                            <span class="role-badge role-${collab.role}">${collab.role.toUpperCase()}</span>
+                        </div>
+                        ${!isOwner && canRemove ? 
+                            `<button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.9em;" 
+                                onclick="removeCollaborator('${collab.user_id}')">Fjern</button>` 
+                            : ''}
+                    `;
+                    
+                    listDiv.appendChild(item);
+                });
+                
+            } catch (error) {
+                console.error('Error loading collaborators:', error);
+            }
+        }
+        
+        // Add collaborator
+        async function addCollaborator() {
+            const email = document.getElementById('new-collaborator-email').value.trim();
+            const role = document.getElementById('new-collaborator-role').value;
+            
+            if (!email) {
+                alert('Indtast venligst en email adresse');
+                return;
+            }
+            
+            if (!supabase || !currentProjectId) return;
+            
+            try {
+                // Find user by email
+                const { data: userData, error: userError } = await supabase
+                    .from('auth.users')
+                    .select('id')
+                    .eq('email', email)
+                    .single();
+                
+                let userId = userData?.id;
+                
+                // If user doesn't exist, they'll get access when they sign up with this email
+                if (!userId) {
+                    userId = 'pending_' + email.replace(/[^a-zA-Z0-9]/g, '_');
+                }
+                
+                // Add access record
+                const { error } = await supabase
+                    .from('project_access')
+                    .insert({
+                        project_id: currentProjectId,
+                        user_id: userId,
+                        user_email: email,
+                        role: role,
+                        granted_by: currentUser.id,
+                        created_at: new Date().toISOString()
+                    });
+                
+                if (error) throw error;
+                
+                // Clear form and reload
+                document.getElementById('new-collaborator-email').value = '';
+                await loadCollaborators();
+                
+                alert(`${email} er tilføjet som ${role}`);
+                
+            } catch (error) {
+                console.error('Error adding collaborator:', error);
+                alert('Kunne ikke tilføje bruger: ' + error.message);
+            }
+        }
+        
+        // Remove collaborator
+        async function removeCollaborator(userId) {
+            if (!confirm('Er du sikker på at du vil fjerne denne bruger?')) return;
+            
+            if (!supabase || !currentProjectId) return;
+            
+            try {
+                const { error } = await supabase
+                    .from('project_access')
+                    .delete()
+                    .eq('project_id', currentProjectId)
+                    .eq('user_id', userId);
+                
+                if (error) throw error;
+                
+                await loadCollaborators();
+                
+            } catch (error) {
+                console.error('Error removing collaborator:', error);
+                alert('Kunne ikke fjerne bruger: ' + error.message);
+            }
+        }
+        
+        // Super admin emails
+        const SUPER_ADMINS = ['mma@scaleup.finance', 'jbo@scaleup.finance'];
+        
+        // Check if user is super admin
+        function isSuperAdmin() {
+            return currentUser && SUPER_ADMINS.includes(currentUser.email);
+        }
+        
+        // Check user's role for current project
+        async function checkUserRole(projectId) {
+            if (!supabase || !currentUser) return 'viewer';
+            
+            // Super admins always have full access
+            if (isSuperAdmin()) {
+                currentUserRole = 'super_admin';
+                return 'super_admin';
+            }
+            
+            try {
+                // Check if user is owner
+                const { data: project, error: projectError } = await supabase
+                    .from('projects')
+                    .select('user_id')
+                    .eq('project_id', projectId)
+                    .single();
+                
+                if (project && project.user_id === currentUser.id) {
+                    currentUserRole = 'owner';
+                    return 'owner';
+                }
+                
+                // Check access table
+                const { data: access, error: accessError } = await supabase
+                    .from('project_access')
+                    .select('role')
+                    .eq('project_id', projectId)
+                    .eq('user_id', currentUser.id)
+                    .single();
+                
+                if (access) {
+                    currentUserRole = access.role;
+                    return access.role;
+                }
+                
+                currentUserRole = 'viewer';
+                return 'viewer';
+                
+            } catch (error) {
+                console.error('Error checking user role:', error);
+                return 'viewer';
+            }
+        }
+        
+        // Update UI based on user role
+        function updateUIForRole(role) {
+            const badge = document.getElementById('user-role-badge');
+            if (badge) {
+                badge.className = `access-badge ${role}`;
+                if (role === 'super_admin') {
+                    badge.textContent = '🌟 SUPER ADMIN';
+                    badge.style.background = 'linear-gradient(135deg, #FFD700, #FFA500)';
+                    badge.style.color = '#333';
+                    badge.style.fontWeight = 'bold';
+                } else {
+                    badge.textContent = role.toUpperCase();
+                }
+            }
+            
+            // Enable/disable editing based on role
+            const canEdit = role === 'owner' || role === 'admin' || role === 'editor' || role === 'super_admin';
+            
+            // Super admins can always edit everything
+            if (role !== 'super_admin') {
+                // Disable/enable form inputs for regular users
+                document.querySelectorAll('input, textarea, select').forEach(element => {
+                    if (!element.id.includes('login') && !element.id.includes('share') && 
+                        !element.id.includes('collaborator') && element.id !== 'project-select') {
+                        element.disabled = !canEdit;
+                    }
+                });
+            }
+            
+            // Show/hide action buttons based on role
+            const canManage = role === 'owner' || role === 'admin' || role === 'super_admin';
+            
+            // Show super admin indicator in header if applicable
+            if (role === 'super_admin') {
+                const header = document.querySelector('.header-description');
+                if (header && !header.textContent.includes('Super Admin')) {
+                    header.innerHTML += '<br><span style="color: #FFD700; font-size: 0.9em;">⚡ Super Admin Mode</span>';
+                }
+            }
+        }
+        
         // Authentication Functions
         async function checkAuth() {
             if (!supabase) return;
@@ -979,6 +991,7 @@
             if (user) {
                 currentUser = user;
                 showDashboard();
+                checkShareLink(); // Check if user came from share link
             } else {
                 showLoginScreen();
             }
@@ -994,9 +1007,44 @@
             document.getElementById('main-dashboard').style.display = 'block';
             if (currentUser) {
                 document.getElementById('current-user-email').textContent = currentUser.email;
-                checkAdminStatus(); // Check if user is admin
+                
+                // Show super admin badge immediately if user is super admin
+                if (isSuperAdmin()) {
+                    const badge = document.getElementById('user-role-badge');
+                    if (badge) {
+                        badge.className = 'access-badge super_admin';
+                        badge.textContent = '🌟 SUPER ADMIN';
+                        badge.style.background = 'linear-gradient(135deg, #FFD700, #FFA500)';
+                        badge.style.color = '#333';
+                        badge.style.fontWeight = 'bold';
+                        badge.style.display = 'inline-flex';
+                    }
+                }
             }
             loadUserProjects();
+        }
+        
+        async function handleLogin() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            if (!email || !password) {
+                showError('Udfyld venligst alle felter');
+                return;
+            }
+            
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
+            
+            if (error) {
+                showError('Login fejlede: ' + error.message);
+            } else {
+                currentUser = data.user;
+                showDashboard();
+                checkShareLink(); // Check for share link after login
+            }
         }
         
         function showLogin() {
@@ -1030,34 +1078,11 @@
             document.getElementById('success-message').style.display = 'none';
         }
         
-        async function handleLogin() {
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            
-            if (!email || !password) {
-                showError('Udfyld venligst alle felter');
-                return;
-            }
-            
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email: email,
-                password: password
-            });
-            
-            if (error) {
-                showError('Login fejlede: ' + error.message);
-            } else {
-                currentUser = data.user;
-                showDashboard();
-            }
-        }
-        
         async function handleSignup() {
             const email = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
-            const companyName = document.getElementById('company-name').value;
             
-            if (!email || !password || !companyName) {
+            if (!email || !password) {
                 showError('Udfyld venligst alle felter');
                 return;
             }
@@ -1069,18 +1094,13 @@
             
             const { data, error } = await supabase.auth.signUp({
                 email: email,
-                password: password,
-                options: {
-                    data: {
-                        company_name: companyName
-                    }
-                }
+                password: password
             });
             
             if (error) {
                 showError('Oprettelse fejlede: ' + error.message);
             } else {
-                showSuccess('Konto oprettet! Du kan nu logge ind.');
+                showSuccess('Konto oprettet! Check din email for at bekræfte.');
                 setTimeout(() => showLogin(), 3000);
             }
         }
@@ -1089,48 +1109,155 @@
             const { error } = await supabase.auth.signOut();
             if (!error) {
                 currentUser = null;
+                currentUserRole = null;
                 showLoginScreen();
             }
         }
         
-        // Load user's projects
+        // Load user's projects (including shared ones)
         async function loadUserProjects() {
             if (!supabase || !currentUser) return;
             
             try {
-                // Get own projects
-                const { data: ownProjects, error: ownError } = await supabase
-                    .from('projects')
-                    .select('project_id, client_data, is_admin')
-                    .eq('user_id', currentUser.id);
-
-                if (ownError) throw ownError;
+                let allProjects = [];
+                let ownedProjects = [];
+                let sharedProjects = [];
                 
-                // Get shared projects
-                const { data: sharedProjects, error: sharedError } = await supabase
-                    .from('projects')
-                    .select('project_id, client_data, shared_with')
-                    .contains('shared_with', [currentUser.email]);
+                // Super admins can see ALL projects
+                if (isSuperAdmin()) {
+                    const { data: allData, error } = await supabase
+                        .from('projects')
+                        .select('project_id, client_data, user_id')
+                        .order('created_at', { ascending: false });
+                    
+                    if (allData) {
+                        allProjects = allData;
+                        // Separate owned vs others
+                        ownedProjects = allData.filter(p => p.user_id === currentUser.id);
+                        sharedProjects = allData.filter(p => p.user_id !== currentUser.id);
+                    }
+                } else {
+                    // Regular users: get owned projects
+                    const { data: owned, error: ownError } = await supabase
+                        .from('projects')
+                        .select('project_id, client_data')
+                        .eq('user_id', currentUser.id);
+                    
+                    ownedProjects = owned || [];
+                    
+                    // Get shared projects
+                    const { data: sharedAccess, error: sharedError } = await supabase
+                        .from('project_access')
+                        .select('project_id, role')
+                        .eq('user_id', currentUser.id);
+                    
+                    if (sharedAccess && sharedAccess.length > 0) {
+                        const sharedIds = sharedAccess.map(a => a.project_id);
+                        const { data: sharedData, error } = await supabase
+                            .from('projects')
+                            .select('project_id, client_data')
+                            .in('project_id', sharedIds);
+                        
+                        sharedProjects = sharedData || [];
+                    }
+                }
                 
-                const allProjects = [...(ownProjects || []), ...(sharedProjects || [])];
-
                 const select = document.getElementById('project-select');
                 if (select) {
                     select.innerHTML = '<option value="">Vælg eller opret et projekt...</option>';
                     
-                    if (allProjects.length > 0) {
+                    // Super admin sees all projects
+                    if (isSuperAdmin() && allProjects.length > 0) {
+                        const allGroup = document.createElement('optgroup');
+                        allGroup.label = '🌟 Alle Projekter (Super Admin)';
+                        
                         allProjects.forEach(project => {
                             const option = document.createElement('option');
                             option.value = project.project_id;
-                            const clientName = project.client_data?.name || 'Unavngivet projekt';
-                            const isShared = !project.is_admin && project.shared_with?.includes(currentUser.email);
-                            option.textContent = clientName + (isShared ? ' (Delt)' : '');
-                            select.appendChild(option);
+                            option.textContent = project.client_data?.name || 'Unavngivet projekt';
+                            allGroup.appendChild(option);
                         });
+                        
+                        select.appendChild(allGroup);
+                    } else {
+                        // Regular view for non-super admins
+                        // Add owned projects
+                        if (ownedProjects && ownedProjects.length > 0) {
+                            const ownedGroup = document.createElement('optgroup');
+                            ownedGroup.label = 'Mine projekter';
+                            
+                            ownedProjects.forEach(project => {
+                                const option = document.createElement('option');
+                                option.value = project.project_id;
+                                option.textContent = project.client_data?.name || 'Unavngivet projekt';
+                                ownedGroup.appendChild(option);
+                            });
+                            
+                            select.appendChild(ownedGroup);
+                        }
+                        
+                        // Add shared projects
+                        if (sharedProjects.length > 0) {
+                            const sharedGroup = document.createElement('optgroup');
+                            sharedGroup.label = 'Delte projekter';
+                            
+                            sharedProjects.forEach(project => {
+                                const option = document.createElement('option');
+                                option.value = project.project_id;
+                                option.textContent = `${project.client_data?.name || 'Unavngivet'}`;
+                                sharedGroup.appendChild(option);
+                            });
+                            
+                            select.appendChild(sharedGroup);
+                        }
                     }
                 }
             } catch (error) {
                 console.error('Error loading projects:', error.message);
+            }
+        }
+        
+        // Load project
+        async function loadProject(projectId) {
+            if (!projectId) {
+                currentProjectId = null;
+                currentUserRole = null;
+                return;
+            }
+            
+            currentProjectId = projectId;
+            
+            // Check user role for this project
+            const role = await checkUserRole(projectId);
+            updateUIForRole(role);
+            
+            if (!supabase) return;
+            
+            try {
+                // Super admins and owners can access any project
+                const canAccessAnyProject = isSuperAdmin();
+                
+                let query = supabase
+                    .from('projects')
+                    .select('*')
+                    .eq('project_id', projectId);
+                
+                // If not super admin, add user filter
+                if (!canAccessAnyProject) {
+                    // This will be checked via checkUserRole instead
+                }
+                
+                const { data: project, error } = await query.single();
+
+                if (error) throw error;
+
+                if (project) {
+                    currentProjectData = project;
+                    // Additional UI updates would go here
+                    console.log('Loaded project:', project.client_data?.name, 'Role:', role);
+                }
+            } catch (error) {
+                console.error('Error loading project:', error.message);
             }
         }
         
@@ -1144,42 +1271,26 @@
             const projectName = prompt('Indtast kundens firmanavn:');
             if (!projectName) return;
             
-            const projectId = generateProjectId(projectName);
-            currentProjectId = projectId;
+            const projectId = 'proj_' + Math.random().toString(36).substr(2, 9);
+            const shareId = generateShareId();
             
-            // Replace [CLIENT] with actual client name in template
-            const projectTasks = JSON.parse(JSON.stringify(masterTemplate));
-            projectTasks.forEach(phase => {
-                phase.tasks.forEach(task => {
-                    if (task.responsible === '[CLIENT]') {
-                        task.responsible = projectName;
-                    }
-                    if (task.subtasks) {
-                        task.subtasks.forEach(subtask => {
-                            if (subtask.responsible === '[CLIENT]') {
-                                subtask.responsible = projectName;
-                            }
-                        });
-                    }
-                });
-            });
+            currentProjectId = projectId;
             
             const newProject = {
                 project_id: projectId,
+                share_id: shareId,
                 user_id: currentUser.id,
                 client_data: {
                     name: projectName,
                     scaleupPM: '',
                     clientPM: '',
-                    notes: '',
-                    logo: null
+                    notes: ''
                 },
                 team_members: [],
-                tasks: projectTasks,
+                tasks: [],
+                is_public: false,
                 created_at: new Date().toISOString(),
-                last_updated: new Date().toISOString(),
-                shared_with: [],
-                is_admin: true
+                last_updated: new Date().toISOString()
             };
             
             if (supabase) {
@@ -1190,9 +1301,22 @@
                     
                     if (error) throw error;
                     
+                    // Also create owner access record
+                    await supabase
+                        .from('project_access')
+                        .insert({
+                            project_id: projectId,
+                            user_id: currentUser.id,
+                            user_email: currentUser.email,
+                            role: 'owner',
+                            granted_by: currentUser.id,
+                            created_at: new Date().toISOString()
+                        });
+                    
                     await loadUserProjects();
                     document.getElementById('project-select').value = projectId;
                     loadProject(projectId);
+                    
                 } catch (error) {
                     console.error('Error creating project:', error.message);
                     alert('Fejl ved oprettelse af projekt: ' + error.message);
@@ -1200,880 +1324,18 @@
             }
         }
         
-        // Load project
-        async function loadProject(projectId) {
-            if (!projectId) {
-                currentProjectId = null;
-                resetUI();
-                return;
-            }
-            
-            currentProjectId = projectId;
-            
-            if (!supabase) return;
-            
-            try {
-                // First try to load as owner
-                let { data: project, error } = await supabase
-                    .from('projects')
-                    .select('*')
-                    .eq('project_id', projectId)
-                    .eq('user_id', currentUser.id)
-                    .single();
-
-                // If not owner, try to load as shared
-                if (error || !project) {
-                    const { data: sharedProject, error: sharedError } = await supabase
-                        .from('projects')
-                        .select('*')
-                        .eq('project_id', projectId)
-                        .contains('shared_with', [currentUser.email])
-                        .single();
-                    
-                    if (sharedProject) {
-                        project = sharedProject;
-                        error = null;
-                    }
-                }
-
-                if (error) throw error;
-
-                if (project) {
-                    currentProjectData = project;
-                    
-                    // Ensure all tasks have visible property
-                    if (currentProjectData.tasks) {
-                        currentProjectData.tasks.forEach(phase => {
-                            phase.tasks.forEach(task => {
-                                if (task.visible === undefined) {
-                                    task.visible = true;
-                                }
-                                if (!task.subtasks) {
-                                    task.subtasks = [];
-                                }
-                            });
-                        });
-                    }
-                    
-                    populateUIFromProject(project);
-                }
-            } catch (error) {
-                console.error('Error loading project:', error.message);
-                alert('Du har ikke adgang til dette projekt');
-            }
-        }
-        
-        // Populate UI from project data
-        function populateUIFromProject(projectData) {
-            const clientData = projectData.client_data || {};
-            document.getElementById('client-name').value = clientData.name || '';
-            document.getElementById('scaleup-pm').value = clientData.scaleupPM || '';
-            document.getElementById('client-pm').value = clientData.clientPM || '';
-            document.getElementById('project-notes').value = clientData.notes || '';
-            
-            // Replace [CLIENT] or "Client" with actual client name in tasks
-            if (clientData.name && projectData.tasks) {
-                projectData.tasks.forEach(phase => {
-                    phase.tasks.forEach(task => {
-                        if (task.responsible === '[CLIENT]' || task.responsible === 'Client') {
-                            task.responsible = clientData.name;
-                        }
-                        if (task.subtasks) {
-                            task.subtasks.forEach(subtask => {
-                                if (subtask.responsible === '[CLIENT]' || subtask.responsible === 'Client') {
-                                    subtask.responsible = clientData.name;
-                                }
-                            });
-                        }
-                    });
-                });
-            }
-            
-            // Load logo if exists
-            if (clientData.logo) {
-                const logoElement = document.getElementById('header-logo');
-                logoElement.src = clientData.logo;
-                logoElement.style.display = 'block';
-                document.getElementById('logo-fallback').style.display = 'none';
-            }
-            
-            // Load team members
-            if (projectData.team_members) {
-                currentProjectData.team_members = projectData.team_members;
-                updateTeamMembersList();
-            }
-            
-            checkSetup();
-            populateTable();
-            updateDashboard();
-        }
-        
-        // Save to Supabase
-        async function saveToSupabase() {
-            if (!currentProjectId || !supabase || !currentUser) return;
-            
-            // Update tasks where responsible is "Client" to actual client name
-            const clientName = document.getElementById('client-name').value.trim();
-            if (clientName && currentProjectData?.tasks) {
-                currentProjectData.tasks.forEach(phase => {
-                    phase.tasks.forEach(task => {
-                        if (task.responsible === 'Client' || task.responsible === '[CLIENT]') {
-                            task.responsible = clientName;
-                        }
-                        if (task.subtasks) {
-                            task.subtasks.forEach(subtask => {
-                                if (subtask.responsible === 'Client' || subtask.responsible === '[CLIENT]') {
-                                    subtask.responsible = clientName;
-                                }
-                            });
-                        }
-                    });
-                });
-            }
-            
-            const currentData = {
-                client_data: {
-                    name: clientName,
-                    scaleupPM: document.getElementById('scaleup-pm').value.trim(),
-                    clientPM: document.getElementById('client-pm').value.trim(),
-                    notes: document.getElementById('project-notes').value.trim(),
-                    logo: currentProjectData?.client_data?.logo || null
-                },
-                team_members: currentProjectData?.team_members || [],
-                tasks: currentProjectData?.tasks || masterTemplate,
-                last_updated: new Date().toISOString()
-            };
-            
-            try {
-                const { error } = await supabase
-                    .from('projects')
-                    .update(currentData)
-                    .eq('project_id', currentProjectId)
-                    .or(`user_id.eq.${currentUser.id},shared_with.cs.["${currentUser.email}"]`);
-                
-                if (error) throw error;
-            } catch (error) {
-                console.error('Failed to save to Supabase:', error.message);
-            }
-            
-            currentProjectData = { ...currentProjectData, ...currentData };
-        }
-        
-        // Logo upload handler
-        function handleLogoUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const logoData = e.target.result;
-                
-                // Update UI
-                const logoElement = document.getElementById('header-logo');
-                logoElement.src = logoData;
-                logoElement.style.display = 'block';
-                document.getElementById('logo-fallback').style.display = 'none';
-                
-                // Save to project data
-                if (currentProjectData) {
-                    if (!currentProjectData.client_data) {
-                        currentProjectData.client_data = {};
-                    }
-                    currentProjectData.client_data.logo = logoData;
-                    saveToSupabase();
-                }
-            };
-            reader.readAsDataURL(file);
-        }
-        
-        // Team member functions
-        function addTeamMember() {
-            const nameInput = document.getElementById('new-member-name');
-            const companySelect = document.getElementById('new-member-company');
-            
-            const name = nameInput.value.trim();
-            let company = companySelect.value;
-            
-            // If "client" is selected, use the actual client name
-            if (company === 'client' && currentProjectData?.client_data?.name) {
-                company = currentProjectData.client_data.name;
-            }
-            
-            if (!name) {
-                alert('Please enter a team member name');
-                return;
-            }
-            
-            if (!currentProjectData.team_members) {
-                currentProjectData.team_members = [];
-            }
-            
-            if (currentProjectData.team_members.find(member => member.name === name)) {
-                alert('Team member already exists');
-                return;
-            }
-            
-            currentProjectData.team_members.push({ name, company });
-            nameInput.value = '';
-            updateTeamMembersList();
-            saveToSupabase();
-        }
-        
-        function removeTeamMember(name) {
-            if (confirm('Remove this team member?')) {
-                currentProjectData.team_members = currentProjectData.team_members.filter(
-                    member => member.name !== name
-                );
-                updateTeamMembersList();
-                saveToSupabase();
-            }
-        }
-        
-        function updateTeamMembersList() {
-            const listDiv = document.getElementById('team-members-list');
-            
-            if (!currentProjectData?.team_members || currentProjectData.team_members.length === 0) {
-                listDiv.innerHTML = '<p style="color: #666; font-style: italic; text-align: center; padding: 20px;">No team members added yet.</p>';
-                return;
-            }
-            
-            listDiv.innerHTML = currentProjectData.team_members.map(member => `
-                <div class="team-member-item">
-                    <div class="team-member-info">
-                        <div class="team-member-name">${member.name}</div>
-                        <div class="team-member-company">${member.company}</div>
-                    </div>
-                    <button onclick="removeTeamMember('${member.name}')" class="btn btn-danger btn-small">Remove</button>
-                </div>
-            `).join('');
-        }
-        
-        // Get responsible options (including team members and client name)
-        function getResponsibleOptions() {
-            let options = ['Scaleup Finance'];
-            
-            // Add client name
-            const clientName = currentProjectData?.client_data?.name;
-            if (clientName) {
-                options.push(clientName);
-            }
-            
-            // Add team members
-            if (currentProjectData?.team_members) {
-                currentProjectData.team_members.forEach(member => {
-                    options.push(member.name);
-                });
-            }
-            
-            return options;
-        }
-        
-        // Share project function
-        async function shareProject() {
-            if (!currentProjectId) {
-                alert('Vælg venligst et projekt først');
-                return;
-            }
-            
-            const email = prompt('Indtast email på personen du vil dele projektet med:');
-            if (!email) return;
-            
-            if (supabase && currentProjectData) {
-                try {
-                    // Add email to shared_with array
-                    const sharedWith = currentProjectData.shared_with || [];
-                    if (!sharedWith.includes(email)) {
-                        sharedWith.push(email);
-                        
-                        const { error } = await supabase
-                            .from('projects')
-                            .update({ 
-                                shared_with: sharedWith,
-                                last_updated: new Date().toISOString()
-                            })
-                            .eq('project_id', currentProjectId)
-                            .eq('user_id', currentUser.id);
-                        
-                        if (error) throw error;
-                        
-                        alert(`Projektet er nu delt med ${email}`);
-                        currentProjectData.shared_with = sharedWith;
-                    } else {
-                        alert('Projektet er allerede delt med denne bruger');
-                    }
-                } catch (error) {
-                    console.error('Error sharing project:', error);
-                    alert('Fejl ved deling af projekt: ' + error.message);
-                }
-            }
-        }
-        
-        // Admin panel function
-        function showAdminPanel() {
-            const adminContent = `
-                <h3>Admin Panel</h3>
-                <p>Projekt ID: ${currentProjectId}</p>
-                <p>Ejer: ${currentUser?.email}</p>
-                <p>Delt med: ${currentProjectData?.shared_with?.join(', ') || 'Ingen'}</p>
-                <h4>Handlinger:</h4>
-                <button onclick="deleteProject()">Slet projekt</button>
-                <button onclick="revokeAccess()">Fjern adgang</button>
-            `;
-            
-            const modal = document.createElement('div');
-            modal.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.3); z-index: 1000;';
-            modal.innerHTML = adminContent + '<button onclick="this.parentElement.remove()">Luk</button>';
-            document.body.appendChild(modal);
-        }
-        
-        // Delete project function
-        async function deleteProject() {
-            if (!confirm('Er du sikker på at du vil slette dette projekt permanent?')) return;
-            
-            if (supabase && currentProjectId) {
-                try {
-                    const { error } = await supabase
-                        .from('projects')
-                        .delete()
-                        .eq('project_id', currentProjectId)
-                        .eq('user_id', currentUser.id);
-                    
-                    if (error) throw error;
-                    
-                    alert('Projekt slettet');
-                    location.reload();
-                } catch (error) {
-                    alert('Fejl ved sletning: ' + error.message);
-                }
-            }
-        }
-        
-        // Check if user is admin
-        
-        // Check if user is admin
-        function checkAdminStatus() {
-            // Add your admin emails here - replace with your actual admin emails
-            const adminEmails = ['mma@scaleup.finance', 'jbo@scaleup.finance']; 
-            if (currentUser && adminEmails.includes(currentUser.email)) {
-                const adminBtn = document.getElementById('admin-btn');
-                if (adminBtn) adminBtn.style.display = 'block';
-            }
-        }
-        
-        // Generate project ID
-        function generateProjectId(projectName) {
-            const cleanName = projectName.toLowerCase().replace(/[^a-z0-9]/g, '-');
-            const timestamp = Date.now().toString().slice(-6);
-            return `${cleanName}-${timestamp}`;
-        }
-        
-        // Reset UI
-        function resetUI() {
-            document.getElementById('client-name').value = '';
-            document.getElementById('scaleup-pm').value = '';
-            document.getElementById('client-pm').value = '';
-            document.getElementById('project-notes').value = '';
-            document.getElementById('team-members-list').innerHTML = '<p style="color: #666; font-style: italic; text-align: center; padding: 20px;">No team members added yet.</p>';
-            checkSetup();
-        }
-        
-        // Switch tabs
         function switchTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
-            document.getElementById(tabName + '-tab').classList.add('active');
+            document.getElementById(tabName + '-tab')?.classList.add('active');
             event.target.classList.add('active');
-            checkSetup();
         }
         
-        // Save setup
-        function saveSetup() {
-            const clientData = {
-                name: document.getElementById('client-name').value.trim(),
-                scaleupPM: document.getElementById('scaleup-pm').value.trim(),
-                clientPM: document.getElementById('client-pm').value.trim(),
-                notes: document.getElementById('project-notes').value.trim()
-            };
-            
-            if (!clientData.name || !clientData.scaleupPM) {
-                alert('Udfyld venligst kundenavn og Scaleup Finance PM');
-                return;
-            }
-            
-            saveToSupabase();
-            switchTab('dashboard');
-            document.querySelectorAll('.nav-tab')[1].click();
-        }
-        
-        // Check setup
-        function checkSetup() {
-            const hasProject = currentProjectId !== null;
-            const clientName = document.getElementById('client-name').value.trim();
-            const scaleupPM = document.getElementById('scaleup-pm').value.trim();
-            const hasSetup = hasProject && clientName && scaleupPM;
-            
-            const dashboardWarning = document.getElementById('dashboard-warning');
-            const dashboardContent = document.getElementById('dashboard-content');
-            const projectWarning = document.getElementById('project-warning');
-            const projectContent = document.getElementById('project-content');
-            
-            if (hasSetup) {
-                if (dashboardWarning) dashboardWarning.style.display = 'none';
-                if (dashboardContent) dashboardContent.style.display = 'block';
-                if (projectWarning) projectWarning.style.display = 'none';
-                if (projectContent) projectContent.style.display = 'block';
-                
-                const clientDisplay = document.getElementById('client-display');
-                if (clientDisplay) {
-                    clientDisplay.textContent = `${clientName} | PM: ${scaleupPM}`;
-                }
-                
-                updateDashboard();
-            } else {
-                if (dashboardWarning) dashboardWarning.style.display = 'block';
-                if (dashboardContent) dashboardContent.style.display = 'none';
-                if (projectWarning) projectWarning.style.display = 'block';
-                if (projectContent) projectContent.style.display = 'none';
-            }
-        }
-        
-        // TASK VISIBILITY FUNCTIONS
-        
-        // Toggle task visibility
-        function toggleTaskVisibility(taskName) {
-            if (!currentProjectData?.tasks) return;
-            
-            for (let phase of currentProjectData.tasks) {
-                for (let task of phase.tasks) {
-                    if (task.name === taskName) {
-                        task.visible = !task.visible;
-                        populateTable();
-                        updateDashboard();
-                        saveToSupabase();
-                        break;
-                    }
-                }
-            }
-        }
-        
-        // Toggle showing hidden tasks
-        function toggleHiddenTasksView() {
-            populateTable();
-        }
-        
-        // Show all tasks
-        function showAllTasks() {
-            if (!currentProjectData?.tasks) return;
-            
-            currentProjectData.tasks.forEach(phase => {
-                phase.tasks.forEach(task => {
-                    task.visible = true;
-                });
-            });
-            
-            populateTable();
-            updateDashboard();
-            saveToSupabase();
-        }
-        
-        // Hide all tasks
-        function hideAllTasks() {
-            if (!currentProjectData?.tasks) return;
-            
-            currentProjectData.tasks.forEach(phase => {
-                phase.tasks.forEach(task => {
-                    task.visible = false;
-                });
-            });
-            
-            populateTable();
-            updateDashboard();
-            saveToSupabase();
-        }
-        
-        // Populate table with visibility controls
-        function populateTable() {
-            const tbody = document.getElementById('project-body');
-            if (!tbody || !currentProjectData?.tasks) return;
-            
-            tbody.innerHTML = '';
-            const showHidden = document.getElementById('show-hidden-tasks')?.checked || false;
-            const responsibleOptions = getResponsibleOptions();
-            
-            currentProjectData.tasks.forEach(phase => {
-                // Check if any tasks in this phase are visible or if we should show hidden
-                const hasVisibleTasks = phase.tasks.some(task => task.visible || showHidden);
-                if (!hasVisibleTasks) return;
-                
-                const phaseRow = document.createElement('tr');
-                phaseRow.innerHTML = `<td colspan="4" style="background: #3a4a47; color: white; font-weight: bold; padding: 15px;">${phase.phase}</td>`;
-                tbody.appendChild(phaseRow);
-                
-                phase.tasks.forEach(task => {
-                    // Skip hidden tasks unless showing them
-                    if (!task.visible && !showHidden) return;
-                    
-                    const taskRow = document.createElement('tr');
-                    if (!task.visible) taskRow.className = 'task-hidden';
-                    
-                    const visibilityIcon = task.visible ? '👁️' : '🙈';
-                    const responsibleDropdown = responsibleOptions.map(option => 
-                        `<option value="${option}" ${task.responsible === option ? 'selected' : ''}>${option}</option>`
-                    ).join('');
-                    
-                    taskRow.innerHTML = `
-                        <td>
-                            <button class="task-visibility-toggle" onclick="toggleTaskVisibility('${task.name}')" title="${task.visible ? 'Skjul opgave' : 'Vis opgave'}">
-                                ${visibilityIcon}
-                            </button>
-                            <span class="task-name">${task.name}</span>
-                            <button class="add-subtask-btn" onclick="showSubtaskInput('${task.name}')">➕ Subtask</button>
-                        </td>
-                        <td>
-                            <select class="status-select status-${task.status}" onchange="updateTaskStatus('${task.name}', this.value)" ${!task.visible ? 'disabled' : ''}>
-                                <option value="not-started" ${task.status === 'not-started' ? 'selected' : ''}>⏳ Not Started</option>
-                                <option value="in-progress" ${task.status === 'in-progress' ? 'selected' : ''}>🔄 In Progress</option>
-                                <option value="completed" ${task.status === 'completed' ? 'selected' : ''}>✅ Completed</option>
-                            </select>
-                        </td>
-                        <td>
-                            <select onchange="updateTaskResponsible('${task.name}', this.value)" ${!task.visible ? 'disabled' : ''} style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px;">
-                                ${responsibleDropdown}
-                            </select>
-                        </td>
-                        <td>${task.description}</td>
-                    `;
-                    tbody.appendChild(taskRow);
-                    
-                    // Add subtasks
-                    if (task.subtasks && task.subtasks.length > 0) {
-                        task.subtasks.forEach((subtask, index) => {
-                            const subtaskRow = document.createElement('tr');
-                            subtaskRow.className = 'subtask-row';
-                            if (!task.visible) subtaskRow.classList.add('task-hidden');
-                            
-                            const subtaskResponsibleDropdown = responsibleOptions.map(option => 
-                                `<option value="${option}" ${subtask.responsible === option ? 'selected' : ''}>${option}</option>`
-                            ).join('');
-                            
-                            subtaskRow.innerHTML = `
-                                <td>
-                                    <span style="margin-left: 35px; color: #666;">└─</span> ${subtask.name}
-                                    <button onclick="removeSubtask('${task.name}', ${index})" style="background: #dc3545; color: white; border: none; padding: 2px 6px; border-radius: 3px; font-size: 0.7em; margin-left: 10px;">🗑️</button>
-                                </td>
-                                <td>
-                                    <select class="status-select status-${subtask.status}" onchange="updateSubtaskStatus('${task.name}', ${index}, this.value)" ${!task.visible ? 'disabled' : ''}>
-                                        <option value="not-started" ${subtask.status === 'not-started' ? 'selected' : ''}>⏳ Not Started</option>
-                                        <option value="in-progress" ${subtask.status === 'in-progress' ? 'selected' : ''}>🔄 In Progress</option>
-                                        <option value="completed" ${subtask.status === 'completed' ? 'selected' : ''}>✅ Completed</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select onchange="updateSubtaskResponsible('${task.name}', ${index}, this.value)" ${!task.visible ? 'disabled' : ''} style="width: 100%; padding: 4px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.85em;">
-                                        ${subtaskResponsibleDropdown}
-                                    </select>
-                                </td>
-                                <td>${subtask.description}</td>
-                            `;
-                            tbody.appendChild(subtaskRow);
-                        });
-                    }
-                });
-            });
-        }
-        
-        // Update dashboard with visibility consideration
-        function updateDashboard() {
-            if (!currentProjectData?.tasks) return;
-            
-            const countHidden = document.getElementById('count-hidden-tasks')?.checked || false;
-            
-            let totalTasks = 0;
-            let completedTasks = 0;
-            let ongoingTasks = 0;
-            let tasksByResponsible = {};
-            
-            currentProjectData.tasks.forEach(phase => {
-                phase.tasks.forEach(task => {
-                    // Only count visible tasks unless countHidden is checked
-                    if (!task.visible && !countHidden) return;
-                    
-                    totalTasks++;
-                    if (task.status === 'completed') completedTasks++;
-                    if (task.status === 'in-progress') ongoingTasks++;
-                    
-                    // Track by responsible
-                    if (!tasksByResponsible[task.responsible]) {
-                        tasksByResponsible[task.responsible] = {
-                            total: 0,
-                            completed: 0,
-                            'in-progress': 0,
-                            'not-started': 0
-                        };
-                    }
-                    tasksByResponsible[task.responsible].total++;
-                    tasksByResponsible[task.responsible][task.status]++;
-                    
-                    // Count subtasks
-                    if (task.subtasks && task.subtasks.length > 0) {
-                        task.subtasks.forEach(subtask => {
-                            totalTasks++;
-                            if (subtask.status === 'completed') completedTasks++;
-                            if (subtask.status === 'in-progress') ongoingTasks++;
-                            
-                            if (!tasksByResponsible[subtask.responsible]) {
-                                tasksByResponsible[subtask.responsible] = {
-                                    total: 0,
-                                    completed: 0,
-                                    'in-progress': 0,
-                                    'not-started': 0
-                                };
-                            }
-                            tasksByResponsible[subtask.responsible].total++;
-                            tasksByResponsible[subtask.responsible][subtask.status]++;
-                        });
-                    }
-                });
-            });
-            
-            const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
-            
-            document.getElementById('overall-progress').textContent = progressPercent + '%';
-            document.getElementById('overall-progress-bar').style.width = progressPercent + '%';
-            document.getElementById('completed-tasks').textContent = completedTasks;
-            document.getElementById('total-tasks').textContent = totalTasks;
-            document.getElementById('ongoing-tasks').textContent = ongoingTasks;
-            
-            // Find next milestone (only from visible tasks)
-            let nextMilestone = 'All tasks completed';
-            for (const phase of currentProjectData.tasks) {
-                for (const task of phase.tasks) {
-                    if (task.visible && task.status !== 'completed') {
-                        nextMilestone = task.name.split(' ').slice(1).join(' ');
-                        break;
-                    }
-                }
-                if (nextMilestone !== 'All tasks completed') break;
-            }
-            document.getElementById('next-milestone').textContent = nextMilestone;
-            
-            // Update team distribution
-            updateTeamDistribution(tasksByResponsible);
-        }
-        
-        // Update team distribution
-        function updateTeamDistribution(tasksByResponsible) {
-            const container = document.getElementById('team-task-distribution');
-            if (!container) return;
-            
-            container.innerHTML = '';
-            
-            if (Object.keys(tasksByResponsible).length === 0) {
-                container.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;"><p>No tasks assigned yet.</p></div>';
-                return;
-            }
-            
-            Object.keys(tasksByResponsible).forEach(responsible => {
-                const data = tasksByResponsible[responsible];
-                const completionRate = data.total > 0 ? Math.round((data.completed / data.total) * 100) : 0;
-                
-                const row = document.createElement('div');
-                row.className = 'person-task-row';
-                row.innerHTML = `
-                    <div class="person-name">👤 ${responsible}</div>
-                    <div class="task-counts">
-                        <span class="task-count count-completed">✅ ${data.completed} done</span>
-                        <span class="task-count count-progress">🔄 ${data['in-progress']} active</span>
-                        <span class="task-count count-total">📋 ${data.total} total (${completionRate}%)</span>
-                    </div>
-                `;
-                container.appendChild(row);
-            });
-        }
-        
-        // SUBTASK FUNCTIONS
-        
-        function showSubtaskInput(taskName) {
-            currentTaskForSubtask = taskName;
-            document.getElementById('target-task').textContent = taskName;
-            document.getElementById('subtask-name').value = '';
-            document.getElementById('subtask-desc').value = '';
-            document.getElementById('subtask-input-area').style.display = 'block';
-            document.getElementById('subtask-name').focus();
-        }
-        
-        function cancelSubtask() {
-            document.getElementById('subtask-input-area').style.display = 'none';
-            currentTaskForSubtask = '';
-        }
-        
-        function createSubtask() {
-            const name = document.getElementById('subtask-name').value.trim();
-            const desc = document.getElementById('subtask-desc').value.trim();
-            
-            if (!name) {
-                alert('Please enter a subtask name');
-                return;
-            }
-            
-            if (!currentProjectData?.tasks) return;
-            
-            for (let phase of currentProjectData.tasks) {
-                for (let task of phase.tasks) {
-                    if (task.name === currentTaskForSubtask) {
-                        if (!task.subtasks) task.subtasks = [];
-                        
-                        const taskNumber = task.name.split(' ')[0];
-                        const subtaskNumber = task.subtasks.length + 1;
-                        const fullSubtaskNumber = `${taskNumber}.${subtaskNumber}`;
-                        
-                        task.subtasks.push({
-                            name: `${fullSubtaskNumber} ${name}`,
-                            status: 'not-started',
-                            responsible: task.responsible,
-                            description: desc || 'Custom subtask'
-                        });
-                        
-                        break;
-                    }
-                }
-            }
-            
-            cancelSubtask();
-            populateTable();
-            updateDashboard();
-            saveToSupabase();
-        }
-        
-        function removeSubtask(taskName, subtaskIndex) {
-            if (!confirm('Remove this subtask?')) return;
-            
-            if (!currentProjectData?.tasks) return;
-            
-            for (let phase of currentProjectData.tasks) {
-                for (let task of phase.tasks) {
-                    if (task.name === taskName && task.subtasks) {
-                        task.subtasks.splice(subtaskIndex, 1);
-                        break;
-                    }
-                }
-            }
-            
-            populateTable();
-            updateDashboard();
-            saveToSupabase();
-        }
-        
-        function updateSubtaskStatus(taskName, subtaskIndex, status) {
-            if (!currentProjectData?.tasks) return;
-            
-            for (let phase of currentProjectData.tasks) {
-                for (let task of phase.tasks) {
-                    if (task.name === taskName && task.subtasks && task.subtasks[subtaskIndex]) {
-                        task.subtasks[subtaskIndex].status = status;
-                        if (event && event.target) {
-                            event.target.className = `status-select status-${status}`;
-                        }
-                        updateDashboard();
-                        saveToSupabase();
-                        break;
-                    }
-                }
-            }
-        }
-        
-        function updateSubtaskResponsible(taskName, subtaskIndex, newResponsible) {
-            if (!currentProjectData?.tasks) return;
-            
-            for (let phase of currentProjectData.tasks) {
-                for (let task of phase.tasks) {
-                    if (task.name === taskName && task.subtasks && task.subtasks[subtaskIndex]) {
-                        task.subtasks[subtaskIndex].responsible = newResponsible;
-                        updateDashboard();
-                        saveToSupabase();
-                        break;
-                    }
-                }
-            }
-        }
-        
-        // Update task status
-        async function updateTaskStatus(taskName, status) {
-            if (!currentProjectData?.tasks) return;
-            
-            for (let phase of currentProjectData.tasks) {
-                for (let task of phase.tasks) {
-                    if (task.name === taskName) {
-                        task.status = status;
-                        if (event && event.target) {
-                            event.target.className = `status-select status-${status}`;
-                        }
-                        updateDashboard();
-                        await saveToSupabase();
-                        break;
-                    }
-                }
-            }
-        }
-        
-        // Update task responsible
-        async function updateTaskResponsible(taskName, newResponsible) {
-            if (!currentProjectData?.tasks) return;
-            
-            // Convert "Client" to actual client name
-            if (newResponsible === 'Client' && currentProjectData?.client_data?.name) {
-                newResponsible = currentProjectData.client_data.name;
-            }
-            
-            for (let phase of currentProjectData.tasks) {
-                for (let task of phase.tasks) {
-                    if (task.name === taskName) {
-                        task.responsible = newResponsible;
-                        updateDashboard();
-                        await saveToSupabase();
-                        break;
-                    }
-                }
-            }
-        }
-        
-        // Export to CSV
-        function exportToCSV() {
-            if (!currentProjectData) return;
-            
-            let csv = 'Client,Scaleup PM,Client PM,Phase,Task,Subtask,Status,Responsible,Description,Visible\n';
-            
-            currentProjectData.tasks.forEach(phase => {
-                phase.tasks.forEach(task => {
-                    const statusText = task.status === 'not-started' ? 'Not Started' : 
-                                     task.status === 'in-progress' ? 'In Progress' : 'Completed';
-                    const clientName = currentProjectData.client_data?.name || '';
-                    const scaleupPM = currentProjectData.client_data?.scaleupPM || '';
-                    const clientPM = currentProjectData.client_data?.clientPM || '';
-                    
-                    csv += `"${clientName}","${scaleupPM}","${clientPM}","${phase.phase}","${task.name}","","${statusText}","${task.responsible}","${task.description}","${task.visible ? 'Yes' : 'No'}"\n`;
-                    
-                    if (task.subtasks && task.subtasks.length > 0) {
-                        task.subtasks.forEach(subtask => {
-                            const subtaskStatusText = subtask.status === 'not-started' ? 'Not Started' : 
-                                                    subtask.status === 'in-progress' ? 'In Progress' : 'Completed';
-                            csv += `"${clientName}","${scaleupPM}","${clientPM}","${phase.phase}","${task.name}","${subtask.name}","${subtaskStatusText}","${subtask.responsible}","${subtask.description}","${task.visible ? 'Yes' : 'No'}"\n`;
-                        });
-                    }
-                });
-            });
-            
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `scaleup-project-${currentProjectId}.csv`;
-            a.click();
-        }
-        
-        // Export project
         function exportProject() {
-            if (!currentProjectData) return;
+            if (!currentProjectData) {
+                alert('Vælg venligst et projekt først');
+                return;
+            }
             
             const exportData = {
                 ...currentProjectData,
@@ -2096,22 +1358,18 @@
                     showDashboard();
                 } else if (event === 'SIGNED_OUT') {
                     currentUser = null;
+                    currentUserRole = null;
                     showLoginScreen();
                 }
             });
         }
         
-        // Keyboard shortcuts
-        document.addEventListener('keydown', function(e) {
-            const subtaskArea = document.getElementById('subtask-input-area');
-            if (subtaskArea && subtaskArea.style.display === 'block') {
-                if (e.key === 'Enter') {
-                    createSubtask();
-                } else if (e.key === 'Escape') {
-                    cancelSubtask();
-                }
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('share-modal')) {
+                closeShareModal();
             }
-        });
+        }
     </script>
 </body>
 </html>
