@@ -3,10 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scaleup Finance - Secure Dashboard</title>
+    <title>Scaleup Finance - Project Management Dashboard</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f5f7fa; color: #333; }
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background: #1a1a2e; 
+            color: #ffffff; 
+        }
+        
         .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
         
         /* Login Screen */
@@ -15,16 +20,17 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #3a4a47 0%, #2d3a36 100%);
+            background: #1a1a2e;
         }
         
         .login-box {
-            background: white;
+            background: #252541;
             padding: 40px;
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
             width: 100%;
             max-width: 400px;
+            border: 1px solid rgba(129, 230, 217, 0.2);
         }
         
         .login-logo {
@@ -34,30 +40,39 @@
         
         .login-logo h1 {
             font-size: 2.5em;
-            background: linear-gradient(135deg, #3a4a47, #2d3a36);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #81e6d9;
+            font-weight: 300;
+        }
+        
+        .login-logo p {
+            color: #9ca3af;
+            margin-top: 10px;
         }
         
         .auth-form {
             margin-top: 20px;
         }
         
-        .auth-form input {
+        .auth-form input, .auth-form select {
             width: 100%;
             padding: 12px;
             margin-bottom: 15px;
-            border: 2px solid #dee2e6;
+            border: 1px solid rgba(129, 230, 217, 0.2);
+            background: #1a1a2e;
             border-radius: 8px;
             font-size: 1em;
+            color: white;
+        }
+        
+        .auth-form input::placeholder {
+            color: #6b7280;
         }
         
         .auth-form button {
             width: 100%;
             padding: 12px;
-            background: linear-gradient(135deg, #3a4a47, #2d3a36);
-            color: white;
+            background: #81e6d9;
+            color: #1a1a2e;
             border: none;
             border-radius: 8px;
             font-size: 1.1em;
@@ -68,271 +83,83 @@
         
         .auth-form button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(58, 74, 71, 0.3);
+            box-shadow: 0 5px 15px rgba(129, 230, 217, 0.4);
         }
         
-        /* Share Modal */
-        .modal {
+        .auth-toggle {
+            text-align: center;
+            margin-top: 20px;
+            color: #9ca3af;
+        }
+        
+        .auth-toggle a {
+            color: #81e6d9;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            color: #f87171;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
             display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
         }
         
-        .modal-content {
-            background-color: white;
-            margin: 5% auto;
-            padding: 0;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 600px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        
-        .modal-header {
-            background: linear-gradient(135deg, #3a4a47 0%, #2d3a36 100%);
-            color: white;
-            padding: 20px 30px;
-            border-radius: 12px 12px 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .modal-body {
-            padding: 30px;
-        }
-        
-        .close-modal {
-            color: white;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            background: none;
-            border: none;
-        }
-        
-        .close-modal:hover {
-            opacity: 0.8;
-        }
-        
-        .share-section {
-            margin-bottom: 25px;
-        }
-        
-        .share-section h3 {
-            color: #3a4a47;
+        .success-message {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid #22c55e;
+            color: #86efac;
+            padding: 10px;
+            border-radius: 5px;
             margin-bottom: 15px;
-            font-size: 1.1em;
-        }
-        
-        .share-link-container {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        
-        .share-link-input {
-            flex: 1;
-            padding: 10px;
-            border: 2px solid #dee2e6;
-            border-radius: 6px;
-            background: #f8f9fa;
-            font-family: monospace;
-            font-size: 0.9em;
-        }
-        
-        .copy-link-btn {
-            padding: 10px 20px;
-            background: #28a745;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        
-        .copy-link-btn:hover {
-            background: #218838;
-        }
-        
-        .permission-select {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #dee2e6;
-            border-radius: 6px;
-            font-size: 1em;
-            margin-bottom: 10px;
-        }
-        
-        .permission-info {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 10px;
-        }
-        
-        .permission-info p {
-            margin: 5px 0;
-            font-size: 0.9em;
-            color: #666;
-        }
-        
-        .collaborators-list {
-            margin-top: 20px;
-        }
-        
-        .collaborator-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-        
-        .collaborator-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .collaborator-email {
-            font-weight: 600;
-            color: #333;
-        }
-        
-        .role-badge {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 600;
-        }
-        
-        .role-owner {
-            background: #3a4a47;
-            color: white;
-        }
-        
-        .role-admin {
-            background: #dc3545;
-            color: white;
-        }
-        
-        .role-editor {
-            background: #007bff;
-            color: white;
-        }
-        
-        .role-viewer {
-            background: #6c757d;
-            color: white;
-        }
-        
-        .add-collaborator-form {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
-        .add-email-input {
-            flex: 1;
-            padding: 10px;
-            border: 2px solid #dee2e6;
-            border-radius: 6px;
-        }
-        
-        .add-role-select {
-            width: 150px;
-            padding: 10px;
-            border: 2px solid #dee2e6;
-            border-radius: 6px;
-        }
-        
-        .add-collaborator-btn {
-            padding: 10px 20px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        
-        .add-collaborator-btn:hover {
-            background: #0056b3;
-        }
-        
-        /* Access Info Badge */
-        .access-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 12px;
-            background: white;
-            border: 2px solid #dee2e6;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 600;
-            margin-left: 15px;
-        }
-        
-        .access-badge.owner {
-            border-color: #3a4a47;
-            color: #3a4a47;
-        }
-        
-        .access-badge.admin {
-            border-color: #dc3545;
-            color: #dc3545;
-        }
-        
-        .access-badge.editor {
-            border-color: #007bff;
-            color: #007bff;
-        }
-        
-        .access-badge.viewer {
-            border-color: #6c757d;
-            color: #6c757d;
+            display: none;
         }
         
         /* User Info Bar */
         .user-bar {
-            background: white;
+            background: #252541;
             padding: 15px 20px;
             border-radius: 12px;
             margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            border: 1px solid rgba(129, 230, 217, 0.1);
         }
         
         .user-info {
             display: flex;
             align-items: center;
             gap: 15px;
+            color: #9ca3af;
         }
         
         .user-email {
             font-weight: 600;
-            color: #3a4a47;
+            color: #81e6d9;
+        }
+        
+        .user-role {
+            background: rgba(129, 230, 217, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            color: #81e6d9;
         }
         
         /* Header */
         .header { 
-            background: linear-gradient(135deg, #3a4a47 0%, #2d3a36 100%);
+            background: linear-gradient(135deg, #252541 0%, #1a1a2e 100%);
             color: white; 
             padding: 50px; 
             border-radius: 15px; 
             margin-bottom: 30px; 
             text-align: center;
+            border: 1px solid rgba(129, 230, 217, 0.1);
         }
         
         .header-content {
@@ -343,44 +170,36 @@
             gap: 30px;
         }
         
-        .scaleup-logo {
-            width: 100px; 
-            height: 100px; 
-            background: #ffffff; 
-            border-radius: 15px; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-            font-size: 48px;
-            font-weight: 800;
-            color: #3a4a47;
-        }
-        
         .company-name {
-            font-size: 4em;
-            font-weight: 700;
+            font-size: 3.5em;
+            font-weight: 200;
             color: white;
         }
         
+        .company-name span {
+            color: #81e6d9;
+            font-weight: 400;
+        }
+        
         .header-description {
-            font-size: 1.3em;
-            opacity: 0.9;
+            font-size: 1.2em;
+            opacity: 0.7;
             text-align: center;
         }
         
         /* Project Controls */
         .project-controls {
-            background: white;
+            background: #252541;
             padding: 20px;
             border-radius: 12px;
             margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 15px;
+            border: 1px solid rgba(129, 230, 217, 0.1);
         }
         
         .project-info {
@@ -391,53 +210,533 @@
         
         .project-select {
             padding: 10px 15px;
-            border: 2px solid #dee2e6;
+            background: #1a1a2e;
+            border: 1px solid rgba(129, 230, 217, 0.2);
+            color: white;
             border-radius: 8px;
             font-size: 1em;
             min-width: 250px;
         }
         
-        .nav-tabs { display: flex; background: white; border-radius: 12px; overflow: hidden; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
-        .nav-tab { flex: 1; padding: 15px 25px; background: #f8f9fa; border: none; cursor: pointer; font-size: 1.1em; font-weight: 600; transition: all 0.3s; }
-        .nav-tab.active { background: linear-gradient(135deg, #3a4a47, #2d3a36); color: white; }
+        .nav-tabs { 
+            display: flex; 
+            background: #252541; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            margin-bottom: 30px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border: 1px solid rgba(129, 230, 217, 0.1);
+        }
+        
+        .nav-tab { 
+            flex: 1; 
+            padding: 15px 25px; 
+            background: transparent; 
+            border: none; 
+            cursor: pointer; 
+            font-size: 1.1em; 
+            font-weight: 600; 
+            transition: all 0.3s;
+            color: #9ca3af;
+        }
+        
+        .nav-tab.active { 
+            background: rgba(129, 230, 217, 0.1); 
+            color: #81e6d9;
+            border-bottom: 2px solid #81e6d9;
+        }
+        
+        .nav-tab.hidden {
+            display: none;
+        }
         
         .tab-content { display: none; }
         .tab-content.active { display: block; }
         
-        .btn { padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 1em; margin: 5px; transition: all 0.3s; }
-        .btn-primary { background: #3a4a47; color: white; }
-        .btn-primary:hover { background: #2d3a36; transform: translateY(-2px); }
-        .btn-secondary { background: #6c757d; color: white; }
-        .btn-success { background: #28a745; color: white; }
-        .btn-danger { background: #dc3545; color: white; }
-        .btn-info { background: #17a2b8; color: white; }
-        
-        .error-message {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            display: none;
+        .setup-form { 
+            background: #252541; 
+            padding: 30px; 
+            border-radius: 12px; 
+            margin-bottom: 20px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border: 1px solid rgba(129, 230, 217, 0.1);
         }
         
-        .success-message {
-            background: #d4edda;
-            color: #155724;
-            padding: 10px;
-            border-radius: 5px;
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #9ca3af; }
+        .form-group input, .form-group textarea { 
+            width: 100%; 
+            padding: 12px; 
+            background: #1a1a2e;
+            border: 1px solid rgba(129, 230, 217, 0.2); 
+            border-radius: 8px; 
+            font-size: 1em; 
+            font-family: 'Segoe UI', sans-serif;
+            color: white;
+        }
+        
+        .btn { 
+            padding: 12px 25px; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 1em; 
+            margin: 5px; 
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .btn-primary { 
+            background: #81e6d9; 
+            color: #1a1a2e; 
+        }
+        
+        .btn-primary:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(129, 230, 217, 0.4);
+        }
+        
+        .btn-secondary { 
+            background: rgba(156, 163, 175, 0.2); 
+            color: #9ca3af;
+            border: 1px solid rgba(156, 163, 175, 0.3);
+        }
+        
+        .btn-success { 
+            background: rgba(34, 197, 94, 0.2); 
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        
+        .btn-danger { 
+            background: rgba(239, 68, 68, 0.2); 
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        
+        .btn-info { 
+            background: rgba(129, 230, 217, 0.2); 
+            color: #81e6d9;
+            border: 1px solid rgba(129, 230, 217, 0.3);
+        }
+        
+        /* Dashboard styles */
+        .dashboard-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 25px; 
+            margin-bottom: 40px; 
+        }
+        
+        .kpi-card { 
+            background: #252541;
+            padding: 30px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); 
+            text-align: center; 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(129, 230, 217, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .kpi-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(129, 230, 217, 0.3);
+        }
+        
+        .kpi-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            background: rgba(129, 230, 217, 0.1);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .kpi-value { 
+            font-size: 3.5em; 
+            font-weight: 800; 
+            margin: 20px 0 10px; 
+            color: #81e6d9;
+        }
+        
+        .kpi-label { 
+            color: #9ca3af; 
+            font-size: 1.1em; 
+            font-weight: 600;
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
             margin-bottom: 15px;
-            display: none;
+        }
+        
+        .progress-bar { 
+            width: 100%; 
+            height: 8px; 
+            background: rgba(129, 230, 217, 0.1); 
+            border-radius: 10px; 
+            overflow: hidden; 
+            margin: 20px 0 10px;
+        }
+        
+        .progress-fill { 
+            height: 100%; 
+            background: linear-gradient(90deg, #81e6d9, #4fd1c5); 
+            border-radius: 10px; 
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .kpi-subtitle {
+            font-size: 0.9em;
+            color: #6b7280;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        .dashboard-intro {
+            background: #252541;
+            border: 1px solid rgba(129, 230, 217, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .dashboard-intro h2 {
+            color: #81e6d9;
+            font-size: 2.2em;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .dashboard-intro p {
+            color: #9ca3af;
+            font-size: 1.1em;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Team Performance Section */
+        .team-distribution {
+            background: #252541;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(129, 230, 217, 0.1);
+            margin-top: 30px;
+        }
+
+        .team-distribution h3 {
+            color: #81e6d9;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 1.8em;
+        }
+
+        .team-member-card {
+            background: #1a1a2e;
+            border: 1px solid rgba(129, 230, 217, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .team-member-name {
+            color: #81e6d9;
+            font-weight: 600;
+        }
+
+        .task-count {
+            color: #9ca3af;
+        }
+        
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            background: #252541; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        th, td { 
+            padding: 15px; 
+            text-align: left; 
+            border-bottom: 1px solid rgba(129, 230, 217, 0.1);
+            color: white;
+        }
+        
+        th { 
+            background: rgba(129, 230, 217, 0.05); 
+            font-weight: 600; 
+            color: #81e6d9;
+        }
+
+        /* Ensure subtasks align properly */
+        td:first-child {
+            width: 350px;
+        }
+        
+        td:nth-child(2) {
+            width: 150px;
+        }
+        
+        td:nth-child(3) {
+            width: 200px;
+        }
+        
+        .table-header { 
+            background: rgba(129, 230, 217, 0.1); 
+            color: white; 
+            padding: 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+        }
+        
+        .client-info { 
+            font-size: 1.1em; 
+            color: #81e6d9;
+        }
+        
+        .status-select { 
+            padding: 8px 12px; 
+            background: #1a1a2e;
+            border: 1px solid rgba(129, 230, 217, 0.2); 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-weight: 600;
+            color: white;
+        }
+        
+        .status-completed { 
+            background: rgba(34, 197, 94, 0.2); 
+            color: #22c55e;
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+        
+        .status-in-progress { 
+            background: rgba(129, 230, 217, 0.2); 
+            color: #81e6d9;
+            border-color: rgba(129, 230, 217, 0.3);
+        }
+        
+        .status-not-started { 
+            background: rgba(156, 163, 175, 0.1); 
+            color: #9ca3af;
+            border-color: rgba(156, 163, 175, 0.2);
+        }
+
+        .subtask-row {
+            background: rgba(129, 230, 217, 0.02);
+        }
+
+        .subtask-row td {
+            padding-left: 45px;
+            position: relative;
+        }
+
+        .subtask-row td:first-child::before {
+            content: '└─';
+            position: absolute;
+            left: 25px;
+            color: #81e6d9;
+        }
+        
+        .warning-message { 
+            background: rgba(251, 191, 36, 0.1); 
+            border: 1px solid #fbbf24; 
+            color: #fbbf24; 
+            padding: 15px; 
+            border-radius: 8px; 
+            margin-bottom: 20px;
+        }
+        
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            font-size: 1.2em;
+            color: #6b7280;
+        }
+
+        .share-controls {
+            background: #252541;
+            border: 1px solid rgba(129, 230, 217, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .share-link {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .share-link input {
+            flex: 1;
+            padding: 10px;
+            background: #1a1a2e;
+            border: 1px solid rgba(129, 230, 217, 0.2);
+            border-radius: 8px;
+            font-family: monospace;
+            color: white;
+        }
+
+        .copy-btn {
+            padding: 10px 20px;
+            background: #81e6d9;
+            color: #1a1a2e;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(129, 230, 217, 0.4);
+        }
+
+        .share-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(156, 163, 175, 0.2);
+            transition: .4s;
+            border-radius: 34px;
+            border: 1px solid rgba(156, 163, 175, 0.3);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: #9ca3af;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: rgba(129, 230, 217, 0.2);
+            border-color: rgba(129, 230, 217, 0.3);
+        }
+
+        input:checked + .slider:before {
+            background-color: #81e6d9;
+            transform: translateX(30px);
+        }
+
+        /* Role-based invite section */
+        .invite-section {
+            background: #252541;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border: 1px solid rgba(129, 230, 217, 0.1);
+        }
+
+        .invite-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .invite-input {
+            flex: 1;
+            padding: 10px;
+            background: #1a1a2e;
+            border: 1px solid rgba(129, 230, 217, 0.2);
+            border-radius: 8px;
+            color: white;
+        }
+
+        .role-select {
+            padding: 10px;
+            background: #1a1a2e;
+            border: 1px solid rgba(129, 230, 217, 0.2);
+            border-radius: 8px;
+            color: white;
+            min-width: 150px;
+        }
+
+        .team-list {
+            margin-top: 20px;
+        }
+
+        .team-member-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #1a1a2e;
+            border: 1px solid rgba(129, 230, 217, 0.1);
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .member-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .member-email {
+            color: #81e6d9;
+        }
+
+        .member-role {
+            background: rgba(129, 230, 217, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            color: #81e6d9;
         }
     </style>
 </head>
 <body>
     <!-- Login Screen -->
-    <div id="login-screen" class="login-container" style="display: none;">
+    <div id="login-screen" class="login-container" style="display: flex;">
         <div class="login-box">
             <div class="login-logo">
-                <h1>Scaleup Finance</h1>
-                <p>e-conomic Dimensions Dashboard</p>
+                <h1>Scaleup <span style="color: #81e6d9;">Finance</span></h1>
+                <p>Project Management Dashboard</p>
             </div>
             
             <div id="error-message" class="error-message"></div>
@@ -445,57 +744,29 @@
             
             <!-- Login Form -->
             <div id="login-form" class="auth-form">
-                <h2 style="margin-bottom: 20px;">Log ind</h2>
+                <h2 style="margin-bottom: 20px; color: white;">Sign In</h2>
                 <input type="email" id="login-email" placeholder="Email" required>
                 <input type="password" id="login-password" placeholder="Password" required>
-                <button onclick="handleLogin()">Log ind</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Share Modal -->
-    <div id="share-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Del Projekt</h2>
-                <button class="close-modal" onclick="closeShareModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <!-- Share Link Section -->
-                <div class="share-section">
-                    <h3>🔗 Del med link</h3>
-                    <div class="share-link-container">
-                        <input type="text" id="share-link" class="share-link-input" readonly>
-                        <button class="copy-link-btn" onclick="copyShareLink()">📋 Kopier</button>
-                    </div>
-                    
-                    <select id="link-permission" class="permission-select" onchange="updateShareLink()">
-                        <option value="viewer">Kun visning</option>
-                        <option value="editor">Kan redigere</option>
-                        <option value="admin">Administrator</option>
-                    </select>
-                    
-                    <div class="permission-info">
-                        <p id="permission-desc">Personer med dette link kan se projektet</p>
-                    </div>
+                <button onclick="handleLogin()">Sign In</button>
+                <div class="auth-toggle">
+                    New user? <a href="#" onclick="showSignup(); return false;">Create account</a>
                 </div>
-
-                <!-- Collaborators Section -->
-                <div class="share-section">
-                    <h3>👥 Projektmedlemmer</h3>
-                    <div id="collaborators-list" class="collaborators-list">
-                        <!-- Will be populated dynamically -->
-                    </div>
-                    
-                    <div class="add-collaborator-form">
-                        <input type="email" id="new-collaborator-email" class="add-email-input" placeholder="Email adresse">
-                        <select id="new-collaborator-role" class="add-role-select">
-                            <option value="viewer">Viewer</option>
-                            <option value="editor">Editor</option>
-                            <option value="admin">Admin</option>
-                        </select>
-                        <button class="add-collaborator-btn" onclick="addCollaborator()">Tilføj</button>
-                    </div>
+            </div>
+            
+            <!-- Signup Form -->
+            <div id="signup-form" class="auth-form" style="display: none;">
+                <h2 style="margin-bottom: 20px; color: white;">Create Account</h2>
+                <input type="email" id="signup-email" placeholder="Email" required>
+                <input type="password" id="signup-password" placeholder="Password (min. 6 characters)" required>
+                <input type="text" id="company-name" placeholder="Company Name" required>
+                <select id="signup-role" required>
+                    <option value="admin">Admin (Full Access)</option>
+                    <option value="employee">Employee (Edit Tasks)</option>
+                    <option value="viewer">Viewer (Read Only)</option>
+                </select>
+                <button onclick="handleSignup()">Create Account</button>
+                <div class="auth-toggle">
+                    Already have an account? <a href="#" onclick="showLogin(); return false;">Sign in</a>
                 </div>
             </div>
         </div>
@@ -507,401 +778,328 @@
         <!-- User Bar -->
         <div class="user-bar">
             <div class="user-info">
-                <span>Logget ind som:</span>
+                <span>Signed in as:</span>
                 <span class="user-email" id="current-user-email">-</span>
-                <span id="user-role-badge" class="access-badge"></span>
+                <span class="user-role" id="current-user-role">Admin</span>
             </div>
-            <button class="btn btn-danger" onclick="handleLogout()">Log ud</button>
+            <button class="btn btn-danger" onclick="handleLogout()">Sign Out</button>
         </div>
         
         <!-- Header -->
         <div class="header">
             <div class="header-content">
-                <div class="scaleup-logo">8</div>
-                <div class="company-name">Scaleup Finance</div>
+                <div class="company-name">Scaleup <span>Finance</span></div>
             </div>
-            <div class="header-description">e-conomic Dimensions Implementation Dashboard</div>
+            <div class="header-description">Financial Management for Next Gen. Founders</div>
         </div>
 
         <!-- Project Controls -->
         <div class="project-controls">
             <div class="project-info">
-                <label style="font-weight: 600; color: #495057;">Current Project:</label>
+                <label style="font-weight: 600; color: #9ca3af;">Current Project:</label>
                 <select id="project-select" class="project-select" onchange="loadProject(this.value)">
-                    <option value="">Vælg eller opret et projekt...</option>
+                    <option value="">Select or create a project...</option>
                 </select>
             </div>
             <div>
-                <button class="btn btn-info" onclick="openShareModal()">🔗 Del Projekt</button>
-                <button class="btn btn-success" onclick="createNewProject()">➕ Nyt Projekt</button>
+                <button class="btn btn-success" onclick="createNewProject()" id="new-project-btn">➕ New Project</button>
+                <button class="btn btn-info" onclick="toggleShareControls()" id="share-btn">🔗 Share Project</button>
                 <button class="btn btn-secondary" onclick="exportProject()">💾 Export</button>
             </div>
         </div>
 
-        <!-- Navigation Tabs -->
+        <!-- Share Controls (hidden by default) -->
+        <div id="share-controls" class="share-controls" style="display: none;">
+            <h3 style="color: #81e6d9;">🔗 Share this project</h3>
+            
+            <!-- Invite Team Members -->
+            <div class="invite-section">
+                <h4 style="color: white; margin-bottom: 15px;">Invite Team Members</h4>
+                <div class="invite-row">
+                    <input type="email" id="invite-email" class="invite-input" placeholder="Enter email address">
+                    <select id="invite-role" class="role-select">
+                        <option value="employee">Employee (Can edit tasks)</option>
+                        <option value="viewer">Viewer (Read only)</option>
+                        <option value="admin">Admin (Full access)</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="inviteTeamMember()">Send Invite</button>
+                </div>
+                
+                <!-- Team Members List -->
+                <div class="team-list" id="team-members-list">
+                    <!-- Team members will be listed here -->
+                </div>
+            </div>
+            
+            <!-- Public Link -->
+            <div class="share-toggle">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="public-toggle" onchange="togglePublicAccess()">
+                    <span class="slider"></span>
+                </label>
+                <span style="color: #9ca3af;">Make project publicly accessible (read-only)</span>
+            </div>
+            <div id="share-link-container" style="display: none;">
+                <p style="color: #9ca3af;">Share this link with clients or partners:</p>
+                <div class="share-link">
+                    <input type="text" id="share-link-input" readonly>
+                    <button class="copy-btn" onclick="copyShareLink()">📋 Copy</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
         <div class="nav-tabs">
-            <button class="nav-tab active" onclick="switchTab('setup')">🔧 Client Setup</button>
+            <button class="nav-tab active" onclick="switchTab('setup')" id="setup-tab-btn">🔧 Client Setup</button>
             <button class="nav-tab" onclick="switchTab('dashboard')">📊 Dashboard</button>
             <button class="nav-tab" onclick="switchTab('project')">📋 Project Plan</button>
         </div>
 
-        <!-- Content will be added here -->
+        <!-- Client Setup Tab -->
+        <div id="setup-tab" class="tab-content active">
+            <div class="setup-form">
+                <h2 style="color: white;">Client Information Setup</h2>
+                <p style="margin-bottom: 25px; color: #9ca3af;">Configure client details for this project.</p>
+                
+                <div class="form-group">
+                    <label>Client Company Name *</label>
+                    <input type="text" id="client-name" placeholder="e.g., ABC Corporation" onchange="saveToSupabase()">
+                </div>
+                
+                <div class="form-group">
+                    <label>Scaleup Finance Project Manager *</label>
+                    <input type="text" id="scaleup-pm" placeholder="e.g., John Smith" onchange="saveToSupabase()">
+                </div>
+                
+                <div class="form-group">
+                    <label>Client Project Manager</label>
+                    <input type="text" id="client-pm" placeholder="e.g., Jane Doe (CFO)" onchange="saveToSupabase()">
+                </div>
+                
+                <div class="form-group">
+                    <label>Project Notes (Optional)</label>
+                    <textarea id="project-notes" rows="3" placeholder="Any specific notes about this implementation..." onchange="saveToSupabase()"></textarea>
+                </div>
+                
+                <button class="btn btn-primary" onclick="saveSetup()">💾 Save Client Setup</button>
+            </div>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard-tab" class="tab-content">
+            <div id="dashboard-warning" class="warning-message">
+                ⚠️ Please select a project and complete the Client Setup first to view the dashboard.
+            </div>
+            
+            <div id="dashboard-content" style="display: none;">
+                <div class="dashboard-intro">
+                    <h2>📊 Project Overview</h2>
+                    <p>Monitor your e-conomic dimensions implementation progress.</p>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-icon">📈</div>
+                        <div class="kpi-label">Overall Progress</div>
+                        <div class="kpi-value" id="overall-progress">0%</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="overall-progress-bar" style="width: 0%"></div>
+                        </div>
+                        <div class="kpi-subtitle">Implementation Status</div>
+                    </div>
+                    
+                    <div class="kpi-card">
+                        <div class="kpi-icon">✅</div>
+                        <div class="kpi-label">Completed Tasks</div>
+                        <div class="kpi-value" id="completed-tasks">0</div>
+                        <div class="kpi-subtitle">of <span id="total-tasks">0</span> total tasks</div>
+                    </div>
+                    
+                    <div class="kpi-card">
+                        <div class="kpi-icon">🔄</div>
+                        <div class="kpi-label">Active Tasks</div>
+                        <div class="kpi-value" id="ongoing-tasks">0</div>
+                        <div class="kpi-subtitle">currently in progress</div>
+                    </div>
+                    
+                    <div class="kpi-card">
+                        <div class="kpi-icon">🎯</div>
+                        <div class="kpi-label">Next Milestone</div>
+                        <div class="kpi-value" style="font-size: 1.8em; line-height: 1.2;" id="next-milestone">Requirements Analysis</div>
+                        <div class="kpi-subtitle">Phase 1 - Analysis</div>
+                    </div>
+                </div>
+
+                <!-- Team Performance Section -->
+                <div class="team-distribution">
+                    <h3>👥 Team Task Assignments</h3>
+                    <div id="team-assignments">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Plan Tab -->
+        <div id="project-tab" class="tab-content">
+            <div id="project-warning" class="warning-message">
+                ⚠️ Please select a project and complete the Client Setup first to access the project plan.
+            </div>
+            
+            <div id="project-content" style="display: none;">
+                <div style="background: #252541; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+                    <div class="table-header">
+                        <h2 style="color: white;">📋 Detailed Project Plan</h2>
+                        <div class="client-info" id="client-display">No project selected</div>
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 350px">Task</th>
+                                <th style="width: 150px">Status</th>
+                                <th style="width: 200px">Responsible</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody id="project-body">
+                            <tr>
+                                <td colspan="4" class="loading">Select a project to view tasks...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Add Subtask Button (admin only) -->
+                <div id="add-task-section" style="margin-top: 20px;">
+                    <button class="btn btn-success" onclick="showAddSubtaskForm()" id="add-subtask-btn">➕ Add Subtask</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Public View Screen (for shared links) -->
+    <div id="public-view" class="container" style="display: none;">
+        <div class="header">
+            <div class="header-content">
+                <div class="company-name">Scaleup <span>Finance</span></div>
+            </div>
+            <div class="header-description">Project Status - Read Only View</div>
+        </div>
+        
+        <div id="public-content">
+            <!-- Content will be loaded here -->
+        </div>
     </div>
 
     <!-- Supabase SDK -->
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
     <script>
-        // Supabase Configuration - REPLACE WITH YOUR VALUES
-        const supabaseUrl = 'https://swlnojbzlfosjdtqswjd.supabase.co'
+        // Supabase Configuration - UPDATE WITH YOUR VALUES
+        const supabaseUrl = 'https://swlnojbzlfosjdtqswjd.supabase.co';
         const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3bG5vamJ6bGZvc2pkdHFzd2pkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTczNDUzNzIsImV4cCI6MjA3MjkyMTM3Mn0.weAmKGGMeUaerNwyAoz6dpFufK0Fz1YbrdaUzsKiYk8';
         
         let supabase = null;
         let currentUser = null;
+        let currentUserRole = 'viewer';
         let currentProjectId = null;
         let currentProjectData = null;
-        let currentUserRole = null;
+        let isReadOnly = false;
         
-        // Initialize Supabase
-        try {
-            if (supabaseUrl !== 'https://YOUR-PROJECT-REF.supabase.co') {
-                supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
-                checkAuth();
-            } else {
-                console.error('Please configure Supabase credentials');
-                alert('Supabase er ikke konfigureret. Opdater credentials i HTML filen.');
+        // Master template for new projects
+        const masterTemplate = [
+            {
+                phase: "Phase 1: Analysis & Planning",
+                tasks: [
+                    {name: "1.1 Requirements Analysis", status: "not-started", responsible: "Scaleup Finance", description: "Map dimension requirements and needs"},
+                    {name: "1.2 System Mapping", status: "not-started", responsible: "Client", description: "Current setup in all systems"},
+                    {name: "1.3 Gap Analysis", status: "not-started", responsible: "Scaleup Finance", description: "Identify change requirements"},
+                    {name: "1.4 Technical Architecture", status: "not-started", responsible: "Scaleup Finance", description: "Design solution architecture"}
+                ]
+            },
+            {
+                phase: "Phase 2: e-conomic Configuration",
+                tasks: [
+                    {name: "2.1 Dimension Setup", status: "not-started", responsible: "Scaleup Finance", description: "Create dimensions in e-conomic"},
+                    {name: "2.2 Chart of Accounts Adaptation", status: "not-started", responsible: "Scaleup Finance", description: "Update chart of accounts"},
+                    {name: "2.3 Report Configuration", status: "not-started", responsible: "Scaleup Finance", description: "Customize standard reports"},
+                    {name: "2.4 User Permissions", status: "not-started", responsible: "Client", description: "Setup user access rights"}
+                ]
+            },
+            {
+                phase: "Phase 3: Corpay Integration",
+                tasks: [
+                    {name: "3.1 Corpay Setup", status: "not-started", responsible: "Client", description: "Configure dimensions in Corpay"},
+                    {name: "3.2 e-conomic Mapping", status: "not-started", responsible: "Scaleup Finance", description: "System mapping between platforms"},
+                    {name: "3.3 Data Import Testing", status: "not-started", responsible: "Scaleup Finance", description: "Test data transfer processes"},
+                    {name: "3.4 Automation Rules", status: "not-started", responsible: "Scaleup Finance", description: "Setup automatic posting rules"}
+                ]
+            },
+            {
+                phase: "Phase 4: Pleo Integration",
+                tasks: [
+                    {name: "4.1 Pleo Setup", status: "not-started", responsible: "Client", description: "Configure dimensions in Pleo"},
+                    {name: "4.2 Employee Training", status: "not-started", responsible: "Client", description: "Train employees on dimension usage"},
+                    {name: "4.3 Approval Workflows", status: "not-started", responsible: "Client", description: "Setup approval processes"},
+                    {name: "4.4 Integration Testing", status: "not-started", responsible: "Scaleup Finance", description: "Test Pleo to e-conomic integration"}
+                ]
+            },
+            {
+                phase: "Phase 5: Testing & Validation",
+                tasks: [
+                    {name: "5.1 System Testing", status: "not-started", responsible: "Scaleup Finance", description: "Functional testing of all systems"},
+                    {name: "5.2 User Acceptance Testing", status: "not-started", responsible: "Client", description: "Testing with end users"},
+                    {name: "5.3 Report Validation", status: "not-started", responsible: "Scaleup Finance", description: "Verify report accuracy"},
+                    {name: "5.4 Performance Testing", status: "not-started", responsible: "Scaleup Finance", description: "Test system performance"}
+                ]
+            },
+            {
+                phase: "Phase 6: Go-Live & Support",
+                tasks: [
+                    {name: "6.1 Production Implementation", status: "not-started", responsible: "Scaleup Finance", description: "Deploy to production environment"},
+                    {name: "6.2 User Training", status: "not-started", responsible: "Scaleup Finance", description: "Train all users"},
+                    {name: "6.3 Documentation", status: "not-started", responsible: "Scaleup Finance", description: "Create user manuals"},
+                    {name: "6.4 Post-Implementation Support", status: "not-started", responsible: "Scaleup Finance", description: "Ongoing support first month"}
+                ]
             }
-        } catch (error) {
-            console.error('Supabase initialization error:', error);
-        }
+        ];
         
-        // Check if user came from share link
-        function checkShareLink() {
+        // Initialize
+        window.onload = function() {
+            // Check for share link first
             const urlParams = new URLSearchParams(window.location.search);
             const shareId = urlParams.get('share');
-            const permission = urlParams.get('permission') || 'viewer';
             
             if (shareId) {
-                // Store share link info in session storage
-                sessionStorage.setItem('shareId', shareId);
-                sessionStorage.setItem('sharePermission', permission);
-                
-                // If user is logged in, grant access
-                if (currentUser) {
-                    grantAccessFromShareLink(shareId, permission);
-                }
+                loadPublicView(shareId);
+            } else {
+                initSupabase();
             }
-        }
+        };
         
-        // Grant access from share link
-        async function grantAccessFromShareLink(shareId, permission) {
-            if (!supabase || !currentUser) return;
-            
-            try {
-                // First, find the project with this share ID
-                const { data: project, error: projectError } = await supabase
-                    .from('projects')
-                    .select('project_id')
-                    .eq('share_id', shareId)
-                    .single();
+        // Initialize Supabase
+        function initSupabase() {
+            if (supabaseUrl !== 'YOUR_SUPABASE_URL') {
+                supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+                checkAuth();
                 
-                if (projectError) throw projectError;
-                
-                // Check if user already has access
-                const { data: existingAccess, error: accessError } = await supabase
-                    .from('project_access')
-                    .select('role')
-                    .eq('project_id', project.project_id)
-                    .eq('user_id', currentUser.id)
-                    .single();
-                
-                if (!existingAccess) {
-                    // Grant new access
-                    const { error: insertError } = await supabase
-                        .from('project_access')
-                        .insert({
-                            project_id: project.project_id,
-                            user_id: currentUser.id,
-                            user_email: currentUser.email,
-                            role: permission,
-                            granted_by: 'share_link',
-                            created_at: new Date().toISOString()
-                        });
-                    
-                    if (insertError) throw insertError;
-                    
-                    alert(`Du har nu ${permission} adgang til projektet!`);
-                }
-                
-                // Clear share link from URL and session
-                window.history.replaceState({}, document.title, window.location.pathname);
-                sessionStorage.removeItem('shareId');
-                sessionStorage.removeItem('sharePermission');
-                
-                // Load the project
-                await loadUserProjects();
-                loadProject(project.project_id);
-                
-            } catch (error) {
-                console.error('Error granting access from share link:', error);
-            }
-        }
-        
-        // Generate unique share ID
-        function generateShareId() {
-            return 'share_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
-        }
-        
-        // Open share modal
-        async function openShareModal() {
-            if (!currentProjectId) {
-                alert('Vælg venligst et projekt først');
-                return;
-            }
-            
-            document.getElementById('share-modal').style.display = 'block';
-            
-            // Generate share link
-            updateShareLink();
-            
-            // Load collaborators
-            await loadCollaborators();
-        }
-        
-        // Close share modal
-        function closeShareModal() {
-            document.getElementById('share-modal').style.display = 'none';
-        }
-        
-        // Update share link based on permission
-        async function updateShareLink() {
-            if (!currentProjectData) return;
-            
-            const permission = document.getElementById('link-permission').value;
-            
-            // Ensure project has share_id
-            if (!currentProjectData.share_id) {
-                currentProjectData.share_id = generateShareId();
-                
-                // Update in database
-                if (supabase) {
-                    await supabase
-                        .from('projects')
-                        .update({ share_id: currentProjectData.share_id })
-                        .eq('project_id', currentProjectId);
-                }
-            }
-            
-            const shareUrl = `${window.location.origin}${window.location.pathname}?share=${currentProjectData.share_id}&permission=${permission}`;
-            document.getElementById('share-link').value = shareUrl;
-            
-            // Update permission description
-            const descriptions = {
-                'viewer': 'Personer med dette link kan se projektet',
-                'editor': 'Personer med dette link kan redigere projektet',
-                'admin': 'Personer med dette link får administrator rettigheder'
-            };
-            
-            document.getElementById('permission-desc').textContent = descriptions[permission];
-        }
-        
-        // Copy share link to clipboard
-        function copyShareLink() {
-            const linkInput = document.getElementById('share-link');
-            linkInput.select();
-            document.execCommand('copy');
-            
-            const btn = event.target;
-            const originalText = btn.textContent;
-            btn.textContent = '✓ Kopieret!';
-            btn.style.background = '#28a745';
-            
-            setTimeout(() => {
-                btn.textContent = originalText;
-                btn.style.background = '';
-            }, 2000);
-        }
-        
-        // Load collaborators
-        async function loadCollaborators() {
-            if (!supabase || !currentProjectId) return;
-            
-            try {
-                const { data: collaborators, error } = await supabase
-                    .from('project_access')
-                    .select('*')
-                    .eq('project_id', currentProjectId)
-                    .order('created_at', { ascending: false });
-                
-                if (error) throw error;
-                
-                const listDiv = document.getElementById('collaborators-list');
-                listDiv.innerHTML = '';
-                
-                collaborators.forEach(collab => {
-                    const item = document.createElement('div');
-                    item.className = 'collaborator-item';
-                    
-                    const isOwner = collab.role === 'owner';
-                    const canRemove = currentUserRole === 'owner' || currentUserRole === 'admin';
-                    
-                    item.innerHTML = `
-                        <div class="collaborator-info">
-                            <span class="collaborator-email">${collab.user_email}</span>
-                            <span class="role-badge role-${collab.role}">${collab.role.toUpperCase()}</span>
-                        </div>
-                        ${!isOwner && canRemove ? 
-                            `<button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.9em;" 
-                                onclick="removeCollaborator('${collab.user_id}')">Fjern</button>` 
-                            : ''}
-                    `;
-                    
-                    listDiv.appendChild(item);
+                // Add auth state listener
+                supabase.auth.onAuthStateChange((event, session) => {
+                    if (event === 'SIGNED_IN') {
+                        currentUser = session.user;
+                        currentUserRole = session.user.user_metadata?.role || 'viewer';
+                        showDashboard();
+                    } else if (event === 'SIGNED_OUT') {
+                        currentUser = null;
+                        currentUserRole = 'viewer';
+                        showLoginScreen();
+                    }
                 });
-                
-            } catch (error) {
-                console.error('Error loading collaborators:', error);
+            } else {
+                alert('Please update Supabase credentials in the HTML file!');
+                showLoginScreen();
             }
-        }
-        
-        // Add collaborator
-        async function addCollaborator() {
-            const email = document.getElementById('new-collaborator-email').value.trim();
-            const role = document.getElementById('new-collaborator-role').value;
-            
-            if (!email) {
-                alert('Indtast venligst en email adresse');
-                return;
-            }
-            
-            if (!supabase || !currentProjectId) return;
-            
-            try {
-                // Find user by email
-                const { data: userData, error: userError } = await supabase
-                    .from('auth.users')
-                    .select('id')
-                    .eq('email', email)
-                    .single();
-                
-                let userId = userData?.id;
-                
-                // If user doesn't exist, they'll get access when they sign up with this email
-                if (!userId) {
-                    userId = 'pending_' + email.replace(/[^a-zA-Z0-9]/g, '_');
-                }
-                
-                // Add access record
-                const { error } = await supabase
-                    .from('project_access')
-                    .insert({
-                        project_id: currentProjectId,
-                        user_id: userId,
-                        user_email: email,
-                        role: role,
-                        granted_by: currentUser.id,
-                        created_at: new Date().toISOString()
-                    });
-                
-                if (error) throw error;
-                
-                // Clear form and reload
-                document.getElementById('new-collaborator-email').value = '';
-                await loadCollaborators();
-                
-                alert(`${email} er tilføjet som ${role}`);
-                
-            } catch (error) {
-                console.error('Error adding collaborator:', error);
-                alert('Kunne ikke tilføje bruger: ' + error.message);
-            }
-        }
-        
-        // Remove collaborator
-        async function removeCollaborator(userId) {
-            if (!confirm('Er du sikker på at du vil fjerne denne bruger?')) return;
-            
-            if (!supabase || !currentProjectId) return;
-            
-            try {
-                const { error } = await supabase
-                    .from('project_access')
-                    .delete()
-                    .eq('project_id', currentProjectId)
-                    .eq('user_id', userId);
-                
-                if (error) throw error;
-                
-                await loadCollaborators();
-                
-            } catch (error) {
-                console.error('Error removing collaborator:', error);
-                alert('Kunne ikke fjerne bruger: ' + error.message);
-            }
-        }
-        
-        // Check user's role for current project
-        async function checkUserRole(projectId) {
-            if (!supabase || !currentUser) return 'viewer';
-            
-            try {
-                // Check if user is owner
-                const { data: project, error: projectError } = await supabase
-                    .from('projects')
-                    .select('user_id')
-                    .eq('project_id', projectId)
-                    .single();
-                
-                if (project && project.user_id === currentUser.id) {
-                    currentUserRole = 'owner';
-                    return 'owner';
-                }
-                
-                // Check access table
-                const { data: access, error: accessError } = await supabase
-                    .from('project_access')
-                    .select('role')
-                    .eq('project_id', projectId)
-                    .eq('user_id', currentUser.id)
-                    .single();
-                
-                if (access) {
-                    currentUserRole = access.role;
-                    return access.role;
-                }
-                
-                currentUserRole = 'viewer';
-                return 'viewer';
-                
-            } catch (error) {
-                console.error('Error checking user role:', error);
-                return 'viewer';
-            }
-        }
-        
-        // Update UI based on user role
-        function updateUIForRole(role) {
-            const badge = document.getElementById('user-role-badge');
-            if (badge) {
-                badge.className = `access-badge ${role}`;
-                badge.textContent = role.toUpperCase();
-            }
-            
-            // Enable/disable editing based on role
-            const canEdit = role === 'owner' || role === 'admin' || role === 'editor';
-            
-            // Disable/enable form inputs
-            document.querySelectorAll('input, textarea, select').forEach(element => {
-                if (!element.id.includes('login') && !element.id.includes('share') && 
-                    !element.id.includes('collaborator') && element.id !== 'project-select') {
-                    element.disabled = !canEdit;
-                }
-            });
-            
-            // Show/hide action buttons based on role
-            const canManage = role === 'owner' || role === 'admin';
-            
-            // You can add more UI adjustments here based on role
         }
         
         // Authentication Functions
@@ -912,8 +1110,8 @@
             
             if (user) {
                 currentUser = user;
+                currentUserRole = user.user_metadata?.role || 'viewer';
                 showDashboard();
-                checkShareLink(); // Check if user came from share link
             } else {
                 showLoginScreen();
             }
@@ -922,38 +1120,71 @@
         function showLoginScreen() {
             document.getElementById('login-screen').style.display = 'flex';
             document.getElementById('main-dashboard').style.display = 'none';
+            document.getElementById('public-view').style.display = 'none';
         }
         
         function showDashboard() {
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('main-dashboard').style.display = 'block';
+            document.getElementById('public-view').style.display = 'none';
+            
             if (currentUser) {
                 document.getElementById('current-user-email').textContent = currentUser.email;
+                document.getElementById('current-user-role').textContent = currentUserRole.charAt(0).toUpperCase() + currentUserRole.slice(1);
+                
+                // Apply role-based UI restrictions
+                applyRoleRestrictions();
             }
+            
             loadUserProjects();
         }
         
-        async function handleLogin() {
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
+        // Apply role-based UI restrictions
+        function applyRoleRestrictions() {
+            const setupTabBtn = document.getElementById('setup-tab-btn');
+            const newProjectBtn = document.getElementById('new-project-btn');
+            const shareBtn = document.getElementById('share-btn');
+            const addSubtaskBtn = document.getElementById('add-subtask-btn');
             
-            if (!email || !password) {
-                showError('Udfyld venligst alle felter');
-                return;
+            if (currentUserRole === 'viewer') {
+                // Viewers can only see dashboard and project plan
+                if (setupTabBtn) setupTabBtn.style.display = 'none';
+                if (newProjectBtn) newProjectBtn.style.display = 'none';
+                if (shareBtn) shareBtn.style.display = 'none';
+                if (addSubtaskBtn) addSubtaskBtn.style.display = 'none';
+                
+                // Default to dashboard tab
+                switchTab('dashboard');
+                
+            } else if (currentUserRole === 'employee') {
+                // Employees can't see client setup
+                if (setupTabBtn) setupTabBtn.style.display = 'none';
+                if (newProjectBtn) newProjectBtn.style.display = 'none';
+                if (shareBtn) shareBtn.style.display = 'none';
+                if (addSubtaskBtn) addSubtaskBtn.style.display = 'none';
+                
+                // Default to dashboard tab
+                switchTab('dashboard');
+                
+            } else if (currentUserRole === 'admin') {
+                // Admins have full access
+                if (setupTabBtn) setupTabBtn.style.display = 'block';
+                if (newProjectBtn) newProjectBtn.style.display = 'inline-block';
+                if (shareBtn) shareBtn.style.display = 'inline-block';
+                if (addSubtaskBtn) addSubtaskBtn.style.display = 'inline-block';
             }
-            
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email: email,
-                password: password
-            });
-            
-            if (error) {
-                showError('Login fejlede: ' + error.message);
-            } else {
-                currentUser = data.user;
-                showDashboard();
-                checkShareLink(); // Check for share link after login
-            }
+        }
+        
+        function showLogin() {
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('signup-form').style.display = 'none';
+            clearMessages();
+        }
+        
+        function showSignup() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('signup-form').style.display = 'block';
+            clearMessages();
         }
         
         function showError(message) {
@@ -963,76 +1194,180 @@
             setTimeout(() => errorDiv.style.display = 'none', 5000);
         }
         
-        async function handleLogout() {
-            const { error } = await supabase.auth.signOut();
-            if (!error) {
-                currentUser = null;
-                currentUserRole = null;
-                showLoginScreen();
+        function showSuccess(message) {
+            const successDiv = document.getElementById('success-message');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            setTimeout(() => successDiv.style.display = 'none', 5000);
+        }
+        
+        function clearMessages() {
+            document.getElementById('error-message').style.display = 'none';
+            document.getElementById('success-message').style.display = 'none';
+        }
+        
+        async function handleLogin() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            if (!email || !password) {
+                showError('Please fill in all fields');
+                return;
+            }
+            
+            if (!supabase) {
+                initSupabase();
+                if (!supabase) {
+                    showError('Database not configured');
+                    return;
+                }
+            }
+            
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
+            
+            if (error) {
+                showError('Login failed: ' + error.message);
+            } else {
+                currentUser = data.user;
+                currentUserRole = data.user.user_metadata?.role || 'viewer';
+                showDashboard();
             }
         }
         
-        // Load user's projects (including shared ones)
+        async function handleSignup() {
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const companyName = document.getElementById('company-name').value;
+            const role = document.getElementById('signup-role').value;
+            
+            if (!email || !password || !companyName) {
+                showError('Please fill in all fields');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showError('Password must be at least 6 characters');
+                return;
+            }
+            
+            if (!supabase) {
+                initSupabase();
+                if (!supabase) {
+                    showError('Database not configured');
+                    return;
+                }
+            }
+            
+            const { data, error } = await supabase.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    data: {
+                        company_name: companyName,
+                        role: role
+                    }
+                }
+            });
+            
+            if (error) {
+                showError('Signup failed: ' + error.message);
+            } else {
+                showSuccess('Account created! You can now sign in.');
+                setTimeout(() => showLogin(), 3000);
+            }
+        }
+        
+        async function handleLogout() {
+            if (supabase) {
+                const { error } = await supabase.auth.signOut();
+                if (!error) {
+                    currentUser = null;
+                    currentUserRole = 'viewer';
+                    showLoginScreen();
+                }
+            }
+        }
+        
+        // Invite team member
+        async function inviteTeamMember() {
+            if (currentUserRole !== 'admin' || !currentProjectId) return;
+            
+            const email = document.getElementById('invite-email').value;
+            const role = document.getElementById('invite-role').value;
+            
+            if (!email) {
+                alert('Please enter an email address');
+                return;
+            }
+            
+            // Here you would typically send an invitation email
+            // For now, we'll just add them to the project's team members
+            if (currentProjectData) {
+                if (!currentProjectData.team_members) {
+                    currentProjectData.team_members = [];
+                }
+                
+                currentProjectData.team_members.push({
+                    email: email,
+                    role: role,
+                    invited_at: new Date().toISOString()
+                });
+                
+                await saveToSupabase();
+                updateTeamMembersList();
+                document.getElementById('invite-email').value = '';
+                alert(`Invitation sent to ${email} as ${role}`);
+            }
+        }
+        
+        // Update team members list
+        function updateTeamMembersList() {
+            const container = document.getElementById('team-members-list');
+            if (!container || !currentProjectData?.team_members) return;
+            
+            container.innerHTML = '';
+            currentProjectData.team_members.forEach(member => {
+                const item = document.createElement('div');
+                item.className = 'team-member-item';
+                item.innerHTML = `
+                    <div class="member-info">
+                        <span class="member-email">${member.email}</span>
+                        <span class="member-role">${member.role}</span>
+                    </div>
+                    ${currentUserRole === 'admin' ? `<button class="btn btn-danger" onclick="removeTeamMember('${member.email}')">Remove</button>` : ''}
+                `;
+                container.appendChild(item);
+            });
+        }
+        
+        // Load user's projects
         async function loadUserProjects() {
             if (!supabase || !currentUser) return;
             
             try {
-                // Get owned projects
-                const { data: ownedProjects, error: ownError } = await supabase
+                const { data: projects, error } = await supabase
                     .from('projects')
                     .select('project_id, client_data')
-                    .eq('user_id', currentUser.id);
-                
-                // Get shared projects
-                const { data: sharedAccess, error: sharedError } = await supabase
-                    .from('project_access')
-                    .select('project_id, role')
-                    .eq('user_id', currentUser.id);
-                
-                let sharedProjects = [];
-                if (sharedAccess && sharedAccess.length > 0) {
-                    const sharedIds = sharedAccess.map(a => a.project_id);
-                    const { data: sharedData, error } = await supabase
-                        .from('projects')
-                        .select('project_id, client_data')
-                        .in('project_id', sharedIds);
-                    
-                    sharedProjects = sharedData || [];
-                }
-                
+                    .or(`user_id.eq.${currentUser.id},team_members.cs.{"email":"${currentUser.email}"}`)
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
                 const select = document.getElementById('project-select');
                 if (select) {
-                    select.innerHTML = '<option value="">Vælg eller opret et projekt...</option>';
+                    select.innerHTML = '<option value="">Select or create a project...</option>';
                     
-                    // Add owned projects
-                    if (ownedProjects && ownedProjects.length > 0) {
-                        const ownedGroup = document.createElement('optgroup');
-                        ownedGroup.label = 'Mine projekter';
-                        
-                        ownedProjects.forEach(project => {
+                    if (projects && projects.length > 0) {
+                        projects.forEach(project => {
                             const option = document.createElement('option');
                             option.value = project.project_id;
-                            option.textContent = project.client_data?.name || 'Unavngivet projekt';
-                            ownedGroup.appendChild(option);
+                            const clientName = project.client_data?.name || 'Unnamed project';
+                            option.textContent = clientName;
+                            select.appendChild(option);
                         });
-                        
-                        select.appendChild(ownedGroup);
-                    }
-                    
-                    // Add shared projects
-                    if (sharedProjects.length > 0) {
-                        const sharedGroup = document.createElement('optgroup');
-                        sharedGroup.label = 'Delte projekter';
-                        
-                        sharedProjects.forEach(project => {
-                            const access = sharedAccess.find(a => a.project_id === project.project_id);
-                            const option = document.createElement('option');
-                            option.value = project.project_id;
-                            option.textContent = `${project.client_data?.name || 'Unavngivet'} (${access.role})`;
-                            sharedGroup.appendChild(option);
-                        });
-                        
-                        select.appendChild(sharedGroup);
                     }
                 }
             } catch (error) {
@@ -1040,19 +1375,76 @@
             }
         }
         
+        // Create new project (admin only)
+        async function createNewProject() {
+            if (!currentUser || currentUserRole !== 'admin') {
+                alert('Only admins can create new projects');
+                return;
+            }
+            
+            const projectName = prompt('Enter client company name:');
+            if (!projectName) return;
+            
+            const projectId = generateProjectId(projectName);
+            currentProjectId = projectId;
+            
+            const newProject = {
+                project_id: projectId,
+                user_id: currentUser.id,
+                client_data: {
+                    name: projectName,
+                    scaleupPM: '',
+                    clientPM: '',
+                    notes: ''
+                },
+                team_members: [],
+                tasks: masterTemplate,
+                is_public: false,
+                share_token: generateShareToken(),
+                created_at: new Date().toISOString(),
+                last_updated: new Date().toISOString()
+            };
+            
+            if (supabase) {
+                try {
+                    const { error } = await supabase
+                        .from('projects')
+                        .insert([newProject]);
+                    
+                    if (error) throw error;
+                    
+                    await loadUserProjects();
+                    document.getElementById('project-select').value = projectId;
+                    loadProject(projectId);
+                } catch (error) {
+                    console.error('Error creating project:', error.message);
+                    alert('Error creating project: ' + error.message);
+                }
+            }
+        }
+        
+        // Generate project ID
+        function generateProjectId(projectName) {
+            const cleanName = projectName.toLowerCase().replace(/[^a-z0-9]/g, '-');
+            const timestamp = Date.now().toString().slice(-6);
+            return `${cleanName}-${timestamp}`;
+        }
+        
+        // Generate share token
+        function generateShareToken() {
+            return Math.random().toString(36).substring(2, 15) + 
+                   Math.random().toString(36).substring(2, 15);
+        }
+        
         // Load project
         async function loadProject(projectId) {
             if (!projectId) {
                 currentProjectId = null;
-                currentUserRole = null;
+                resetUI();
                 return;
             }
             
             currentProjectId = projectId;
-            
-            // Check user role for this project
-            const role = await checkUserRole(projectId);
-            updateUIForRole(role);
             
             if (!supabase) return;
             
@@ -1067,88 +1459,493 @@
 
                 if (project) {
                     currentProjectData = project;
-                    // Additional UI updates would go here
+                    
+                    // Update "Client" to actual client name in tasks
+                    if (project.client_data?.name) {
+                        updateClientNameInTasks(project.client_data.name);
+                    }
+                    
+                    populateUIFromProject(project);
+                    updateShareControls(project);
+                    updateTeamMembersList();
+                    updateTeamAssignments();
                 }
             } catch (error) {
                 console.error('Error loading project:', error.message);
             }
         }
         
-        // Create new project
-        async function createNewProject() {
-            if (!currentUser) {
-                alert('Du skal være logget ind for at oprette projekter');
-                return;
+        // Update client name in tasks
+        function updateClientNameInTasks(clientName) {
+            if (!currentProjectData?.tasks || !clientName) return;
+            
+            currentProjectData.tasks.forEach(phase => {
+                phase.tasks?.forEach(task => {
+                    if (task.responsible === 'Client') {
+                        task.responsible = clientName;
+                    }
+                    // Also update subtasks
+                    task.subtasks?.forEach(subtask => {
+                        if (subtask.responsible === 'Client') {
+                            subtask.responsible = clientName;
+                        }
+                    });
+                });
+            });
+        }
+        
+        // Toggle share controls
+        function toggleShareControls() {
+            const controls = document.getElementById('share-controls');
+            if (controls.style.display === 'none') {
+                controls.style.display = 'block';
+            } else {
+                controls.style.display = 'none';
+            }
+        }
+        
+        // Update share controls
+        function updateShareControls(project) {
+            if (!project || currentUserRole !== 'admin') return;
+            
+            const toggle = document.getElementById('public-toggle');
+            const linkContainer = document.getElementById('share-link-container');
+            const linkInput = document.getElementById('share-link-input');
+            
+            toggle.checked = project.is_public || false;
+            
+            if (project.is_public && project.share_token) {
+                linkContainer.style.display = 'block';
+                const shareUrl = `${window.location.origin}${window.location.pathname}?share=${project.share_token}`;
+                linkInput.value = shareUrl;
+            } else {
+                linkContainer.style.display = 'none';
+            }
+        }
+        
+        // Toggle public access
+        async function togglePublicAccess() {
+            if (!currentProjectData || !supabase || currentUserRole !== 'admin') return;
+            
+            const isPublic = document.getElementById('public-toggle').checked;
+            
+            try {
+                const { error } = await supabase
+                    .from('projects')
+                    .update({ is_public: isPublic })
+                    .eq('project_id', currentProjectId);
+                
+                if (error) throw error;
+                
+                currentProjectData.is_public = isPublic;
+                updateShareControls(currentProjectData);
+            } catch (error) {
+                console.error('Error updating public access:', error.message);
+            }
+        }
+        
+        // Copy share link
+        function copyShareLink() {
+            const input = document.getElementById('share-link-input');
+            input.select();
+            document.execCommand('copy');
+            alert('Link copied to clipboard!');
+        }
+        
+        // Update team assignments on dashboard
+        function updateTeamAssignments() {
+            const container = document.getElementById('team-assignments');
+            if (!container || !currentProjectData?.tasks) return;
+            
+            // Count tasks by responsible person
+            const assignments = {};
+            
+            currentProjectData.tasks.forEach(phase => {
+                phase.tasks?.forEach(task => {
+                    const responsible = task.responsible;
+                    if (!assignments[responsible]) {
+                        assignments[responsible] = { total: 0, completed: 0, inProgress: 0, notStarted: 0 };
+                    }
+                    assignments[responsible].total++;
+                    
+                    if (task.status === 'completed') assignments[responsible].completed++;
+                    else if (task.status === 'in-progress') assignments[responsible].inProgress++;
+                    else assignments[responsible].notStarted++;
+                    
+                    // Also count subtasks
+                    task.subtasks?.forEach(subtask => {
+                        const subResp = subtask.responsible;
+                        if (!assignments[subResp]) {
+                            assignments[subResp] = { total: 0, completed: 0, inProgress: 0, notStarted: 0 };
+                        }
+                        assignments[subResp].total++;
+                        
+                        if (subtask.status === 'completed') assignments[subResp].completed++;
+                        else if (subtask.status === 'in-progress') assignments[subResp].inProgress++;
+                        else assignments[subResp].notStarted++;
+                    });
+                });
+            });
+            
+            // Display assignments
+            container.innerHTML = '';
+            Object.keys(assignments).forEach(person => {
+                const data = assignments[person];
+                const card = document.createElement('div');
+                card.className = 'team-member-card';
+                card.innerHTML = `
+                    <div class="team-member-name">${person}</div>
+                    <div class="task-count">
+                        <span style="color: #22c55e;">✅ ${data.completed}</span> | 
+                        <span style="color: #81e6d9;">🔄 ${data.inProgress}</span> | 
+                        <span style="color: #9ca3af;">⏳ ${data.notStarted}</span> | 
+                        Total: ${data.total}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+        
+        // Populate UI from project data
+        function populateUIFromProject(projectData) {
+            const clientData = projectData.client_data || {};
+            
+            // Only populate if user has access to setup tab
+            if (currentUserRole === 'admin') {
+                document.getElementById('client-name').value = clientData.name || '';
+                document.getElementById('scaleup-pm').value = clientData.scaleupPM || '';
+                document.getElementById('client-pm').value = clientData.clientPM || '';
+                document.getElementById('project-notes').value = clientData.notes || '';
             }
             
-            const projectName = prompt('Indtast kundens firmanavn:');
-            if (!projectName) return;
+            checkSetup();
+            populateTable();
+            updateDashboard();
+        }
+        
+        // Save to Supabase
+        async function saveToSupabase() {
+            if (!currentProjectId || !supabase || !currentUser || isReadOnly) return;
             
-            const projectId = 'proj_' + Math.random().toString(36).substr(2, 9);
-            const shareId = generateShareId();
+            // Check permissions
+            if (currentUserRole === 'viewer') return;
             
-            currentProjectId = projectId;
-            
-            const newProject = {
-                project_id: projectId,
-                share_id: shareId,
-                user_id: currentUser.id,
+            const currentData = {
                 client_data: {
-                    name: projectName,
-                    scaleupPM: '',
-                    clientPM: '',
-                    notes: ''
+                    name: document.getElementById('client-name').value.trim(),
+                    scaleupPM: document.getElementById('scaleup-pm').value.trim(),
+                    clientPM: document.getElementById('client-pm').value.trim(),
+                    notes: document.getElementById('project-notes').value.trim()
                 },
-                team_members: [],
-                tasks: [],
-                is_public: false,
-                created_at: new Date().toISOString(),
+                tasks: currentProjectData?.tasks || masterTemplate,
+                team_members: currentProjectData?.team_members || [],
                 last_updated: new Date().toISOString()
             };
             
-            if (supabase) {
-                try {
-                    const { error } = await supabase
-                        .from('projects')
-                        .insert([newProject]);
-                    
-                    if (error) throw error;
-                    
-                    // Also create owner access record
-                    await supabase
-                        .from('project_access')
-                        .insert({
-                            project_id: projectId,
-                            user_id: currentUser.id,
-                            user_email: currentUser.email,
-                            role: 'owner',
-                            granted_by: currentUser.id,
-                            created_at: new Date().toISOString()
-                        });
-                    
-                    await loadUserProjects();
-                    document.getElementById('project-select').value = projectId;
-                    loadProject(projectId);
-                    
-                } catch (error) {
-                    console.error('Error creating project:', error.message);
-                    alert('Fejl ved oprettelse af projekt: ' + error.message);
-                }
+            // Update client name in tasks if it changed
+            if (currentData.client_data.name) {
+                updateClientNameInTasks(currentData.client_data.name);
             }
+            
+            try {
+                const { error } = await supabase
+                    .from('projects')
+                    .update(currentData)
+                    .eq('project_id', currentProjectId);
+                
+                if (error) throw error;
+            } catch (error) {
+                console.error('Failed to save to Supabase:', error.message);
+            }
+            
+            currentProjectData = { ...currentProjectData, ...currentData };
         }
         
+        // Reset UI
+        function resetUI() {
+            if (currentUserRole === 'admin') {
+                document.getElementById('client-name').value = '';
+                document.getElementById('scaleup-pm').value = '';
+                document.getElementById('client-pm').value = '';
+                document.getElementById('project-notes').value = '';
+            }
+            checkSetup();
+        }
+        
+        // Switch tabs
         function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
-            document.getElementById(tabName + '-tab')?.classList.add('active');
-            event.target.classList.add('active');
-        }
-        
-        function exportProject() {
-            if (!currentProjectData) {
-                alert('Vælg venligst et projekt først');
+            // Check permissions
+            if (tabName === 'setup' && (currentUserRole === 'employee' || currentUserRole === 'viewer')) {
+                alert('You do not have permission to access Client Setup');
                 return;
             }
+            
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+            checkSetup();
+        }
+        
+        // Save setup
+        function saveSetup() {
+            if (currentUserRole !== 'admin') return;
+            
+            const clientData = {
+                name: document.getElementById('client-name').value.trim(),
+                scaleupPM: document.getElementById('scaleup-pm').value.trim(),
+                clientPM: document.getElementById('client-pm').value.trim(),
+                notes: document.getElementById('project-notes').value.trim()
+            };
+            
+            if (!clientData.name || !clientData.scaleupPM) {
+                alert('Please fill in client name and Scaleup Finance PM');
+                return;
+            }
+            
+            // Update client name in tasks
+            if (clientData.name) {
+                updateClientNameInTasks(clientData.name);
+            }
+            
+            saveToSupabase();
+            switchTab('dashboard');
+            document.querySelectorAll('.nav-tab')[1].click();
+        }
+        
+        // Check setup
+        function checkSetup() {
+            const hasProject = currentProjectId !== null;
+            const clientName = currentProjectData?.client_data?.name || '';
+            const scaleupPM = currentProjectData?.client_data?.scaleupPM || '';
+            const hasSetup = hasProject && clientName && scaleupPM;
+            
+            const dashboardWarning = document.getElementById('dashboard-warning');
+            const dashboardContent = document.getElementById('dashboard-content');
+            const projectWarning = document.getElementById('project-warning');
+            const projectContent = document.getElementById('project-content');
+            
+            if (hasSetup) {
+                if (dashboardWarning) dashboardWarning.style.display = 'none';
+                if (dashboardContent) dashboardContent.style.display = 'block';
+                if (projectWarning) projectWarning.style.display = 'none';
+                if (projectContent) projectContent.style.display = 'block';
+                
+                const clientDisplay = document.getElementById('client-display');
+                if (clientDisplay) {
+                    clientDisplay.textContent = `${clientName} | PM: ${scaleupPM}`;
+                }
+                
+                populateTable();
+                updateDashboard();
+                updateTeamAssignments();
+            } else {
+                if (dashboardWarning) dashboardWarning.style.display = 'block';
+                if (dashboardContent) dashboardContent.style.display = 'none';
+                if (projectWarning) projectWarning.style.display = 'block';
+                if (projectContent) projectContent.style.display = 'none';
+            }
+        }
+        
+        // Populate table
+        function populateTable() {
+            const tbody = document.getElementById('project-body');
+            if (!tbody || !currentProjectData?.tasks) return;
+            
+            tbody.innerHTML = '';
+            
+            currentProjectData.tasks.forEach((phase, phaseIndex) => {
+                const phaseRow = document.createElement('tr');
+                phaseRow.innerHTML = `<td colspan="4" style="background: rgba(129, 230, 217, 0.1); color: #81e6d9; font-weight: bold; padding: 15px;">${phase.phase}</td>`;
+                tbody.appendChild(phaseRow);
+                
+                phase.tasks.forEach((task, taskIndex) => {
+                    const taskRow = document.createElement('tr');
+                    const canEdit = currentUserRole !== 'viewer';
+                    
+                    taskRow.innerHTML = `
+                        <td>${task.name}</td>
+                        <td>
+                            <select class="status-select status-${task.status}" 
+                                    onchange="updateTaskStatus(${phaseIndex}, ${taskIndex}, this.value)" 
+                                    ${!canEdit ? 'disabled' : ''}>
+                                <option value="not-started" ${task.status === 'not-started' ? 'selected' : ''}>⏳ Not Started</option>
+                                <option value="in-progress" ${task.status === 'in-progress' ? 'selected' : ''}>🔄 In Progress</option>
+                                <option value="completed" ${task.status === 'completed' ? 'selected' : ''}>✅ Completed</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select onchange="updateTaskResponsible(${phaseIndex}, ${taskIndex}, this.value)" 
+                                    style="width: 100%; padding: 6px; background: #1a1a2e; border: 1px solid rgba(129, 230, 217, 0.2); color: white; border-radius: 6px;"
+                                    ${!canEdit ? 'disabled' : ''}>
+                                ${getResponsibleOptions(task.responsible)}
+                            </select>
+                        </td>
+                        <td>${task.description}</td>
+                    `;
+                    tbody.appendChild(taskRow);
+                    
+                    // Add subtasks if they exist
+                    if (task.subtasks && task.subtasks.length > 0) {
+                        task.subtasks.forEach((subtask, subtaskIndex) => {
+                            const subtaskRow = document.createElement('tr');
+                            subtaskRow.className = 'subtask-row';
+                            subtaskRow.innerHTML = `
+                                <td style="padding-left: 45px; position: relative;">
+                                    <span style="position: absolute; left: 25px; color: #81e6d9;">└─</span>
+                                    ${subtask.name}
+                                </td>
+                                <td>
+                                    <select class="status-select status-${subtask.status}" 
+                                            onchange="updateSubtaskStatus(${phaseIndex}, ${taskIndex}, ${subtaskIndex}, this.value)" 
+                                            ${!canEdit ? 'disabled' : ''}>
+                                        <option value="not-started" ${subtask.status === 'not-started' ? 'selected' : ''}>⏳ Not Started</option>
+                                        <option value="in-progress" ${subtask.status === 'in-progress' ? 'selected' : ''}>🔄 In Progress</option>
+                                        <option value="completed" ${subtask.status === 'completed' ? 'selected' : ''}>✅ Completed</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select onchange="updateSubtaskResponsible(${phaseIndex}, ${taskIndex}, ${subtaskIndex}, this.value)" 
+                                            style="width: 100%; padding: 6px; background: #1a1a2e; border: 1px solid rgba(129, 230, 217, 0.2); color: white; border-radius: 6px;"
+                                            ${!canEdit ? 'disabled' : ''}>
+                                        ${getResponsibleOptions(subtask.responsible)}
+                                    </select>
+                                </td>
+                                <td>${subtask.description}</td>
+                            `;
+                            tbody.appendChild(subtaskRow);
+                        });
+                    }
+                });
+            });
+        }
+        
+        // Get responsible options including client name
+        function getResponsibleOptions(currentValue) {
+            const clientName = currentProjectData?.client_data?.name || 'Client';
+            const options = ['Scaleup Finance', clientName];
+            
+            // Add team members
+            if (currentProjectData?.team_members) {
+                currentProjectData.team_members.forEach(member => {
+                    if (!options.includes(member.email)) {
+                        options.push(member.email);
+                    }
+                });
+            }
+            
+            // Add current value if not in list
+            if (currentValue && !options.includes(currentValue)) {
+                options.push(currentValue);
+            }
+            
+            return options.map(opt => 
+                `<option value="${opt}" ${opt === currentValue ? 'selected' : ''}>${opt}</option>`
+            ).join('');
+        }
+        
+        // Update dashboard
+        function updateDashboard() {
+            if (!currentProjectData?.tasks) return;
+            
+            let totalTasks = 0;
+            let completedTasks = 0;
+            let ongoingTasks = 0;
+            
+            currentProjectData.tasks.forEach(phase => {
+                phase.tasks.forEach(task => {
+                    totalTasks++;
+                    if (task.status === 'completed') completedTasks++;
+                    if (task.status === 'in-progress') ongoingTasks++;
+                    
+                    // Count subtasks
+                    if (task.subtasks) {
+                        task.subtasks.forEach(subtask => {
+                            totalTasks++;
+                            if (subtask.status === 'completed') completedTasks++;
+                            if (subtask.status === 'in-progress') ongoingTasks++;
+                        });
+                    }
+                });
+            });
+            
+            const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            
+            document.getElementById('overall-progress').textContent = progressPercent + '%';
+            document.getElementById('overall-progress-bar').style.width = progressPercent + '%';
+            document.getElementById('completed-tasks').textContent = completedTasks;
+            document.getElementById('total-tasks').textContent = totalTasks;
+            document.getElementById('ongoing-tasks').textContent = ongoingTasks;
+            
+            // Find next milestone
+            let nextMilestone = 'All tasks completed';
+            for (const phase of currentProjectData.tasks) {
+                for (const task of phase.tasks) {
+                    if (task.status !== 'completed') {
+                        nextMilestone = task.name.split(' ').slice(1).join(' ');
+                        break;
+                    }
+                }
+                if (nextMilestone !== 'All tasks completed') break;
+            }
+            document.getElementById('next-milestone').textContent = nextMilestone;
+        }
+        
+        // Update task status
+        async function updateTaskStatus(phaseIndex, taskIndex, status) {
+            if (!currentProjectData?.tasks || isReadOnly || currentUserRole === 'viewer') return;
+            
+            currentProjectData.tasks[phaseIndex].tasks[taskIndex].status = status;
+            if (event && event.target) {
+                event.target.className = `status-select status-${status}`;
+            }
+            updateDashboard();
+            updateTeamAssignments();
+            await saveToSupabase();
+        }
+        
+        // Update subtask status
+        async function updateSubtaskStatus(phaseIndex, taskIndex, subtaskIndex, status) {
+            if (!currentProjectData?.tasks || isReadOnly || currentUserRole === 'viewer') return;
+            
+            const task = currentProjectData.tasks[phaseIndex].tasks[taskIndex];
+            if (task.subtasks && task.subtasks[subtaskIndex]) {
+                task.subtasks[subtaskIndex].status = status;
+                if (event && event.target) {
+                    event.target.className = `status-select status-${status}`;
+                }
+                updateDashboard();
+                updateTeamAssignments();
+                await saveToSupabase();
+            }
+        }
+        
+        // Update task responsible
+        async function updateTaskResponsible(phaseIndex, taskIndex, newResponsible) {
+            if (!currentProjectData?.tasks || isReadOnly || currentUserRole === 'viewer') return;
+            
+            currentProjectData.tasks[phaseIndex].tasks[taskIndex].responsible = newResponsible;
+            updateDashboard();
+            updateTeamAssignments();
+            await saveToSupabase();
+        }
+        
+        // Update subtask responsible
+        async function updateSubtaskResponsible(phaseIndex, taskIndex, subtaskIndex, newResponsible) {
+            if (!currentProjectData?.tasks || isReadOnly || currentUserRole === 'viewer') return;
+            
+            const task = currentProjectData.tasks[phaseIndex].tasks[taskIndex];
+            if (task.subtasks && task.subtasks[subtaskIndex]) {
+                task.subtasks[subtaskIndex].responsible = newResponsible;
+                updateDashboard();
+                updateTeamAssignments();
+                await saveToSupabase();
+            }
+        }
+        
+        // Export project
+        function exportProject() {
+            if (!currentProjectData) return;
             
             const exportData = {
                 ...currentProjectData,
@@ -1163,25 +1960,184 @@
             a.click();
         }
         
-        // Add auth state listener
-        if (supabase) {
-            supabase.auth.onAuthStateChange((event, session) => {
-                if (event === 'SIGNED_IN') {
-                    currentUser = session.user;
-                    showDashboard();
-                } else if (event === 'SIGNED_OUT') {
-                    currentUser = null;
-                    currentUserRole = null;
-                    showLoginScreen();
+        // Load public view
+        async function loadPublicView(shareToken) {
+            if (!supabase) {
+                initSupabase();
+            }
+            
+            try {
+                const { data: project, error } = await supabase
+                    .from('projects')
+                    .select('*')
+                    .eq('share_token', shareToken)
+                    .eq('is_public', true)
+                    .single();
+                
+                if (error) throw error;
+                
+                if (project) {
+                    isReadOnly = true;
+                    displayPublicView(project);
+                } else {
+                    alert('Project not found or not publicly accessible');
+                    window.location.href = window.location.pathname;
                 }
-            });
+            } catch (error) {
+                console.error('Error loading public project:', error.message);
+                alert('Error loading project');
+            }
         }
         
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            if (event.target == document.getElementById('share-modal')) {
-                closeShareModal();
+        // Display public view
+        function displayPublicView(project) {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-dashboard').style.display = 'none';
+            document.getElementById('public-view').style.display = 'block';
+            
+            const content = document.getElementById('public-content');
+            
+            // Update client name in tasks for display
+            if (project.client_data?.name && project.tasks) {
+                project.tasks.forEach(phase => {
+                    phase.tasks?.forEach(task => {
+                        if (task.responsible === 'Client') {
+                            task.responsible = project.client_data.name;
+                        }
+                        task.subtasks?.forEach(subtask => {
+                            if (subtask.responsible === 'Client') {
+                                subtask.responsible = project.client_data.name;
+                            }
+                        });
+                    });
+                });
             }
+            
+            // Create read-only dashboard view
+            let html = `
+                <div class="dashboard-intro">
+                    <h2>${project.client_data?.name || 'Project'} - Status</h2>
+                    <p>Project Manager: ${project.client_data?.scaleupPM || '-'}</p>
+                </div>
+            `;
+            
+            // Calculate stats
+            let totalTasks = 0;
+            let completedTasks = 0;
+            let ongoingTasks = 0;
+            
+            if (project.tasks) {
+                project.tasks.forEach(phase => {
+                    phase.tasks?.forEach(task => {
+                        totalTasks++;
+                        if (task.status === 'completed') completedTasks++;
+                        if (task.status === 'in-progress') ongoingTasks++;
+                        
+                        task.subtasks?.forEach(subtask => {
+                            totalTasks++;
+                            if (subtask.status === 'completed') completedTasks++;
+                            if (subtask.status === 'in-progress') ongoingTasks++;
+                        });
+                    });
+                });
+            }
+            
+            const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            
+            // Add KPIs
+            html += `
+                <div class="dashboard-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-icon">📈</div>
+                        <div class="kpi-label">Overall Progress</div>
+                        <div class="kpi-value">${progressPercent}%</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progressPercent}%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="kpi-card">
+                        <div class="kpi-icon">✅</div>
+                        <div class="kpi-label">Completed</div>
+                        <div class="kpi-value">${completedTasks}</div>
+                        <div class="kpi-subtitle">of ${totalTasks} total</div>
+                    </div>
+                    
+                    <div class="kpi-card">
+                        <div class="kpi-icon">🔄</div>
+                        <div class="kpi-label">Active</div>
+                        <div class="kpi-value">${ongoingTasks}</div>
+                        <div class="kpi-subtitle">in progress</div>
+                    </div>
+                </div>
+            `;
+            
+            // Add task table
+            html += `
+                <div style="background: #252541; border-radius: 12px; overflow: hidden; margin-top: 30px;">
+                    <div class="table-header">
+                        <h2 style="color: white;">📋 Project Tasks</h2>
+                        <div class="client-info">Read-Only View</div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Task</th>
+                                <th>Status</th>
+                                <th>Responsible</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            if (project.tasks) {
+                project.tasks.forEach(phase => {
+                    html += `<tr><td colspan="4" style="background: rgba(129, 230, 217, 0.1); color: #81e6d9; font-weight: bold; padding: 15px;">${phase.phase}</td></tr>`;
+                    
+                    phase.tasks?.forEach(task => {
+                        const statusClass = `status-${task.status}`;
+                        const statusText = task.status === 'not-started' ? '⏳ Not Started' :
+                                         task.status === 'in-progress' ? '🔄 In Progress' : '✅ Completed';
+                        
+                        html += `
+                            <tr>
+                                <td>${task.name}</td>
+                                <td><span class="status-select ${statusClass}">${statusText}</span></td>
+                                <td>${task.responsible}</td>
+                                <td>${task.description}</td>
+                            </tr>
+                        `;
+                        
+                        // Add subtasks
+                        task.subtasks?.forEach(subtask => {
+                            const subStatusClass = `status-${subtask.status}`;
+                            const subStatusText = subtask.status === 'not-started' ? '⏳ Not Started' :
+                                                subtask.status === 'in-progress' ? '🔄 In Progress' : '✅ Completed';
+                            
+                            html += `
+                                <tr class="subtask-row">
+                                    <td style="padding-left: 45px; position: relative;">
+                                        <span style="position: absolute; left: 25px; color: #81e6d9;">└─</span>
+                                        ${subtask.name}
+                                    </td>
+                                    <td><span class="status-select ${subStatusClass}">${subStatusText}</span></td>
+                                    <td>${subtask.responsible}</td>
+                                    <td>${subtask.description}</td>
+                                </tr>
+                            `;
+                        });
+                    });
+                });
+            }
+            
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            content.innerHTML = html;
         }
     </script>
 </body>
