@@ -1007,6 +1007,14 @@
         let currentProjectData = null;
         let isReadOnly = false;
         
+        // Super Admin emails - these users always have full admin access
+        const SUPER_ADMINS = ['mma@scaleup.finance', 'jbo@scaleup.finance'];
+        
+        // Helper function to check if user is super admin
+        function isSuperAdmin(email) {
+            return SUPER_ADMINS.includes(email);
+        }
+        
         // Master template for new projects
         const masterTemplate = [
             {
@@ -1088,7 +1096,12 @@
                 supabase.auth.onAuthStateChange((event, session) => {
                     if (event === 'SIGNED_IN') {
                         currentUser = session.user;
-                        currentUserRole = session.user.user_metadata?.role || 'viewer';
+                        // Check if user is a super admin
+                        if (isSuperAdmin(session.user.email)) {
+                            currentUserRole = 'admin';
+                        } else {
+                            currentUserRole = session.user.user_metadata?.role || 'viewer';
+                        }
                         showDashboard();
                     } else if (event === 'SIGNED_OUT') {
                         currentUser = null;
@@ -1110,7 +1123,12 @@
             
             if (user) {
                 currentUser = user;
-                currentUserRole = user.user_metadata?.role || 'viewer';
+                // Check if user is a super admin
+                if (isSuperAdmin(user.email)) {
+                    currentUserRole = 'admin';
+                } else {
+                    currentUserRole = user.user_metadata?.role || 'viewer';
+                }
                 showDashboard();
             } else {
                 showLoginScreen();
@@ -1130,7 +1148,12 @@
             
             if (currentUser) {
                 document.getElementById('current-user-email').textContent = currentUser.email;
-                document.getElementById('current-user-role').textContent = currentUserRole.charAt(0).toUpperCase() + currentUserRole.slice(1);
+                // Show if user is super admin
+                if (isSuperAdmin(currentUser.email)) {
+                    document.getElementById('current-user-role').textContent = 'Super Admin';
+                } else {
+                    document.getElementById('current-user-role').textContent = currentUserRole.charAt(0).toUpperCase() + currentUserRole.slice(1);
+                }
                 
                 // Apply role-based UI restrictions
                 applyRoleRestrictions();
@@ -1232,7 +1255,12 @@
                 showError('Login failed: ' + error.message);
             } else {
                 currentUser = data.user;
-                currentUserRole = data.user.user_metadata?.role || 'viewer';
+                // Check if user is a super admin
+                if (isSuperAdmin(data.user.email)) {
+                    currentUserRole = 'admin';
+                } else {
+                    currentUserRole = data.user.user_metadata?.role || 'viewer';
+                }
                 showDashboard();
             }
         }
